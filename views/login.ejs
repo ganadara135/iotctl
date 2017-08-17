@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Block Chain</title>
+    <link rel="stylesheet" href="css/login.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no
+      initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+  </head>
+  <body>
+    <div class="logo-form">
+      <img src="img/logo3.svg" class="logo"/>
+      <p class="title">Block Chain</p>
+    </div>
+
+    <div class="login-form">
+      <div class="input-username">
+        <img src="img/icon-user.svg" class="input-icon" />
+        <input type="text" placeholder="Username"/>
+      </div>
+      <div class="input-pw">
+        <img src="img/icon-lock.svg" class="input-icon" />
+        <input type="password" placeholder="Password" autocomplete="new-password"/>
+      </div>
+      <button class="sign-in">Sign In</button>
+      <button class="sign-up">Sign Up</button>
+
+    </div>
+    <script>
+      var temp = document.querySelector('.sign-up');
+      var enter = document.querySelector('.sign-in');
+      temp.addEventListener('click',function(){
+        location.href="./signup";
+      });
+      enter.addEventListener('click',function(){
+        location.href="./main";
+      });
+
+    </script>
+  </body>
+</html>

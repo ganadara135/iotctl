@@ -265,6 +265,18 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
       })
   });
 
+  app.get('/login',function(req,res){
+    res.render('login');
+  })
+  app.get('/main',function(req,res){
+    res.render('main');
+  })
+  app.get('/signup',function(req,res){
+    res.render('signup');
+  })
+  app.get('/devices',function(req,res){
+    res.render('devices');
+  })
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 

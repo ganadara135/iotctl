@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+}
+body{
+  overflow: hidden;
+}
+header{
+  width: 100vw;
+  height: 60px;
+  background: -webkit-linear-gradient(left,#31435b,#25364a);
+}
+
+#menu-bar{
+  display: none;
+}
+
+#menu-bar+label[for=menu-bar]{
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+label[for="menu-bar"] > span{
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  margin: auto;
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  border-radius: 4px;
+}
+label[for="menu-bar"] > span::before{
+  position: absolute;
+  content: '';
+  top: -10px;
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: white;
+}
+label[for="menu-bar"] > span::after{
+  position: absolute;
+  content: '';
+  top: 10px;
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+#menu-bar:checked ~ nav{
+  left: 0px;
+}
+#menu-bar:checked ~ .overlay{
+  display: inline-block;
+}
+
+nav{
+  position: fixed;
+  width: 80vw;
+  top: 0px;
+  left: -80vw;
+  bottom: 0px;
+  background: white;
+  box-sizing: border-box;
+  transition: all 0.5s;
+  z-index: 10;
+}
+
+.user_info{
+  width: 80vw;
+  height: 40vw;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom: 2px solid #eee;
+  box-sizing: border-box;
+      background: -webkit-linear-gradient(top,#75d6a7,#57c0f1);
+}
+.img-wrap{
+  width: 25vw;
+  height: 25vw;
+  border-radius: 100%;
+  border: 2px solid #eee;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.img-wrap:active > img{
+  transform: scale(1.2);
+}
+
+.img-wrap > img{
+  width: 100%;
+  height: auto;
+  transition: all 0.5s;
+}
+.profile{
+  width: 50vw;
+  height: 40vw;
+  box-sizing: border-box;
+  padding: 0px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+
+}
+.username{
+  font-size: 11pt;
+  font-weight: bold;
+  color: black;
+}
+.user_detail{
+  font-size: 9pt;
+  color: gray;
+  font-weight: bold;
+}
+
+.icon-setting{
+  position: absolute;
+  width: 7vw;
+  height: 7vw;
+  bottom: 2.5vw;
+  right: 0px;
+  transition: all 1s;
+}
+
+.icon-setting:active{
+  transform: rotate(720deg);
+}
+
+.overlay{
+  display: none;
+  position: fixed;
+  z-index: 9;
+  width: 100vw;
+  top: 60px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0,0,0,0.5);
+}
+
+
+
+.menu-container{
+  width: 100%;
+  height: 400px;
+}
+
+
+
+.menu-container > a {
+  display: block;
+  padding: 15px 0px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+.menu-container > a:active{
+  background-color: lightgray;
+}
+
+
+
+
+
+
+
+
+.content{
+  width: 100vw;
+  height: calc(100vh - 60px);
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.object-icon-wrap{
+  width: 62vw;
+  height: 62vw;
+  border-top: 4px solid rgb(117,214,167);
+  border-left: 4px solid rgb(101,202,206);
+  border-right: 4px solid rgb(101,202,206);
+  border-bottom: 4px solid rgb(87,192,241);
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.object-icon{
+  width: 60vw;
+  height: auto;
+}
+
+.object-title{
+  font-size: 20pt;
+  font-weight: bold;
+  padding: 20px 0px;
+}
+
+.object-switch{
+
+}
+.object-switch > input[type=checkbox]{
+  display: none;
+}
+label[for="aircon-switch"]{
+  position: relative;
+  display: inline-block;
+  width: 30vw;
+  height: 15vw;
+  background-color: lightgray;
+  border: 4px solid #bebebe;
+  //box-sizing: border-box;
+  border-radius: 15vw;
+  transition: all 0.5s;
+}
+label[for="aircon-switch"] > span{
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 15vw;
+  height: 15vw;
+  background-color: white;
+  box-sizing: border-box;
+  border: 5px solid lightgray  ;
+  border-radius: 100%;
+  transition: all 0.5s;
+}
+#aircon-switch:checked + label[for="aircon-switch"]{
+  background-color: #4bd865;
+  border-color: #4bb465;
+
+}
+#aircon-switch:checked + label[for="aircon-switch"] > span{
+  left: calc(100% - 15vw);
+  border-color: #4bd865;
+
+}

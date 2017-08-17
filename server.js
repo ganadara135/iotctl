@@ -1,4 +1,5 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -13,9 +14,8 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 
-
-app.use(express.static('public'));
-
+//app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 // create application/json parser
 var jsonParser = bodyParser.json({ type: 'application/json'});
 // create application/x-www-form-urlencoded parser
