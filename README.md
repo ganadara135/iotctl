@@ -1,2 +1,4 @@
-# multichain
-# test commit
+
+1. 2018.8.18::03:30
+실행방법   서버> node server.js {원하는 포트번호}
+
