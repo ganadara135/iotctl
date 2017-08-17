@@ -16,29 +16,81 @@ const multichain = bluebird.promisifyAll(require("multichain-node")(connection),
 
 module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
-  //console.log("this   : ", this);
-//  console.log("thisVar   : ", thisVar);
-//  const client = new chain.Client(address_param,client_token_arg);
-
-//module.exports = require("multichain-node");
-
-/*
-let confirmCallbackForthis = () => {
-    bluebird.bind(this)
-    console.log(" confirmCallbackForthis   ==> ", this);
-}
-*/
-// XMLHttpRequest communication
-app.post('/createAddressPrivateKey/:IDname',function(req,res){
+//  app.post('/login/:IDname',jsonParser, function(req, res){
+app.post('/login',urlencodedParser, function(req, res){
+//  app.post('/login',urlencodedParser, function(req, res){
       var sess = req.session;
-      var IDofUser = req.params.IDname;
+
+      if (!req.body)
+        console.log("bodyParser is not working!!!!");
+
+
+      console.log("req.body  : ", req.body);
+
+      fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
+          var users = JSON.parse(data);
+          var IDname = req.body.IDname;
+          var password = req.body.password;
+          var result = {};
+          if(!users[IDname]){
+              // USERNAME NOT FOUND
+              result["success"] = 0;
+              result["error"] = "ID incorrect";
+              res.json(result);
+              return;
+          }
+
+          if(users[IDname]["password"] == password){
+              result["success"] = 1;
+              result["IDname"]= "Successfully login";
+
+              var tenMinute = 60000 * 10;
+              // expires 는 쿠키생존기간 설정변수
+              req.session.cookie.expires = new Date(Date.now() + tenMinute);
+              //maxAge 는 expires 설정후 지난 시간을 나타냄
+              req.session.cookie.maxAge = tenMinute;
+      //        sess.IDname = users[IDname]["IDname"];
+              res.json(result);
+/*                res.redirect('choice', {
+                  title: "MY HOMEPAGE",
+                  length: 5,
+                  IDname: req.body.IDname,
+                  amount: 0
+              })
+*/
+          }else{
+              result["success"] = 0;
+              result["error"] = "PW incorrect";
+              res.json(result);
+          }
+      })
+});
+
+app.get('/logout', function(req, res){
+      sess = req.session;
+      if(sess.IDname){
+          req.session.destroy(function(err){
+              if(err){
+                  console.log(err);
+              }else{
+                  res.redirect('/');
+              }
+          })
+      }else{
+          res.redirect('/');
+      }
+});
+app.post('/createUserAddress',function(req,res){
+      var sess = req.session;
+      var IDofUser = req.body.username;
+
       var result = {};
       var iotDataFrom;
 
 //      let addressMy, pubkeyMy, privkeyMy;
 
       // CHECK REQ VALIDITY
-      if(!req.body.password || !req.body.IDname){
+      if(!req.body.password || !req.body.username){
       //     if(!req.body["password"] || !req.body["name"]){
           result["success"] = 0;
           result["error"] = "invalid request";
@@ -80,11 +132,10 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
                 console.log("addrPubPri : " , addrPubPri);
 //                this = {};
                 console.log("this  ===> ", this);
-/*
-                this.address1 = addrPubPri[0]["address"];
-                this.pubkey = addrPubPri[0]["pubkey"];
-                this.privkey = addrPubPri[0]["privkey"];
-                */
+
+                // this.address1 = addrPubPri[0]["address"];
+                // this.pubkey = addrPubPri[0]["pubkey"];
+                // this.privkey = addrPubPri[0]["privkey"];
 
                 result["address"] = addrPubPri[0]["address"];
                 result["pubkey"] = addrPubPri[0]["pubkey"];
@@ -96,8 +147,6 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
                 })
             })
             .then(() => {
-    //            assert(privateKey)
-
                 console.log("TEST: GRANT")
                 return multichain.grantPromise({
                     addresses: result["address"],
@@ -155,10 +204,6 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
       bluebird.bind(this)   // this is not working????
       .then(() => {
 
-//  console.log("result_return : ", result_return)
-//  console.log("result_return[address] : ", result_return["address"])
-//  console.log("this : ", this)
-  //console.log("this.addrPubPri[0]['address']  : ", this.addrPubPri[0]["address"]);
           console.log("TEST: LIST STREAMS")
           return multichain.listStreamsPromise({
             streams: "BookingStream"
@@ -226,14 +271,18 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
 
 
   // XMLHttpRequest communication
-  app.post('/checkID/:IDname', function(req, res){
+//  app.post('/checkID/:username', function(req, res){
+  app.post('/checkID', function(req, res){
 
      var result = {  };
-     var IDname = req.params.IDname;
+     var IDname = req.body.username;
 
+//     console.log("chk req.params   : ", req.params);
+     console.log("chk req.body   : ", req.body);
+     console.log("chk IDname   : ", IDname);
 
      // CHECK REQ VALIDITY
-     if(!req.params.IDname){
+     if(!IDname){
   //     if(!req.body["password"] || !req.body["name"]){
          result["success"] = 0;
          result["error"] = "invalid request";
@@ -269,9 +318,10 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
     res.render('login');
   })
   app.get('/main',function(req,res){
+    console.log("call main()");
     res.render('main');
   })
-  app.get('/signup',function(req,res){
+  app.get('/signup',function(req,res){   // 사용자 등록화면
     res.render('signup');
   })
   app.get('/devices',function(req,res){

@@ -5,36 +5,75 @@
     <link rel="stylesheet" href="css/login.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
   </head>
   <body>
     <div class="logo-form">
       <img src="img/logo3.svg" class="logo"/>
       <p class="title">Block Chain</p>
     </div>
-
+  <!-- <div>   <responsePanel style="color: white;padding: 20px 0px;">  </responsePanel> </div> -->
     <div class="login-form">
       <div class="input-username">
         <img src="img/icon-user.svg" class="input-icon" />
-        <input type="text" placeholder="Username"/>
+        <input type="text" placeholder="Username" id="username"/>
       </div>
       <div class="input-pw">
         <img src="img/icon-lock.svg" class="input-icon" />
-        <input type="password" placeholder="Password" autocomplete="new-password"/>
+        <input type="password" placeholder="Password" autocomplete="new-password" id="password"/>
       </div>
       <button class="sign-in">Sign In</button>
       <button class="sign-up">Sign Up</button>
 
     </div>
     <script>
-      var temp = document.querySelector('.sign-up');
-      var enter = document.querySelector('.sign-in');
-      temp.addEventListener('click',function(){
+      var signupval = document.querySelector('.sign-up');
+      var signinval = document.querySelector('.sign-in');
+      signupval.addEventListener('click',function(){
         location.href="./signup";
       });
-      enter.addEventListener('click',function(){
-        location.href="./main";
+      signinval.addEventListener('click',function(){
+      //  location.href="./main";
+        login();
       });
 
+      function login(){
+
+        var login_id = $("#username").val();
+        var login_pw = $("#password").val();
+
+        console.log("login_id : ", login_id);
+        console.log("login_pw : ", login_pw);
+
+        if (login_id == null || login_id == "") {
+          alert("Please enter ID.");
+          return false;
+        }
+        if (login_pw == null || login_pw == "") {
+          alert("Please enter Password.");
+          return false;
+        }
+
+    //    form.action = "/login/"+login_id;
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log("responseText  : " + this.responseText);
+
+//            $("responsePanel").append(JSON.parse(this.responseText).error);
+            if( JSON.parse(this.responseText).success == 1)
+              location.href="/main";
+            else
+              alert(JSON.parse(this.responseText).error);
+          }
+        }
+
+        xmlhttp.open("POST", "/login/", true);  //true Asyc, false syc
+    //    xmlhttp.setRequestHeader("Content-type", "application/json");
+        xmlhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("IDname="+login_id+"&"+"password=" + login_pw);
+      };
     </script>
   </body>
 </html>
