@@ -43,7 +43,7 @@ border: 1px solid #CCC!important;
 .input-username, .input-password, .input-retype{
   padding: 5px 0px;
 }
-#username, #password, #retype{
+#username, #password, #retype, #security-card{
   border: none;
   padding: 10px;
   box-sizing: border-box;
