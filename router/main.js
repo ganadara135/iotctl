@@ -33,6 +33,7 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
       var sess = req.session;
       var IDofUser = req.params.IDname;
       var result = {};
+      var iotDataFrom;
 
 //      let addressMy, pubkeyMy, privkeyMy;
 
@@ -57,6 +58,12 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
           }
           // ADD TO DATA
           users[IDofUser] =  req.body;
+          users[IDofUser].iotAddress = "8769uyjhmn";
+          users[IDofUser].iotPubkey = "pubx8769uyjhmn";
+          users[IDofUser].iotPubkey = "등록날짜";
+
+//          iotDataFrom = users[IDofUser].iotAddress;
+
 
           // SAVE DATA
           fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
