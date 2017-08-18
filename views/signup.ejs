@@ -5,6 +5,47 @@
     <link rel="stylesheet" href="../css/signup.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script>
+      function userRegister(){
+        //var username_chk = document.getElementById("#username").value;
+        //var password_chk = document.getElementById("#password").value;
+        //var retype_chk = document.getElementById("#retype").value;
+        var username_chk =  $("#username").val();
+        var password_chk =  $("#password").val();
+        var retype_chk =    $("#retype").val();
+
+        // console.log("username_chk : ", username_chk);
+        // console.log("password_chk : ", password_chk);
+        // console.log("retype_chk : ", retype_chk);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+
+            console.log("this.responseText : ", this.responseText);
+            // $("responsePanel").append(" "+this.responseText+" ");
+
+            var myJSON = JSON.stringify(this.responseText);
+            localStorage.setItem("myJSONSecretKey", myJSON);
+            alert(JSON.parse(this.responseText));
+//            alert(myJSON);
+
+            //$("#responsePanel").append(this.responseText);
+            document.getElementById("register_button").disabled = false;
+          }
+        }
+
+        xmlhttp.open("POST", "/createUserAddress", true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("username="+username_chk+"&"+"password=" + password_chk);
+      }
+
+    function main(){
+//      location.href="/main/"+enroll_id+"/"+userLang;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
+      location.href="/main/";//+enroll_id+"/"+userLang;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
+    }
+  </script>
   </head>
   <body>
     <p class="title">Register</p>
@@ -17,13 +58,16 @@
     <div class="input-retype">
       <input type="password" id="retype" placeholder="Re-Type"/>
     </div>
-    <button id="valid_button" class="button-1">Check</button>
+
+    <button id="valid_button" class="button-1" onclick='return userRegister()'>Check & Generate Secret Key</button>
     <span class="line"></span>
-    <button id="key-generator" class="button-1">Generate Secret Key</button>
-    <p class="secret-key" style="color: white;padding: 20px 0px;">
+    <!-- <button id="key-generator" class="button-1">Generate Secret Key</button> -->
+    <!-- <p class="secret-key" style="color: white;padding: 20px 0px;">
       Insert Secret Key Here
-    </p>
-    <input type="text" id="security-card" placeholder="Security Number" />
-    <button id="register_button" class="button-1">Register</button>
+    </p> -->
+    <!-- <div>   <responsePanel style="color: white;padding: 20px 0px;">  </responsePanel> </div> -->
+
+    <input type="text" id="security-card-number" placeholder="Card Serial Number" />
+    <button id="register_button" class="button-1" onclick="main()" disabled=true>Register</button>
   </body>
 </html>
