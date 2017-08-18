@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Block Chain</title>
-    <link rel="stylesheet" href="css/devices.css" />
+    <link rel="stylesheet" href="css/device_add2.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
   </head>
@@ -32,47 +32,30 @@
     </header>
 
     <div class="content">
-      <div class="devices-list" id="list-1">
-        <div class="devices-img">
-          <img src="img/icon-airconditioner2.svg" />
-        </div>
-        <div class="devices-detail">
-          <p class="device-name">Air Conditioner</p>
-          <p class="device-info">
-            <img src="img/icon-people.svg" />13
-            <span class="connected"></span>
-          </p>
-        </div>
+      <label for="device_name" class="input-1-label">Device Name</label>
+      <input type="text" class="input-1" id="device_name" />
+      <label for="device_purpose" class="input-1-label">Purpose of Use</label>
+      <input type="text" class="input-1" id="device_purpose" />
+      <button class="button-1" id="request">Request</button>
+      <p class="input-1-label">Device Unique Number</p>
+      <div class="device_unique_number" id="unique_number">
+        1231232132131232112312321321312321123123213213123211231232132131232112312321321312321
       </div>
-      <div class="devices-list">
-        <div class="devices-img">
-          <img src="img/icon-light2.svg" />
-        </div>
-        <div class="devices-detail">
-          <p class="device-name">Room Light</p>
-          <p class="device-info">
-            <img src="img/icon-people.svg" />15
-            <span class="disconnected"></span>
-          </p>
-        </div>
+      <p class="input-1-label">Private Key</p>
+      <div class="device_unique_number" id="private_key">
+        12312321321312321123123213213123211231232132
       </div>
-
-
-
-
-      <div class="addButton">
-        <span></span>
+      <p class="input-1-label">Public Key</p>
+      <div class="device_unique_number" id="public_key">
+        12312321321312321123123213213123211231232132
       </div>
+      <button class="button-1" id="register">Register</button>
     </div>
     <script>
-      var temp = document.querySelector('.addButton');
-      var list1 = document.querySelector('#list-1');
+      var temp = document.querySelector('#register');
       temp.addEventListener('click',function(){
-        location.href="./device_add";
-      })
-      list1.addEventListener('click',function(){
-        location.href="./device_detail";
-      })
+        location.href="./devices";
+      });
     </script>
   </body>
 </html>

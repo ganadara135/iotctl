@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="1.1" x="0px" y="0px" viewBox="0 0 100 100" fill="url(#grad2)" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+  <title>59 all</title>
+  <defs>
+   <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+     <stop offset="0%" style="stop-color:rgb(117,214,167);stop-opacity:1" />
+     <stop offset="100%" style="stop-color:rgb(87,192,241);stop-opacity:1" />
+   </linearGradient>
+ </defs>
+  <path d="M45.4,12.1v28.4l-11-12.1l-4.4,4l15.4,17v1.2L30,67.5l4.4,4l11-12.1v28.4l24.7-20.2L54,50l16-17.7L45.4,12.1z M61.4,67  l-10,8.2V56L61.4,67z M51.4,44V24.8l10,8.2L51.4,44z"/></svg>

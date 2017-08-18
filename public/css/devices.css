@@ -260,7 +260,7 @@ nav{
   margin-left: 20px;
   color: #71d3b2;
 }
-.unconnected{
+.disconnected{
   position: relative;
   display: inline-block;
   width: 15px;
@@ -269,9 +269,9 @@ nav{
   border-radius: 100%;
   margin-left: 50px;
 }
-.unconnected::after{
+.disconnected::after{
   display: inline-block;
-  content:'Unconnected';
+  content:'Disconnected';
   margin-left: 20px;
   color: red;
 }

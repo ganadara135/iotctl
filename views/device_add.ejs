@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Block Chain</title>
-    <link rel="stylesheet" href="css/devices.css" />
+    <link rel="stylesheet" href="css/device_add.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
   </head>
@@ -32,47 +32,21 @@
     </header>
 
     <div class="content">
-      <div class="devices-list" id="list-1">
-        <div class="devices-img">
-          <img src="img/icon-airconditioner2.svg" />
+      <div class="bluetooth-img">
+        <div class="background-white">
+
         </div>
-        <div class="devices-detail">
-          <p class="device-name">Air Conditioner</p>
-          <p class="device-info">
-            <img src="img/icon-people.svg" />13
-            <span class="connected"></span>
-          </p>
-        </div>
-      </div>
-      <div class="devices-list">
-        <div class="devices-img">
-          <img src="img/icon-light2.svg" />
-        </div>
-        <div class="devices-detail">
-          <p class="device-name">Room Light</p>
-          <p class="device-info">
-            <img src="img/icon-people.svg" />15
-            <span class="disconnected"></span>
-          </p>
-        </div>
+        <img src="img/icon-bluetooth.svg" />
       </div>
 
+      <p class="bluetooth-text">Searching for device...</p>
 
-
-
-      <div class="addButton">
-        <span></span>
-      </div>
     </div>
     <script>
-      var temp = document.querySelector('.addButton');
-      var list1 = document.querySelector('#list-1');
+      var temp = document.querySelector('.bluetooth-img');
       temp.addEventListener('click',function(){
-        location.href="./device_add";
-      })
-      list1.addEventListener('click',function(){
-        location.href="./device_detail";
-      })
+        location.href="./device_add2";
+      });
     </script>
   </body>
 </html>

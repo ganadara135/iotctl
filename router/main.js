@@ -277,6 +277,15 @@ app.post('/createAddressPrivateKey/:IDname',function(req,res){
   app.get('/devices',function(req,res){
     res.render('devices');
   })
+  app.get('/device_detail',function(req,res){
+    res.render('device_detail');
+  })
+  app.get('/device_add',function(req,res){
+    res.render('device_add');
+  })
+  app.get('/device_add2',function(req,res){
+    res.render('device_add2');
+  })
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 

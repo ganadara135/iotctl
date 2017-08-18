@@ -1,0 +1,310 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Block Chain</title>
+    <link rel="stylesheet" href="css/device_detail.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no
+      initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <input type="checkbox" id="menu-bar" />
+      <label for="menu-bar"><span></span></label>
+      <nav>
+        <div class="user_info">
+          <div class="img-wrap">
+            <img src="img/profile_face2.jpg" />
+          </div>
+          <div class="profile">
+            <p class="username">Alexander Great</p>
+            <p class="user_detail">Administrator</p>
+            <img src="img/icon-setting.svg" class="icon-setting" />
+          </div>
+        </div>
+        <div class="menu-container">
+          <a href="./devices">Devices</a>
+          <a href="#">Reservation</a>
+          <a href="#">Users</a>
+          <a href="./main">History</a>
+        </div>
+      </nav>
+      <label for="menu-bar" class="overlay"></label>
+    </header>
+
+    <div class="content">
+      <input type="radio" name="device_detail_tab" id="tab1" checked/>
+      <input type="radio" name="device_detail_tab" id="tab2" />
+      <input type="radio" name="device_detail_tab" id="tab3" />
+      <div class="tab-header">
+        <label for="tab1">Device</label>
+        <label for="tab2">Users</label>
+        <label for="tab3">History</label>
+      </div>
+
+      <div class="tab-content tab1-content">
+        <div class="device-info">
+          <p class="people"><img src="img/icon-people.svg" />6</p>
+          <p class="status"><span class="connected"></span></p>
+        </div>
+        <div class="device-img">
+          <img src="img/icon-airconditioner2.svg" />
+        </div>
+        <p class="device-name">Air Conditioner</p>
+        <input type="checkbox" id="device-switch" />
+        <label for="device-switch"><span></span></label>
+      </div>
+
+
+
+      <div class="tab-content tab2-content">
+        <div class="user-list">
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">Alexander Great</p>
+              <p class="grade">Administrator</p>
+            </div>
+
+          </div>
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face3.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">Darth Vader</p>
+              <p class="grade">Manager</p>
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face4.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">Simba Zawadi</p>
+              <p class="grade">Guest</p>
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face5.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">John Snow</p>
+              <p class="grade">Guest</p>
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face6.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">Jay Z</p>
+              <p class="grade">Guest</p>
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img">
+              <img src="img/profile_face7.jpg" />
+            </div>
+            <div class="user-info">
+              <p class="name">Big Show</p>
+              <p class="grade">Guest</p>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="tab-content tab3-content">
+        <div class="history-list">
+          <div class="date-divide">
+            <span>Today</span>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face7.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:05 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Turn Off the device
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/icon-airconditioner2.svg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:05 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Authorize As Guest
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/profile_face7.jpg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:04 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Authorize As Guest
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/profile_face6.jpg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:03 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Authorize As Guest
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/profile_face5.jpg" />
+            </div>
+          </div>
+
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:01 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Authorize As Guest
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/profile_face4.jpg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                09:00 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Turn On the device
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/icon-airconditioner2.svg" />
+            </div>
+          </div>
+          <div class="date-divide">
+            <span>Yesterday</span>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                11:59 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Turn Off the device
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/icon-airconditioner2.svg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face3.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                11:41 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Turn On the device
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/icon-airconditioner2.svg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                11:40 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Authorize As Manager
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/profile_face3.jpg" />
+            </div>
+          </div>
+          <div class="list">
+            <div class="user-img sender">
+              <img src="img/profile_face2.jpg" />
+            </div>
+            <div class="history-detail">
+              <p class="history-date">
+                11:30 AM
+              </p>
+              <span class="history-line"></span>
+              <p class="history-text">
+                Register Device!
+              </p>
+            </div>
+            <div class="user-img receiver">
+              <img src="img/icon-airconditioner2.svg" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </body>
+</html>
