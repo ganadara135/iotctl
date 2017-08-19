@@ -5,8 +5,48 @@
     <link rel="stylesheet" href="css/device_add2.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+      <script>
+        function deviceAddrRequest(){
+          var device_name_chk =  $("#device_name").val();
+          var device_purpose_chk =  $("#device_purpose").val();
+          var device_manager_address = null; // =  $("#device_manager").val();
+
+          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+              var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+              console.log("myJSONwithObject : ",myJSONwithObject);
+              console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+              device_manager_address =  myJSONwithObject.address;
+          } else {
+              document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+              return;
+          }
+          console.log("check Storege  ")
+          
+
+
+
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+              console.log("this.responseText : ", this.responseText);
+              // $("responsePanel").append(" "+this.responseText+" ");
+
+              var myJSON = JSON.stringify(this.responseText);
+              localStorage.setItem("myJSONSecretKeyDevice", myJSON);
+              alert(JSON.parse(this.responseText));
+  //            alert(myJSON);
+            }
+          }
+          xmlhttp.open("POST", "/createDeviceAddress", true);
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+"&"+"deviceManagerAddress=" + device_manager_address);
+        }
+  </script>
   </head>
   <body>
+
     <header>
       <input type="checkbox" id="menu-bar" />
       <label for="menu-bar"><span></span></label>
@@ -32,11 +72,11 @@
     </header>
 
     <div class="content">
-      <label for="device_name" class="input-1-label">Device Name</label>
+      <label for="device_name" class="input-1-label">Device Name(중복시 Name + 1,2,3)</label>
       <input type="text" class="input-1" id="device_name" />
       <label for="device_purpose" class="input-1-label">Purpose of Use</label>
       <input type="text" class="input-1" id="device_purpose" />
-      <button class="button-1" id="request">Request</button>
+      <button class="button-1" id="devcieAddrReqeust" onclick="deviceAddrRequest()">Request</button>
       <p class="input-1-label">Device Unique Number</p>
       <div class="device_unique_number" id="unique_number">
         1231232132131232112312321321312321123123213213123211231232132131232112312321321312321
@@ -55,6 +95,7 @@
       var temp = document.querySelector('#register');
       temp.addEventListener('click',function(){
         location.href="./devices";
+      //  deviceRegister();
       });
     </script>
   </body>

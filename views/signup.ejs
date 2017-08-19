@@ -25,10 +25,14 @@
 
             console.log("this.responseText : ", this.responseText);
             // $("responsePanel").append(" "+this.responseText+" ");
+            var myJSON = this.responseText;
+            myJSON.username = username_chk;
+            console.log("myJSON.username  : " , myJSON.username);
 
             var myJSON = JSON.stringify(this.responseText);
             localStorage.setItem("myJSONSecretKey", myJSON);
             alert(JSON.parse(this.responseText));
+
 //            alert(myJSON);
 
             //$("#responsePanel").append(this.responseText);
@@ -42,8 +46,22 @@
       }
 
     function main(){
+      location.href="/main/";
+      // if (typeof(Storage) !== "undefined") {
+      //     var userAddress = JSON.parse(localStorage.getItem("myJSONSecretKey").address);
+      //     var userName = JSON.parse(localStorage.getItem("myJSONSecretKey").username);
+      //     if(userAddress !== null){
+      //       location.href="/main/"+username+"/"+userAddress;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
+      //     }
+      //     else {
+      //       alert("Sorry, your browser does not support Web Storage...");
+      //     }
+      // }else {
+      //     alert("Sorry, your browser does not support Web Storage...");
+      // }
+
 //      location.href="/main/"+enroll_id+"/"+userLang;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
-      location.href="/main/";//+enroll_id+"/"+userLang;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
+
     }
   </script>
   </head>

@@ -21,6 +21,7 @@ app.post('/login',urlencodedParser, function(req, res){
 //  app.post('/login',urlencodedParser, function(req, res){
       var sess = req.session;
 
+
       if (!req.body)
         console.log("bodyParser is not working!!!!");
 
@@ -83,15 +84,15 @@ app.get('/logout', function(req, res){
 
 app.post('/createDeviceAddress',function(req,res){
       var sess = req.session;
-      var IDofUser = req.body.username;
+      var deviceName = req.body.deviceName;
+      var devicePurpose = req.body.devicePurpose;
+      var deviceManagerAddress = req.body.deviceManagerAddress;
 
       var result = {};
-      var iotDataFrom;
-
-//      let addressMy, pubkeyMy, privkeyMy;
+      var resultOfrelation = {};
 
       // CHECK REQ VALIDITY
-      if(!req.body.password || !req.body.username){
+      if(!req.body.deviceName || !req.body.deviceManagerAddress){
       //     if(!req.body["password"] || !req.body["name"]){
           result["success"] = 0;
           result["error"] = "invalid request";
@@ -101,151 +102,131 @@ app.post('/createDeviceAddress',function(req,res){
 
       // LOAD DATA & CHECK DUPLICATION
       fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
-          var users = JSON.parse(data);
-          if(users[IDofUser]){
+          var devices = JSON.parse(data);
+
+          if(devices[deviceName]){
               // DUPLICATION FOUND
               result["success"] = 0;
               result["error"] = "duplicate";
               res.json(result);
               return;
           }
-          // ADD TO DATA
-          users[IDofUser] =  req.body;
-          users[IDofUser].secureGrade = "0";    // 보안등급 0- guest, 1 - 승인된 장치
-          users[IDofUser].deviceManager = "8769uyjhmn";
-//          users[IDofUser].iotPubkey = "pubx8769uyjhmn";
-//          users[IDofUser].iotPubkey = "등록날짜";
 
-//          iotDataFrom = users[IDofUser].iotAddress;
+          // LOAD DATA & CHECK DUPLICATION
+          fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+              var relationshipOf = JSON.parse(data);
 
+              if(err){
+                  throw err;
+              }
 
-          // SAVE DATA
-          fs.writeFile(__dirname + "/../data/device.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
-            if(err){
-                throw err;
-            }
-
-//            confirmCallbackForthis.call(this);
-            console.log("call createkeypairs()");
-//        return multichain.validateAddressPromise({address: this.address1})
-            multichain.createKeyPairsPromise()
-            .then(addrPubPri => {
+              console.log("call createkeypairs()");
+    //        return multichain.validateAddressPromise({address: this.address1})
+              multichain.createKeyPairsPromise()
+              .then(addrPubPri => {
                 assert(addrPubPri);
                 console.log("addrPubPri : " , addrPubPri);
-//                this = {};
                 console.log("this  ===> ", this);
-
-                // this.address1 = addrPubPri[0]["address"];
-                // this.pubkey = addrPubPri[0]["pubkey"];
-                // this.privkey = addrPubPri[0]["privkey"];
 
                 result["address"] = addrPubPri[0]["address"];
                 result["pubkey"] = addrPubPri[0]["pubkey"];
                 result["privkey"] = addrPubPri[0]["privkey"];
 
-                return multichain.importAddressPromise({
-                  address: result["address"],
-                  rescan: false
-                })
-            })
-            .then(() => {
-                console.log("TEST: GRANT")
-                return multichain.grantPromise({
-                    addresses: result["address"],
-//                    permissions: "send,receive,create"
-                    permissions: "connect,send,receive,issue,mine,admin,activate,create"
-                })
-            })
-            .then(txid => {
-                listenForConfirmations(txid, (err, confirmed) => {
+                // store device's info into IOT server  without privkey
+                devices[deviceName] =  req.body;
+      //          users[deviceName].secureGrade = "0";    // 보안등급 0- guest, 1 - 승인된 장치
+                devices[deviceName].address = result["address"];
+                devices[deviceName].pubkey = result["pubkey"];
+                devices[deviceName].enrolledDate = Date.now();
+
+                relationshipOf[deviceName] = {"deviceAddress": result["address"],
+                 "managerAddress": deviceManagerAddress,
+                 "enrolledDate": devices[deviceName].enrolledDate};
+
+                // SAVE DATA
+                fs.writeFile(__dirname + "/../data/device.json", JSON.stringify(devices, null, '\t'), "utf8", function(err, data){
+                  if(err){
+                      throw err;
+                  }
+                  fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
                     if(err){
                         throw err;
                     }
-                    if(confirmed == true){
-                        //confirmCallbackEnroll.call(result);
-                        confirmCallbackEnroll(result,res);
-                    }
-                })
+                  }) // fs.writeFile relationship.json
+               })   // fs.writeFile device.json
+
+
+              return multichain.importAddressPromise({
+                address: result["address"],
+                rescan: false
+              })
+          })
+          .then(() => {
+              console.log("TEST: GRANT")
+              return multichain.grantPromise({
+                  addresses: result["address"],
+    //                    permissions: "send,receive,create"
+                  permissions: "connect,send,receive,issue,mine,admin,activate,create"
+              })
+          })
+          .then(txid => {
+            assert(txid)
+
+            console.log("TEST: SUBSCRIBE STREAM")
+            return multichain.subscribePromise({
+                stream: "BookingStream"
             })
+          })
+          .then(() => {
+          //      console.log("subscribed  : ", subscribed);
+              console.log("TEST: CRATE RAW SEND FROM");
+    //                result_return["dateOfenroll"] = new Buffer(Date.now().toString()).toString("hex");
+
+    //                result_manager
+              return multichain.createRawSendFromPromise({
+                from: result["address"],
+                to: {},
+                msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(devices[deviceName])).toString("hex")},
+                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(relationshipOf)).toString("hex")}],
+          //              action: "send"
+              })
+          })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
+          .then(hexstringblob => {
+            console.log("hexstringblob  : ", hexstringblob);
+
+            assert(hexstringblob)
+
+            return multichain.signRawTransactionPromise({
+                hexstring: hexstringblob,
+          //        parents: [],
+                privatekeys: [result["privkey"]]
+            })
+          })      //  sendrawtransaction [paste-bigger-hex-blob]
+          .then(hexvalue => {
+            console.log("hexvalue.hex  : ", hexvalue.hex);
+
+            assert(hexvalue)
+
+            return multichain.sendRawTransactionPromise({
+                hexstring: hexvalue.hex
+            })
+          })
+          .then(tx_hex => {
+              console.log("tx_hex  : ", tx_hex);
+
+              assert(tx_hex)
+
+              console.log("Finished Successfully");
+              res.json(result);
+          })
           .catch(err => {
-                console.log(err)
-                throw err;
-            })
-          })   // fs.writeFile
+              console.log(err)
+              throw err;
+          })
+        })  // fs.readFile  relationship.json
       })  // fs.readFile
   });
 
-/*
-  let confirmCallbackEnroll = (result_return,res) => {
-      bluebird.bind(this)   // this is not working????
-      .then(() => {
-
-          console.log("TEST: LIST STREAMS")
-          return multichain.listStreamsPromise({
-            streams: "BookingStream"
-          })
-      })
-      .then(stream => {
-  //       console.log("stream : ", stream)
-          assert.equal(stream.length, 1)
-
-          console.log("TEST: SUBSCRIBE STREAM")
-          return multichain.subscribePromise({
-              stream: "BookingStream"
-          })
-      })
-      .then(() => {
-  //      console.log("subscribed  : ", subscribed);
-        console.log("TEST: CRATE RAW SEND FROM");
-//var objOfme = {};
-//var arrOfme = [];
-//arrOfme[0] = '{"for":"BookingStream","key":"bookingTime","data":"'+ new Buffer(Date.now().toString()).toString("hex")+'"}';
-//arrOfme[0] = {"for":"BookingStream","key":"bookingTime","data":"5554584f732046545721"};
-        result_return["dateOfenroll"] = new Buffer(Date.now().toString()).toString("hex");
-        return multichain.createRawSendFromPromise({
-              from: result_return["address"],
-              to: {},
-//              to: arrOfme,
-              msg : [{"for":"BookingStream","key":"bookingTime","data":result_return["dateOfenroll"]}],
-//              msg : arrOfme,
-//              action: "send"
-            })
-      })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
-      .then(hexstringblob => {
-          console.log("hexstringblob  : ", hexstringblob);
-
-          assert(hexstringblob)
-
-          return multichain.signRawTransactionPromise({
-              hexstring: hexstringblob,
-      //        parents: [],
-              privatekeys: [result_return["privkey"]]
-          })
-      })      //  sendrawtransaction [paste-bigger-hex-blob]
-      .then(hexvalue => {
-          console.log("hexvalue.hex  : ", hexvalue.hex);
-
-          assert(hexvalue)
-
-          console.log("Finished Successfully")
-          return multichain.sendRawTransactionPromise({
-              hexstring: hexvalue.hex
-          })
-      })
-      .then(tx_hex => {
-          console.log("tx_hex  : ", tx_hex);
-
-          assert(tx_hex)
-
-          console.log("Finished Successfully");
-          res.json(result_return);
-      })
-      .catch(err => {
-          console.log(err)
-          throw err;
-      })
-};
-*/
 app.post('/createUserAddress',function(req,res){
       var sess = req.session;
       var IDofUser = req.body.username;
@@ -392,7 +373,7 @@ app.post('/createUserAddress',function(req,res){
 //var arrOfme = [];
 //arrOfme[0] = '{"for":"BookingStream","key":"bookingTime","data":"'+ new Buffer(Date.now().toString()).toString("hex")+'"}';
 //arrOfme[0] = {"for":"BookingStream","key":"bookingTime","data":"5554584f732046545721"};
-        result_return["dateOfenroll"] = new Buffer(Date.now().toString()).toString("hex");
+        result_return["dateOfenroll"] = new Buffer(Date.now()).toString("hex");
         return multichain.createRawSendFromPromise({
               from: result_return["address"],
               to: {},
@@ -475,6 +456,19 @@ app.post('/createUserAddress',function(req,res){
   app.get('/',urlencodedParser,function(req,res){
       var sess = req.session;
 
+//      var testval = new Buffer("문자 변환 테스트 ").toString("hex");
+      var testval = new Buffer("test converting by me   한글도 가능혀 ").toString("hex");
+      console.log("testval hex  : ", testval);
+      console.log("testval toString(utf8) : ", testval.toString("utf8"));
+      console.log("testval toString(ascii) : ", testval.toString("ascii"));
+      console.log("testval toString() : ", testval.toString());
+      console.log("testval toString(hex) : ", testval.toString("hex"));
+
+      const buf2 = new Buffer(testval, 'hex');
+      console.log("buf2.toString()   :  ", buf2.toString());
+
+
+
       res.render('index', {
           title: "인덱스화면",
           length: 5,
@@ -489,6 +483,10 @@ app.post('/createUserAddress',function(req,res){
     console.log("call main()");
     res.render('main');
   })
+  // app.get('/main/:username/:useraddress',function(req,res){
+  //   console.log("call main()");
+  //   res.render('main');
+  // })
   app.get('/signup',function(req,res){   // 사용자 등록화면
     res.render('signup');
   })
