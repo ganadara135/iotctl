@@ -11,6 +11,18 @@
 		"iotAddress": "8769uyjhmn",
 		"iotPubkey": "등록날짜"
 	},
+	"4569": {
+		"username": "4569",
+		"password": "99",
+		"secureGrade": "1",
+		"dateOfenroll": 1503143735149
+	},
+	"456999": {
+		"username": "456999",
+		"password": "99",
+		"secureGrade": "0",
+		"dateOfenroll": 1503143909088
+	},
 	"iii": {
 		"IDname": "iii",
 		"password": "ii",

@@ -10,7 +10,8 @@
         function deviceAddrRequest(){
           var device_name_chk =  $("#device_name").val();
           var device_purpose_chk =  $("#device_purpose").val();
-          var device_manager_address = null; // =  $("#device_manager").val();
+          var device_tele_chk =  $("#device_tele").val();
+          var device_manager_address = null;
 
           if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
               var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
@@ -21,10 +22,6 @@
               document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
               return;
           }
-          console.log("check Storege  ")
-          
-
-
 
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function() {
@@ -36,12 +33,19 @@
               var myJSON = JSON.stringify(this.responseText);
               localStorage.setItem("myJSONSecretKeyDevice", myJSON);
               alert(JSON.parse(this.responseText));
-  //            alert(myJSON);
+
+              console.log("device_address  : ", JSON.parse(this.responseText).address);
+
+//              $("#device_address").val(JSON.parse(this.responseText).address);
+              $("responsePanel01").append(JSON.parse(this.responseText).address);
+              $("responsePanel02").append(JSON.parse(this.responseText).privkey);
+              $("responsePanel03").append(JSON.parse(this.responseText).pubkey);
             }
           }
           xmlhttp.open("POST", "/createDeviceAddress", true);
-          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+"&"+"deviceManagerAddress=" + device_manager_address);
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  device_tele_chk
+          xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+
+          "&"+"deviceManagerAddress=" + device_manager_address+"&"+"deviceTele=" + device_purpose_chk);
         }
   </script>
   </head>
@@ -76,18 +80,23 @@
       <input type="text" class="input-1" id="device_name" />
       <label for="device_purpose" class="input-1-label">Purpose of Use</label>
       <input type="text" class="input-1" id="device_purpose" />
+      <label for="device_check_telecommunication" class="input-1-label">통신가능여부체크( 0-불가, 1-가능)</label>
+      <input type="text" class="input-1" id="device_tele" />
       <button class="button-1" id="devcieAddrReqeust" onclick="deviceAddrRequest()">Request</button>
-      <p class="input-1-label">Device Unique Number</p>
-      <div class="device_unique_number" id="unique_number">
-        1231232132131232112312321321312321123123213213123211231232132131232112312321321312321
+      <p class="input-1-label">Device Unique Address</p>
+      <div class="device_unique_number" >
+        <responsePanel01 style="color: black;padding: 20px 0px;">
+        </responsePanel01>
       </div>
       <p class="input-1-label">Private Key</p>
-      <div class="device_unique_number" id="private_key">
-        12312321321312321123123213213123211231232132
+      <div class="device_unique_number">
+        <responsePanel02 style="color: black;padding: 20px 0px;">
+        </responsePanel02>
       </div>
       <p class="input-1-label">Public Key</p>
-      <div class="device_unique_number" id="public_key">
-        12312321321312321123123213213123211231232132
+      <div class="device_unique_number" >
+        <responsePanel03 style="color: black;padding: 20px 0px;">
+        </responsePanel03>
       </div>
       <button class="button-1" id="register">Register</button>
     </div>

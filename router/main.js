@@ -134,12 +134,13 @@ app.post('/createDeviceAddress',function(req,res){
 
                 // store device's info into IOT server  without privkey
                 devices[deviceName] =  req.body;
-      //          users[deviceName].secureGrade = "0";    // 보안등급 0- guest, 1 - 승인된 장치
+//                users[deviceName].tele = "0";    // 보안등급    0 - 자체통신불가, 1 - 자체통신가능
                 devices[deviceName].address = result["address"];
                 devices[deviceName].pubkey = result["pubkey"];
                 devices[deviceName].enrolledDate = Date.now();
 
-                relationshipOf[deviceName] = {"deviceAddress": result["address"],
+                // relationshiop.json 은  장치관리자주소 + 장지주소 로 고유번호부여
+                relationshipOf[deviceManagerAddress+result["address"]] = {"deviceAddress": result["address"],
                  "managerAddress": deviceManagerAddress,
                  "enrolledDate": devices[deviceName].enrolledDate};
 
@@ -147,7 +148,7 @@ app.post('/createDeviceAddress',function(req,res){
                 fs.writeFile(__dirname + "/../data/device.json", JSON.stringify(devices, null, '\t'), "utf8", function(err, data){
                   if(err){
                       throw err;
-                  }
+                  }           // relationshiop.json 은  장치관리자주소 + 장지주소 로 고유번호부여
                   fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
                     if(err){
                         throw err;
@@ -179,15 +180,19 @@ app.post('/createDeviceAddress',function(req,res){
           })
           .then(() => {
           //      console.log("subscribed  : ", subscribed);
-              console.log("TEST: CRATE RAW SEND FROM");
+              console.log("TEST: CREATE RAW SEND FROM");
     //                result_return["dateOfenroll"] = new Buffer(Date.now().toString()).toString("hex");
 
-    //                result_manager
+              var textvall = new Buffer(JSON.stringify(devices[deviceName])).toString("hex")
+              const buf222 = new Buffer(textvall, 'hex');
+              console.log("buf222.toString()   :  ", buf222.toString());
+
+
               return multichain.createRawSendFromPromise({
                 from: result["address"],
                 to: {},
                 msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(devices[deviceName])).toString("hex")},
-                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(relationshipOf)).toString("hex")}],
+                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify( relationshipOf[deviceManagerAddress+result["address"]]  )).toString("hex")}],
           //              action: "send"
               })
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
@@ -238,7 +243,6 @@ app.post('/createUserAddress',function(req,res){
 
       // CHECK REQ VALIDITY
       if(!req.body.password || !req.body.username){
-      //     if(!req.body["password"] || !req.body["name"]){
           result["success"] = 0;
           result["error"] = "invalid request";
           res.json(result);
@@ -257,12 +261,9 @@ app.post('/createUserAddress',function(req,res){
           }
           // ADD TO DATA
           users[IDofUser] =  req.body;
-          users[IDofUser].secureGrade = "0";    // 보안등급 0- guest, 1 - 직원, 2 - 관리자
-          users[IDofUser].iotAddress = "8769uyjhmn";
-          users[IDofUser].iotPubkey = "pubx8769uyjhmn";
-          users[IDofUser].iotPubkey = "등록날짜";
-
-//          iotDataFrom = users[IDofUser].iotAddress;
+          users[IDofUser].secureGrade = "0";    // 보안등급 0- 일반인, 1 - 관리자
+          users[IDofUser].dateOfenroll = Date.now();
+//          result_return["dateOfenroll"]
 
 
           // SAVE DATA
@@ -288,6 +289,10 @@ app.post('/createUserAddress',function(req,res){
                 result["address"] = addrPubPri[0]["address"];
                 result["pubkey"] = addrPubPri[0]["pubkey"];
                 result["privkey"] = addrPubPri[0]["privkey"];
+                result["dateOfenroll"] = users[IDofUser].dateOfenroll;
+
+                console.log(" result['dateOfenroll']   :   ", result["dateOfenroll"]);
+
 
                 return multichain.importAddressPromise({
                   address: result["address"],
@@ -368,17 +373,17 @@ app.post('/createUserAddress',function(req,res){
       })
       .then(() => {
   //      console.log("subscribed  : ", subscribed);
-        console.log("TEST: CRATE RAW SEND FROM");
+        console.log("TEST: CREATE RAW SEND FROM");
 //var objOfme = {};
 //var arrOfme = [];
 //arrOfme[0] = '{"for":"BookingStream","key":"bookingTime","data":"'+ new Buffer(Date.now().toString()).toString("hex")+'"}';
 //arrOfme[0] = {"for":"BookingStream","key":"bookingTime","data":"5554584f732046545721"};
-        result_return["dateOfenroll"] = new Buffer(Date.now()).toString("hex");
+//        result_return["dateOfenroll"] = new Buffer(Date.now()).toString("hex");
         return multichain.createRawSendFromPromise({
               from: result_return["address"],
               to: {},
 //              to: arrOfme,
-              msg : [{"for":"BookingStream","key":"bookingTime","data":result_return["dateOfenroll"]}],
+              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(result_return["dateOfenroll"].toString()).toString("hex")}],
 //              msg : arrOfme,
 //              action: "send"
             })
@@ -396,17 +401,14 @@ app.post('/createUserAddress',function(req,res){
       })      //  sendrawtransaction [paste-bigger-hex-blob]
       .then(hexvalue => {
           console.log("hexvalue.hex  : ", hexvalue.hex);
-
           assert(hexvalue)
 
-          console.log("Finished Successfully")
           return multichain.sendRawTransactionPromise({
               hexstring: hexvalue.hex
           })
       })
       .then(tx_hex => {
           console.log("tx_hex  : ", tx_hex);
-
           assert(tx_hex)
 
           console.log("Finished Successfully");
