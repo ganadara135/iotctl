@@ -16,6 +16,70 @@ const multichain = bluebird.promisifyAll(require("multichain-node")(connection),
 
 module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
+  app.post('/requestMyDeviceList',urlencodedParser, function(req, res){
+    var sess = req.session;
+    var userAddress = req.body.userAddress;
+    var result = {};
+
+    fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
+        var devicesOf = JSON.parse(data);
+        if(err){
+            throw err;    // device가 하나도 없거나, 읽을때 에러 발생
+        }
+        fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+            var relationshipOf = JSON.parse(data);
+            var x,y;
+
+            if(err){
+                throw err;   // relationship 이 하나도 없거나, 에러 발생시
+            }
+            for(x in devicesOf){
+              for(y in relationshipOf){
+                if(relationshipOf[y].userAddress == userAddress){
+//                console.log(" relationshipOf[x].userAddress.   --> : ", relationshipOf[y].userAddress)
+                  result[x] = devicesOf[x];
+//                  result[x].myDevice = 1;   // 내 장치 임
+                }
+              }
+            }
+//          console.log("result  : ", result);
+            res.json(result);
+        })   // fs.readFile  relationship.json
+      })// fs.readFile  device.json
+});
+
+app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
+  var sess = req.session;
+  var userAddress = req.body.userAddress;
+  var result = {};
+
+  fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
+      var devicesOf = JSON.parse(data);
+      if(err){
+          throw err;    // device가 하나도 없거나, 읽을때 에러 발생
+      }
+      fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+          var relationshipOf = JSON.parse(data);
+          var x,y;
+
+          if(err){
+              throw err;   // relationship 이 하나도 없거나, 에러 발생시
+          }
+          for(x in devicesOf){
+            result[x] = devicesOf[x];
+            result[x].myDevice = 0;     // 내 장치가 아님
+            for(y in relationshipOf){
+              if(relationshipOf[y].userAddress == userAddress){
+//                console.log(" relationshipOf[x].userAddress.   --> : ", relationshipOf[y].userAddress)
+                result[x].myDevice = 1;   // 내 장치 임
+              }
+            }
+          }
+//          console.log("result  : ", result);
+          res.json(result);
+      })   // fs.readFile  relationship.json
+    })// fs.readFile  device.json
+});
 //  app.post('/login/:IDname',jsonParser, function(req, res){
 app.post('/login',urlencodedParser, function(req, res){
 //  app.post('/login',urlencodedParser, function(req, res){
@@ -86,13 +150,13 @@ app.post('/createDeviceAddress',function(req,res){
       var sess = req.session;
       var deviceName = req.body.deviceName;
       var devicePurpose = req.body.devicePurpose;
-      var deviceManagerAddress = req.body.deviceManagerAddress;
+      var deviceInputerAddress = req.body.deviceInputerAddress;
 
       var result = {};
       var resultOfrelation = {};
 
       // CHECK REQ VALIDITY
-      if(!req.body.deviceName || !req.body.deviceManagerAddress){
+      if(!req.body.deviceName || !req.body.deviceInputerAddress){
       //     if(!req.body["password"] || !req.body["name"]){
           result["success"] = 0;
           result["error"] = "invalid request";
@@ -140,8 +204,8 @@ app.post('/createDeviceAddress',function(req,res){
                 devices[deviceName].enrolledDate = Date.now();
 
                 // relationshiop.json 은  장치관리자주소 + 장지주소 로 고유번호부여
-                relationshipOf[deviceManagerAddress+result["address"]] = {"deviceAddress": result["address"],
-                 "managerAddress": deviceManagerAddress,
+                relationshipOf[deviceInputerAddress+result["address"]] = {"deviceAddress": result["address"],
+                 "userAddress": deviceInputerAddress,
                  "enrolledDate": devices[deviceName].enrolledDate};
 
                 // SAVE DATA
@@ -192,7 +256,7 @@ app.post('/createDeviceAddress',function(req,res){
                 from: result["address"],
                 to: {},
                 msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(devices[deviceName])).toString("hex")},
-                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify( relationshipOf[deviceManagerAddress+result["address"]]  )).toString("hex")}],
+                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify( relationshipOf[deviceInputerAddress+result["address"]]  )).toString("hex")}],
           //              action: "send"
               })
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'

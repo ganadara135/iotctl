@@ -11,15 +11,15 @@
           var device_name_chk =  $("#device_name").val();
           var device_purpose_chk =  $("#device_purpose").val();
           var device_tele_chk =  $("#device_tele").val();
-          var device_manager_address = null;
+          var device_inputer_address = null;
 
           if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
               var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
               console.log("myJSONwithObject : ",myJSONwithObject);
               console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-              device_manager_address =  myJSONwithObject.address;
+              device_inputer_address =  myJSONwithObject.address;
           } else {
-              document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+              allert("Sorry, your browser does not support Web Storage...");
               return;
           }
 
@@ -42,10 +42,10 @@
               $("responsePanel03").append(JSON.parse(this.responseText).pubkey);
             }
           }
-          xmlhttp.open("POST", "/createDeviceAddress", true);
+          xmlhttp.open("POST", "/createDeviceAddress", true);   //true Asyc, false syc
           xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  device_tele_chk
           xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+
-          "&"+"deviceManagerAddress=" + device_manager_address+"&"+"deviceTele=" + device_purpose_chk);
+          "&"+"deviceInputerAddress=" + device_inputer_address+"&"+"deviceTele=" + device_purpose_chk);
         }
   </script>
   </head>
