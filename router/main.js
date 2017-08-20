@@ -16,6 +16,10 @@ const multichain = bluebird.promisifyAll(require("multichain-node")(connection),
 
 module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
+  app.get('/booking',function(req,res){
+    res.render('booking');
+  })
+
   app.post('/requestMyDeviceList',urlencodedParser, function(req, res){
     var sess = req.session;
     var userAddress = req.body.userAddress;
@@ -323,55 +327,55 @@ app.post('/createUserAddress',function(req,res){
               res.json(result);
               return;
           }
-          // ADD TO DATA
-          users[IDofUser] =  req.body;
-          users[IDofUser].secureGrade = "0";    // 보안등급 0- 일반인, 1 - 관리자
-          users[IDofUser].dateOfenroll = Date.now();
-//          result_return["dateOfenroll"]
-
-
-          // SAVE DATA
-          fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
-            if(err){
-                throw err;
-            }
 
 //            confirmCallbackForthis.call(this);
             console.log("call createkeypairs()");
 //        return multichain.validateAddressPromise({address: this.address1})
-            multichain.createKeyPairsPromise()
-            .then(addrPubPri => {
-                assert(addrPubPri);
-                console.log("addrPubPri : " , addrPubPri);
-//                this = {};
-                console.log("this  ===> ", this);
+          multichain.createKeyPairsPromise()
+          .then(addrPubPri => {
+              assert(addrPubPri);
+              console.log("addrPubPri : " , addrPubPri);
+  //                this = {};
+              console.log("this  ===> ", this);
 
-                // this.address1 = addrPubPri[0]["address"];
-                // this.pubkey = addrPubPri[0]["pubkey"];
-                // this.privkey = addrPubPri[0]["privkey"];
+              // this.address1 = addrPubPri[0]["address"];
+              // this.pubkey = addrPubPri[0]["pubkey"];
+              // this.privkey = addrPubPri[0]["privkey"];
 
-                result["address"] = addrPubPri[0]["address"];
-                result["pubkey"] = addrPubPri[0]["pubkey"];
-                result["privkey"] = addrPubPri[0]["privkey"];
-                result["dateOfenroll"] = users[IDofUser].dateOfenroll;
+              result["address"] = addrPubPri[0]["address"];
+              result["pubkey"] = addrPubPri[0]["pubkey"];
+              result["privkey"] = addrPubPri[0]["privkey"];
+              result["dateOfenroll"] = users[IDofUser].dateOfenroll;
 
-                console.log(" result['dateOfenroll']   :   ", result["dateOfenroll"]);
+              // ADD TO DATA
+              users[IDofUser] =  req.body;
+              users[IDofUser] =  result["address"];
+              users[IDofUser] =  result["pubkey"];
+              users[IDofUser].secureGrade = "0";    // 보안등급 0- 일반인, 1 - 관리자
+              users[IDofUser].dateOfenroll = Date.now();
+
+              // SAVE DATA
+              fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
+                if(err){
+                    throw err;
+                }
+              })   // fs.writeFile
 
 
-                return multichain.importAddressPromise({
-                  address: result["address"],
-                  rescan: false
-                })
-            })
-            .then(() => {
+              return multichain.importAddressPromise({
+                address: result["address"],
+                rescan: false
+              })
+          })
+          .then(() => {
                 console.log("TEST: GRANT")
                 return multichain.grantPromise({
                     addresses: result["address"],
 //                    permissions: "send,receive,create"
                     permissions: "connect,send,receive,issue,mine,admin,activate,create"
                 })
-            })
-            .then(txid => {
+          })
+          .then(txid => {
                 listenForConfirmations(txid, (err, confirmed) => {
                     if(err){
                         throw err;
@@ -381,12 +385,11 @@ app.post('/createUserAddress',function(req,res){
                         confirmCallbackEnroll(result,res);
                     }
                 })
-            })
+          })
           .catch(err => {
                 console.log(err)
                 throw err;
-            })
-          })   // fs.writeFile
+          })
       })  // fs.readFile
   });
 
