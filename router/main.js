@@ -322,10 +322,12 @@ app.post('/createDeviceAddress',function(req,res){
 
 app.post('/createUserAddress',function(req,res){
       var sess = req.session;
-      var IDofUser = req.body.username;
+      var username = req.body.username;
 
       var result = {};
-      var iotDataFrom;
+
+      console.log("req.body  ===> ", req.body);
+
 
 //      let addressMy, pubkeyMy, privkeyMy;
 
@@ -340,7 +342,7 @@ app.post('/createUserAddress',function(req,res){
       // LOAD DATA & CHECK DUPLICATION
       fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
           var users = JSON.parse(data);
-          if(users[IDofUser]){
+          if(users[username]){
               // DUPLICATION FOUND
               result["success"] = 0;
               result["error"] = "duplicate";
@@ -365,14 +367,18 @@ app.post('/createUserAddress',function(req,res){
               result["address"] = addrPubPri[0]["address"];
               result["pubkey"] = addrPubPri[0]["pubkey"];
               result["privkey"] = addrPubPri[0]["privkey"];
-              result["dateOfenroll"] = users[IDofUser].dateOfenroll;
 
               // ADD TO DATA
-              users[IDofUser] =  req.body;
-              users[IDofUser] =  result["address"];
-              users[IDofUser] =  result["pubkey"];
-              users[IDofUser].secureGrade = "0";    // 보안등급 0- 일반인, 1 - 관리자
-              users[IDofUser].dateOfenroll = Date.now();
+              users[username] =  req.body;
+              users[username].address =  result["address"];
+              users[username].pubkey =  result["pubkey"];
+              users[username].secureGrade = 0;    // 보안등급 0- 일반인, 1 - 관리자
+              users[username].enrolledDate = Date.now();
+              result["dateOfenroll"] = users[username].dateOfenroll;
+              console.log("*********  users[username]  : " , users[username]);
+
+
+
 
               // SAVE DATA
               fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
@@ -470,7 +476,7 @@ app.post('/createUserAddress',function(req,res){
               from: result_return["address"],
               to: {},
 //              to: arrOfme,
-              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(result_return["dateOfenroll"].toString()).toString("hex")}],
+              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(new String(result_return["dateOfenroll"])).toString("hex")}],
 //              msg : arrOfme,
 //              action: "send"
             })

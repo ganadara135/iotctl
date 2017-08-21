@@ -10,7 +10,7 @@
         function deviceAddrRequest(){
           var device_name_chk =  $("#device_name").val();
           var device_purpose_chk =  $("#device_purpose").val();
-          var device_tele_chk =  $("#device_tele").val();
+          var device_teleport_chk =  $("#teleport").val();
           var device_inputer_address = null;
 
           if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
@@ -43,9 +43,9 @@
             }
           }
           xmlhttp.open("POST", "/createDeviceAddress", true);   //true Asyc, false syc
-          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  device_tele_chk
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
           xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+
-          "&"+"deviceInputerAddress=" + device_inputer_address+"&"+"deviceTele=" + device_purpose_chk);
+          "&"+"deviceInputerAddress=" + device_inputer_address+"&"+"teleport=" + device_teleport_chk);
         }
   </script>
   </head>
@@ -81,7 +81,7 @@
       <label for="device_purpose" class="input-1-label">Purpose of Use</label>
       <input type="text" class="input-1" id="device_purpose" />
       <label for="device_check_telecommunication" class="input-1-label">통신가능여부체크( 0-불가, 1-가능)</label>
-      <input type="text" class="input-1" id="device_tele" />
+      <input type="text" class="input-1" id="teleport" />
       <button class="button-1" id="devcieAddrReqeust" onclick="deviceAddrRequest()">Request</button>
       <p class="input-1-label">Device Unique Address</p>
       <div class="device_unique_number" >

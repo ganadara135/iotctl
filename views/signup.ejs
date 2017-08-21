@@ -15,9 +15,11 @@
         var password_chk =  $("#password").val();
         var retype_chk =    $("#retype").val();
 
-        // console.log("username_chk : ", username_chk);
-        // console.log("password_chk : ", password_chk);
-        // console.log("retype_chk : ", retype_chk);
+
+
+         console.log("username_chk : ", username_chk);
+         console.log("password_chk : ", password_chk);
+         console.log("retype_chk : ", retype_chk);
 
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -25,18 +27,15 @@
 
             console.log("this.responseText : ", this.responseText);
             // $("responsePanel").append(" "+this.responseText+" ");
-            var myJSON = this.responseText;
-            myJSON.username = username_chk;
-            console.log("myJSON.username  : " , myJSON.username);
-
-            var myJSON = JSON.stringify(this.responseText);
-            localStorage.setItem("myJSONSecretKey", myJSON);
-            alert(JSON.parse(this.responseText));
-
-//            alert(myJSON);
-
-            //$("#responsePanel").append(this.responseText);
-            document.getElementById("register_button").disabled = false;
+            alert(this.responseText);
+            if(JSON.parse(this.responseText).address){
+              alert("비밀키 생성이 성공하였습니다.")
+              var myJSON = JSON.stringify(this.responseText);
+              localStorage.setItem("myJSONSecretKey", myJSON);
+              document.getElementById("register_button").disabled = false;
+            }else {
+                alert("this.responseText" + "비밀키 생성에 실패하였습니다");
+            }
           }
         }
 
