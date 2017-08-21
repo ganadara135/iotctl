@@ -16,9 +16,20 @@ const multichain = bluebird.promisifyAll(require("multichain-node")(connection),
 
 module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
+
+//  xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"deviceName="+bbdeviceName+
+//  "&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
+  app.post('/bookingDevice',function(req,res){
+    var sess = req.session;
+    var userAddress = req.body.userAddress;
+
+    console.log("req.body  : ", req.body);
+  });
+
+  
   app.get('/booking',function(req,res){
     res.render('booking');
-  })
+  });
 
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
     var sess = req.session;
@@ -279,8 +290,10 @@ app.post('/createDeviceAddress',function(req,res){
               return multichain.createRawSendFromPromise({
                 from: result["address"],
                 to: {},
-                msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(devices[deviceName])).toString("hex")},
-                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify( relationshipOf[deviceInputerAddress+result["address"]]  )).toString("hex")}],
+                msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                        devices[deviceName])).toString("hex")},
+                      {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                        relationshipOf[deviceInputerAddress+result["address"]]  )).toString("hex")}],
           //              action: "send"
               })
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'

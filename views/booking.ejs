@@ -1,0 +1,146 @@
+<html>
+  <head>
+    <title>
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      var d = new Date();
+//      var str = currentDate.toLocaleTimeString();
+      var oneHour = 60000 * 10 * 6;
+//      var limitDate = new Date(currentDate.getTime()+oneHour);
+      var limitDate = new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),
+      d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds())+oneHour);
+
+      alert(limitDate);
+
+      $("#bday").val(limitDate.toISOString().slice(0,10));
+      $("#btime").val(limitDate.toISOString().slice(11,16));
+    });
+
+
+  function setUserPrivkey() {   // 사용자 비밀키  웹스토리지에서 불러오는 부분
+      var msg;
+      if(typeof(Storage) !== "undefined") {
+          var xprivkey = localStorage.getItem("myJSONSecretKey");
+          if (xprivkey) {
+              var myObj  = JSON.parse(JSON.parse(xprivkey));
+              msg = myObj.privkey;
+          } else {
+              msg = "등록된 사용자의 비밀키가 없습니다.";
+          }
+      } else {
+          msg = "Sorry, your browser does not support web storage...";
+      }
+      alert(msg);
+      document.getElementById("id_userPrivkey").value = msg;
+    }
+
+    function bookingDevice(){
+      var bbday = document.getElementById("bday").value;
+      var bbtime = document.getElementById("btime").value;
+      var bbdeviceName = document.getElementById("id_deviceName").value;
+      var bbdeviceAddress = document.getElementById("id_deviceAddress").value;
+      var bbpurpose = document.getElementById("id_purpose").value;
+      var bbxprivkey = document.getElementById("id_userPrivkey").value;
+
+      if (bbpurpose == null || bbpurpose == "") {
+        alert("Please input purposes.");
+        $("#bpurpose").focus();
+        return false;
+      }
+      var myJSONuser, myJSONdevice, myObjUser, myObjDevice;
+      if(typeof(Storage) !== "undefined") {
+          myJSONuser = localStorage.getItem("myJSONSecretKey");
+//          myJSONdevice = localStorage.getItem("myJSONSecretKeyDevice");
+//          if (myJSONuser && myJSONdevice) {
+            if (myJSONuser) {
+              myObjUser  = JSON.parse(JSON.parse(myJSONuser));
+              console.log("myObjUser.address : ", myObjUser.address);
+//              myObjDevice  = JSON.parse(JSON.parse(myJSONdevice));
+              //msg = myObj.privkey;
+          } else {
+              alert("localStorage 에 문제가 발생했습니다.")
+              return;
+          }
+      } else {
+          alert("Sorry, your browser does not support web storage...")
+          return;
+      }
+
+      var currentDate = new Date();
+      var bookingDate = new Date(bbday+'T'+bbtime+":00Z");
+      bookingDate.setTime(bookingDate.getTime() + (currentDate.getTimezoneOffset() * 60000 ) )
+      var oneHour = 60000 * 10 * 6;
+
+      if(bookingDate.getTime() >= currentDate.getTime() + oneHour){
+        alert("입력한 시간으로 예약합니다"  + bookingDate.toISOString() +" / " + bookingDate.getTime());
+      }else{
+        alert("UNVALIDITY : 1시간 앞서 예약하세요");
+        return false;
+      }
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("this.responseText  : ", this.responseText)
+          // 여기서 부터는 진균이가
+        }
+      }
+      xmlhttp.open("POST", "/bookingDevice/", true);  //true Asyc, false syc
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"deviceName="+bbdeviceName+
+      "&"+"deviceAddress=" +bbdeviceAddress+"&"+"userAddress=" + myObjUser.address);
+//      xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"devicePrivkey=" + myObjDevice.privkey
+//      +"&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
+    };
+
+    // xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // xmlhttp.send("userAddress="+userAddress);
+
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i}; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
+        return i;
+    }
+
+    </script>
+  </head>
+  <body onload="startTime()">
+      <form method="post">
+        <fieldset>
+          <h4 >사물명</h4>
+          <input type="text" id="id_deviceName" readonly value="사물명 하드코딩"><br>
+          <h4 >사물주소</h4>
+          <input type="text" id="id_deviceAddress" readonly value="사물주소 하드코딩"><br>
+          <h4> 예약일시 </h4>
+          <ml > 사용일시 </ml> ( <ml > 현재시간: </ml> <divTime id="clock"></divTime>)<br>
+          <input type="date" name="bday" id="bday" max=""  required>
+          <input type="time" name="btime" id="btime" required><br>
+
+          <h4 >사용용도</h4>
+          <input type="text" id="id_purpose"><br>
+
+          <fieldset>
+            <legend >사용자 비밀키</legend>
+            <input type="text" id="id_userPrivkey" >
+            <input type="button" value="비밀키 불러오기" onclick="setUserPrivkey()" ><br>
+          </fieldset>
+        <input type="button" value='예약등록 버튼' id="id_bookingButton" onclick="bookingDevice()" >
+        <input type="button" value='나가기' id="goToChoiceId" >
+        </fieldset>
+      </form>
+
+  </body>
+</html>
