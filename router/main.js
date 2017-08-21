@@ -591,6 +591,9 @@ app.post('/createUserAddress',function(req,res){
   app.get('/device_add2',function(req,res){
     res.render('device_add2');
   })
+  app.get('/users',function(req,res){
+    res.render('users');
+  })
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Block Chain</title>
+    <link rel="stylesheet" href="css/common_nav.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no
+      initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <input type="checkbox" id="menu-bar" />
+      <label for="menu-bar"><span></span></label>
+      <nav>
+        <div class="user_info">
+          <div class="img-wrap">
+            <img src="img/profile_face2.jpg" />
+          </div>
+          <div class="profile">
+            <p class="username">Alexander Great</p>
+            <p class="user_detail">Administrator</p>
+            <img src="img/icon-setting.svg" class="icon-setting" />
+          </div>
+        </div>
+        <div class="menu-container">
+          <a href="./devices">Devices</a>
+          <a href="#">Reservation</a>
+          <a href="./users">Users</a>
+          <a href="./main">History</a>
+        </div>
+      </nav>
+      <label for="menu-bar" class="overlay"></label>
+    </header>
+
+    <div class="content">
+
+    </div>
+    <script>
+    function requestAllUserList(){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+          console.log("this.responseText : ", this.responseText);
+          console.log(this.responseText);
+          //전체 유저목록을 가져왔으므로 표현은 영균이가 ~~
+        }
+      }
+      xmlhttp.open("POST", "/requestAllUserList", true);  //true Asyc, false syc
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send();
+    };
+    requestAllUserList();
+    </script>
+  </body>
+</html>
