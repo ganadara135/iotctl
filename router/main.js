@@ -31,10 +31,9 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
             throw err;    // device가 하나도 없거나, 읽을때 에러 발생
         }
         var x;
-
-        for(x in devicesOf){
+        for(x in userOf){
           result[x] = userOf[x];
-          delete = result[y].password;
+          delete  result[x].password;
         }
         res.json(result);
       })// fs.readFile  device.json
