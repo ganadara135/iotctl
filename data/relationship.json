@@ -2,6 +2,11 @@
 	"1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV": {
 		"deviceAddress": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
 		"userAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
-		"enrolledDate": 1503283892924		
+		"enrolledDate": 1503283892924
+	},
+	"1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy": {
+		"deviceAddress": "1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy",
+		"userAddress": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
+		"enrolledDate": 1503299102676
 	}
 }

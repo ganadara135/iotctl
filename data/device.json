@@ -7,5 +7,14 @@
 		"address": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
 		"pubkey": "02f100b429f938c75a2b57b4e055440df300b50c6678a2449702162ce6a0424a95",
 		"enrolledDate": 1503283892924
+	},
+	"testestest": {
+		"deviceName": "testestest",
+		"devicePurpose": "testestest",
+		"deviceInputerAddress": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
+		"teleport": "1",
+		"address": "1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy",
+		"pubkey": "035af565f06cc72079c52794e69ee1c008a04a38db0a6e725bde5c10e9a1cb3659",
+		"enrolledDate": 1503299102676
 	}
 }
