@@ -22,11 +22,114 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
   app.post('/bookingDevice',function(req,res){
     var sess = req.session;
     var userAddress = req.body.userAddress;
+    var deviceAddress = req.body.deviceAddress;
+    var deviceName = req.body.deviceName;
+    var userPrivkey = req.body.userPrivkey;
+    var bookingTime = req.body.bookingTime;
+    var result = {};
 
     console.log("req.body  : ", req.body);
+
+    // 1. 보내준 값 유효범위 체크
+    // 2. 해당 디바이스가 있는지 체크
+    // 3. 권한 요청 승인 기록 (RDB relationship,  Blockchain 각각에)
+    //    3.1. 예약유효기간은 예약시각의 30분이내
+    //    3.2. relationship.approvalBooking = true, false. (default=false)
+
+    // 1. 보내준 값 유효범위 체크
+    if(!req.body.deviceName || !req.body.userAddress){
+        result["success"] = 0;
+        result["error"] = "invalid request";
+        res.json(result);
+        return;
+    }
+
+    fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
+        var devices = JSON.parse(data);
+        // 2. 해당 디바이스가 있는지 체크
+        if(!devices[deviceName]){
+            result["success"] = 0;
+            result["error"] = "No device";
+            res.json(result);
+            return;
+        }
+
+        // 3. 권한 요청 승인 기록 (RDB relationship,  Blockchain 각각에)
+        //    3.1. 예약유효기간은 예약시각의 30분이내
+        //    3.2. relationship.approvalBooking = true, false. (default=false)
+         fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+             var relationshipOf = JSON.parse(data);
+             if(err){
+                 throw err;
+             }
+
+             // relationshiop.json 은  장치관리자주소 + 장치주소 + bookingTime 로 고유번호부여
+             relationshipOf[userAddress+deviceAddress+bookingTime] = {};
+             relationshipOf[userAddress+deviceAddress+bookingTime].deviceAddress = deviceAddress;
+             relationshipOf[userAddress+deviceAddress+bookingTime].userAddress = userAddress;
+             relationshipOf[userAddress+deviceAddress+bookingTime].enrolledDate = Date.now();
+             relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
+             relationshipOf[userAddress+deviceAddress+bookingTime].bookingTime = bookingTime;
+
+          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
+
+
+
+          fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
+            if(err){
+                throw err;
+            }
+          }) // fs.writeFile relationship.json
+
+          console.log("call createRawSendFrom()");
+  //        return multichain.validateAddressPromise({address: this.address1})
+          multichain.createRawSendFromPromise({
+              from: userAddress,
+              to: {},
+              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                      relationshipOf)).toString("hex")}],
+        //              action: "send"
+          })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
+          .then(hexstringblob => {
+            console.log("hexstringblob  : ", hexstringblob);
+
+            assert(hexstringblob)
+
+            return multichain.signRawTransactionPromise({
+              hexstring: hexstringblob,
+        //        parents: [],
+              privatekeys: [userPrivkey]
+          })
+        })      //  sendrawtransaction [paste-bigger-hex-blob]
+        .then(hexvalue => {
+          console.log("hexvalue.hex  : ", hexvalue.hex);
+
+          assert(hexvalue)
+
+          return multichain.sendRawTransactionPromise({
+              hexstring: hexvalue.hex
+          })
+        })
+        .then(tx_hex => {
+            console.log("tx_hex  : ", tx_hex);
+
+            assert(tx_hex)
+
+            console.log("Finished Successfully");
+            result["success"] = 1;
+            result["error"] = "Booking Completed";
+            res.json(result);
+        })
+        .catch(err => {
+            console.log(err)
+            throw err;
+        })
+
+      }) //fs.readFile relationship.json
+    })  //fs.readFile device.json
   });
 
-  
+
   app.get('/booking',function(req,res){
     res.render('booking');
   });
@@ -188,7 +291,6 @@ app.post('/createDeviceAddress',function(req,res){
       var deviceInputerAddress = req.body.deviceInputerAddress;
 
       var result = {};
-      var resultOfrelation = {};
 
       // CHECK REQ VALIDITY
       if(!req.body.deviceName || !req.body.deviceInputerAddress){
@@ -238,8 +340,9 @@ app.post('/createDeviceAddress',function(req,res){
                 devices[deviceName].pubkey = result["pubkey"];
                 devices[deviceName].enrolledDate = Date.now();
 
-                // relationshiop.json 은  장치관리자주소 + 장지주소 로 고유번호부여
-                relationshipOf[deviceInputerAddress+result["address"]] = {"deviceAddress": result["address"],
+                // relationshiop.json 은  장치관리자주소 + 장치주소 + 등록날짜 로 고유번호부여
+                relationshipOf[deviceInputerAddress+result["address"]+devices[deviceName].enrolledDate] =
+                 {"deviceAddress": result["address"],
                  "userAddress": deviceInputerAddress,
                  "enrolledDate": devices[deviceName].enrolledDate};
 
@@ -565,7 +668,10 @@ app.post('/createUserAddress',function(req,res){
       var sess = req.session;
 
 //      var testval = new Buffer("문자 변환 테스트 ").toString("hex");
-      var testval = new Buffer("test converting by me   한글도 가능혀 ").toString("hex");
+var testval= "7b22314e5761416f6347514242526f33577757436a35467970733235334e48716f4a525752394b75315935627857555a7a59653464665663614a6d734e3236454479393676713667654e4b697756223a7b2264657669636541646472657373223a22315935627857555a7a59653464665663614a6d734e3236454479393676713667654e4b697756222c227573657241646472657373223a22314e5761416f6347514242526f33577757436a35467970733235334e48716f4a525752394b75222c22656e726f6c6c656444617465223a313530333330323933363332302c22617070726f76616c426f6f6b696e67223a66616c73652c22626f6f6b696e6754696d65223a2231353033333035383830303030227d2c22314e5761416f6347514242526f33577757436a35467970733235334e48716f4a525752394b75315935627857555a7a59653464665663614a6d734e3236454479393676713667654e4b69775631353033333037303830303030223a7b2264657669636541646472657373223a22315935627857555a7a59653464665663614a6d734e3236454479393676713667654e4b697756222c227573657241646472657373223a22314e5761416f6347514242526f33577757436a35467970733235334e48716f4a525752394b75222c22656e726f6c6c656444617465223a313530333330333337363436382c22617070726f76616c426f6f6b696e67223a66616c73652c22626f6f6b696e6754696d65223a2231353033333037303830303030227d7d";
+
+
+//      var testval = new Buffer("test converting by me   한글도 가능혀 ").toString("hex");
       console.log("testval hex  : ", testval);
       console.log("testval toString(utf8) : ", testval.toString("utf8"));
       console.log("testval toString(ascii) : ", testval.toString("ascii"));

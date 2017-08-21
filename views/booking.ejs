@@ -90,7 +90,7 @@
       xmlhttp.open("POST", "/bookingDevice/", true);  //true Asyc, false syc
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"deviceName="+bbdeviceName+
-      "&"+"deviceAddress=" +bbdeviceAddress+"&"+"userAddress=" + myObjUser.address);
+      "&"+"deviceAddress=" +bbdeviceAddress+"&"+"userAddress=" + myObjUser.address+"&"+"userPrivkey=" + myObjUser.privkey);
 //      xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"devicePrivkey=" + myObjDevice.privkey
 //      +"&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
     };
@@ -121,9 +121,9 @@
       <form method="post">
         <fieldset>
           <h4 >사물명</h4>
-          <input type="text" id="id_deviceName" readonly value="사물명 하드코딩"><br>
+          <input type="text" id="id_deviceName" readonly value="아이폰01"><br>
           <h4 >사물주소</h4>
-          <input type="text" id="id_deviceAddress" readonly value="사물주소 하드코딩"><br>
+          <input type="text" id="id_deviceAddress" readonly value="1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV"><br>
           <h4> 예약일시 </h4>
           <ml > 사용일시 </ml> ( <ml > 현재시간: </ml> <divTime id="clock"></divTime>)<br>
           <input type="date" name="bday" id="bday" max=""  required>
