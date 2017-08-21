@@ -6,33 +6,62 @@
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <div class="loading-overlay" id="overlay">
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </div>
+    <p class="title">Register</p>
+    <div class="input-username">
+      <input type="text" id="username" placeholder="Username"/>
+    </div>
+    <div class="input-password">
+      <input type="password" id="password" placeholder="Password"/>
+    </div>
+    <div class="input-retype">
+      <input type="password" id="retype" placeholder="Re-Type"/>
+    </div>
+
+    <button id="valid_button" class="button-1">Check & Generate Secret Key</button>
+    <span class="line"></span>
+    <!-- <button id="key-generator" class="button-1">Generate Secret Key</button> -->
+    <!-- <p class="secret-key" style="color: white;padding: 20px 0px;">
+      Insert Secret Key Here
+    </p> -->
+    <!-- <div>   <responsePanel style="color: white;padding: 20px 0px;">  </responsePanel> </div> -->
+
+    <input type="text" id="security-card-number" placeholder="Card Serial Number" />
+    <button id="register_button" class="button-1 invisible" onclick="main()" disabled>Register</button>
     <script>
-      function userRegister(){
-        //var username_chk = document.getElementById("#username").value;
-        //var password_chk = document.getElementById("#password").value;
-        //var retype_chk = document.getElementById("#retype").value;
-        var username_chk =  $("#username").val();
-        var password_chk =  $("#password").val();
-        var retype_chk =    $("#retype").val();
 
-
-
-         console.log("username_chk : ", username_chk);
-         console.log("password_chk : ", password_chk);
-         console.log("retype_chk : ", retype_chk);
-
+      var valid = document.querySelector("#valid_button");
+      valid.addEventListener('click',userRegister);
+      function userRegister(e){
+        var username_chk = document.querySelector("#username").value;
+        var password_chk = document.querySelector("#password").value;
+        var retype_chk = document.querySelector("#retype").value;
+        var overlay = document.querySelector("#overlay");
+        overlay.classList.add('overlay-on');
+        console.log("username_chk : ", username_chk);
+        console.log("password_chk : ", password_chk);
+        console.log("retype_chk : ", retype_chk);
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-
             console.log("this.responseText : ", this.responseText);
             // $("responsePanel").append(" "+this.responseText+" ");
-            alert(this.responseText);
+            //alert(this.responseText);
             if(JSON.parse(this.responseText).address){
-              alert("비밀키 생성이 성공하였습니다.")
+              overlay.classList.remove('overlay-on');
+              //alert("비밀키 생성이 성공하였습니다.");
               var myJSON = JSON.stringify(this.responseText);
               localStorage.setItem("myJSONSecretKey", myJSON);
               document.getElementById("register_button").disabled = false;
+              document.getElementById("register_button").classList.remove('invisible');
             }else {
                 alert("this.responseText" + "비밀키 생성에 실패하였습니다");
             }
@@ -63,28 +92,5 @@
 
     }
   </script>
-  </head>
-  <body>
-    <p class="title">Register</p>
-    <div class="input-username">
-      <input type="text" id="username" placeholder="Username"/>
-    </div>
-    <div class="input-password">
-      <input type="password" id="password" placeholder="Password"/>
-    </div>
-    <div class="input-retype">
-      <input type="password" id="retype" placeholder="Re-Type"/>
-    </div>
-
-    <button id="valid_button" class="button-1" onclick='return userRegister()'>Check & Generate Secret Key</button>
-    <span class="line"></span>
-    <!-- <button id="key-generator" class="button-1">Generate Secret Key</button> -->
-    <!-- <p class="secret-key" style="color: white;padding: 20px 0px;">
-      Insert Secret Key Here
-    </p> -->
-    <!-- <div>   <responsePanel style="color: white;padding: 20px 0px;">  </responsePanel> </div> -->
-
-    <input type="text" id="security-card-number" placeholder="Card Serial Number" />
-    <button id="register_button" class="button-1" onclick="main()" disabled=true>Register</button>
   </body>
 </html>
