@@ -20,6 +20,27 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
     res.render('booking');
   })
 
+  app.post('/requestAllUserList',urlencodedParser, function(req, res){
+    var sess = req.session;
+  //  var userAddress = req.body.userAddress;
+    var result = {};
+
+    fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
+        var userOf = JSON.parse(data);
+        if(err){
+            throw err;    // device가 하나도 없거나, 읽을때 에러 발생
+        }
+        var x;
+
+        for(x in devicesOf){
+          result[x] = userOf[x];
+          delete = result[y].password;
+        }
+        res.json(result);
+      })// fs.readFile  device.json
+  });
+
+
   app.post('/requestMyDeviceList',urlencodedParser, function(req, res){
     var sess = req.session;
     var userAddress = req.body.userAddress;
