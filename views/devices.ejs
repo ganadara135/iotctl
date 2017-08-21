@@ -8,9 +8,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
       <script>
       function requestMyDeviceList(){
-        // var device_name_chk =  $("#device_name").val();
         var userAddress;// = null;
-
         if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
             console.log("myJSONwithObject : ",myJSONwithObject);
@@ -20,7 +18,6 @@
             allert("Sorry, your browser does not support Web Storage...");
             return;
         }
-
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
@@ -29,17 +26,16 @@
             //내 장비목록을 가져왔으므로 표현은 영균이가 ~~
           }
         }
+
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("userAddress="+userAddress);
       };
 
       function requestAllDeviceList(){
-        // var device_name_chk =  $("#device_name").val();
-        // var device_purpose_chk =  $("#device_purpose").val();
-        // var device_tele_chk =  $("#device_tele").val();
         var userAddress;// = null;
-
+        var content = document.querySelector('.content');
+        content.innerHTML = '';
         if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
             console.log("myJSONwithObject : ",myJSONwithObject);
@@ -53,9 +49,29 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-
-            console.log("this.responseText : ", this.responseText);
-            //전체 장비목록을 가져왔으므로 표현은 영균이가 ~~
+            var userOf = JSON.parse(this.responseText);
+            for(var x in userOf){
+              console.log(userOf[x]);
+              content.innerHTML +=
+              `
+                <div class="devices-list" id="list-1">
+                  <div class="devices-img">
+                    <img src="img/icon-airconditioner2.svg" />
+                  </div>
+                  <div class="devices-detail">
+                    <p class="device-name">${userOf[x].deviceName}</p>
+                    <p class="device-info">
+                      <img src="img/icon-people.svg" />13
+                      <span class="connected"></span>
+                    </p>
+                  </div>
+                </div>
+              `
+            }
+            content.innerHTML +=
+                `<div class="addButton">
+                    <span></span>
+                  </div>`
           }
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
@@ -84,9 +100,9 @@
       <label for="menu-bar"><span></span></label>
 
 
-      <button  id="id_requestMyDeviceList" onclick='requestMyDeviceList()' ><h2>내 장치목록 가져오기</h2></button>
-      <button  id="id_requestAllDeviceList" onclick='requestAllDeviceList()' ><h2>등록된 전체 장치목록 가져오기</h2></button>
-      <button  id="id_requestAllUserList" onclick='requestAllUserList()' ><h2>등록된 전체 사용자목록 가져오기</h2></button>
+      <!-- <button  id="id_requestMyDeviceList" onclick='requestMyDeviceList()' ><h2>내 장치목록 가져오기</h2></button> -->
+      <!-- <button  id="id_requestAllDeviceList" onclick='requestAllDeviceList()' ><h2>등록된 전체 장치목록 가져오기</h2></button> -->
+      <!-- <button  id="id_requestAllUserList" onclick='requestAllUserList()' ><h2>등록된 전체 사용자목록 가져오기</h2></button> -->
 
       <nav>
         <div class="user_info">
@@ -102,7 +118,7 @@
         <div class="menu-container">
           <a href="./devices">Devices</a>
           <a href="#">Reservation</a>
-          <a href="#">Users</a>
+          <a href="./users">Users</a>
           <a href="./main">History</a>
         </div>
       </nav>
@@ -143,15 +159,16 @@
       </div>
     </div>
     <script>
-      var temp = document.querySelector('.addButton');
-      var list1 = document.querySelector('#list-1');
-      temp.addEventListener('click',function(){
-        location.href="./device_add";
-      })
-      list1.addEventListener('click',function(){
-
-        location.href="./device_detail";
-      })
+      requestAllDeviceList()
+      //var temp = document.querySelector('.addButton');
+      //var list1 = document.querySelector('#list-1');
+      // console.log(temp);
+      // temp.addEventListener('click',function(){
+      //   location.href="./device_add";
+      // });
+      // list1.addEventListener('click',function(){
+      //   location.href="./device_detail";
+      // })
     </script>
   </body>
 </html>

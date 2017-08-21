@@ -22,5 +22,13 @@
 		"pubkey": "024649d4e2d8b028ad1d9910057213aea8fd524d142de0cd78d7b523f88c85981d",
 		"secureGrade": 0,
 		"enrolledDate": 1503283657961
+	},
+	"testest": {
+		"username": "testest",
+		"password": "testest",
+		"address": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
+		"pubkey": "03f495abcca24392ab0cc0ce78d1ec5a83c80ded4dd72d7668ae07debfb739ed82",
+		"secureGrade": 0,
+		"enrolledDate": 1503299045441
 	}
 }

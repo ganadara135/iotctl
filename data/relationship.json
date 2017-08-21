@@ -3,6 +3,7 @@
 		"deviceAddress": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
 		"userAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
 		"enrolledDate": 1503283892924
+<<<<<<< HEAD
   },
 	"1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV1503302936320": {
 		"deviceAddress": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
@@ -17,5 +18,12 @@
 		"enrolledDate": 1503303376468,
 		"approvalBooking": false,
 		"bookingTime": "1503307080000"
+=======
+	},
+	"1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy": {
+		"deviceAddress": "1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy",
+		"userAddress": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
+		"enrolledDate": 1503299102676
+>>>>>>> 7cda0209d1c0f5e24b54ca8bdb7f53eafc763f85
 	}
 }

@@ -716,6 +716,9 @@ var testval= "7b22314e5761416f6347514242526f33577757436a35467970733235334e48716f
   app.get('/device_add2',function(req,res){
     res.render('device_add2');
   })
+  app.get('/users',function(req,res){
+    res.render('users');
+  })
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 
