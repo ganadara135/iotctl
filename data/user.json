@@ -1,43 +1,26 @@
 {
-	"99": {
-		"username": "99",
-		"password": "99",
-		"iotAddress": "8769uyjhmn",
-		"iotPubkey": "등록날짜"
-	},
-	"890": {
-		"username": "890",
-		"password": "890",
-		"iotAddress": "8769uyjhmn",
-		"iotPubkey": "등록날짜"
-	},
-	"4569": {
-		"username": "4569",
-		"password": "99",
-		"secureGrade": "1",
-		"dateOfenroll": 1503143735149
-	},
-	"456999": {
-		"username": "456999",
-		"password": "99",
-		"secureGrade": "0",
-		"dateOfenroll": 1503143909088
-	},
-	"iii": {
-		"IDname": "iii",
-		"password": "ii",
-		"iotAddress": "8769uyjhmn"
+	"777": {
+		"username": "777",
+		"password": "777",
+		"address": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"pubkey": "039fe44bdd88c037e063ee9a2a65337868fb039f2d9cc3a57acb9470fad725125a",
+		"secureGrade": 0,
+		"enrolledDate": 1503283793830
 	},
 	"test": {
 		"username": "test",
 		"password": "test",
-		"iotAddress": "8769uyjhmn",
-		"iotPubkey": "등록날짜"
+		"address": "1GYGdEakL5UHe6DSsz3WLwzaLx7UhYAYkg1xcN",
+		"pubkey": "03c8060c7d23aa1a09f1dc77ddcac63bbf23f794dcc110aa47cad65fd717664cd4",
+		"secureGrade": 0,
+		"enrolledDate": 1503283440257
 	},
-	"000": {
-		"username": "000",
-		"password": "000",
-		"iotAddress": "8769uyjhmn",
-		"iotPubkey": "등록날짜"
+	"ppp": {
+		"username": "ppp",
+		"password": "ppp",
+		"address": "1CXmMJsZ3XXJYqPzePLrbEJRsywLv2JLdqmCxE",
+		"pubkey": "024649d4e2d8b028ad1d9910057213aea8fd524d142de0cd78d7b523f88c85981d",
+		"secureGrade": 0,
+		"enrolledDate": 1503283657961
 	}
 }
