@@ -5,6 +5,33 @@
     <link rel="stylesheet" href="css/main.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+      <script>
+      $(document).ready(function(){
+         var userAddress, deviceAddress;
+         if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+             var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
+             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
+             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+             userAddress =  myJSONwithObject.address;
+             deviceAddress =  myJSONwithObjectDevice.address;
+         } else {
+             allert("Sorry, your browser does not support Web Storage...");
+             return;
+         }
+         var xmlhttp = new XMLHttpRequest();
+         xmlhttp.onreadystatechange = function() {
+           if (this.readyState == 4 && this.status == 200) {
+             console.log("this.responseText : ", this.responseText);
+             
+           }
+         }
+         xmlhttp.open("POST", "/getBookingListByManager", true);  //true Asyc, false syc
+         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xmlhttp.send("userAddress="+userAddress+"&"+"deviceAddress="+deviceAddress);
+      });
+      </script>
   </head>
   <body>
     <header>
@@ -24,7 +51,7 @@
         <div class="menu-container">
 
           <a href="./devices/">Devices</a>
-          
+
           <a href="#">Reservation</a>
           <a href="#">Users</a>
           <a href="#">History</a>
