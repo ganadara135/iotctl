@@ -13,6 +13,8 @@
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
              var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
              var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
+             console.log('>>>>>>>>>>>>>>>>>>>>>>>>>.');
+             console.log(myJSONwithObject)
              console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
              console.log("myJSONwithObject.address : ",myJSONwithObject.address);
              userAddress =  myJSONwithObject.address;
@@ -40,7 +42,7 @@
                    <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
                    <p>
                      <button class="reject-bt">reject</button>
-                     <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress}>admin</button>
+                     <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>admin</button>
                    </p>
                  </div>
                </div>`;
@@ -49,6 +51,24 @@
              adminbt.forEach(function(item,i){
                item.addEventListener('click',function(){
                  console.log(this.getAttribute('userAddress'));
+                 console.log(this.getAttribute('deviceAddress'));
+                 var request = new XMLHttpRequest();
+                  request.open('POST', '/approveBooking', true);
+                  request.onload = function() {
+                    if (request.status >= 200 && request.status < 400) {
+                      // Success!
+                      var resp = request.responseText;
+                      console.log(resp);
+                    } else {
+                      // We reached our target server, but it returned an error
+                    }
+                  };
+
+                  request.onerror = function() {
+                    // There was a connection error of some sort
+                  };
+                  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                  request.send("userAddress="+this.getAttribute('userAddress')+"&"+"deviceAddress="+this.getAttribute('deviceAddress')+"&bookingTime="+this.getAttribute('bookingTime')+"&userPrivkey="+myJSONwithObject.privkey);
                })
              });
            }
