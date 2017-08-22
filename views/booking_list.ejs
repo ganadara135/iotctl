@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+      <!-- <script> </s -->
       <script>
       $(document).ready(function(){
          var userAddress, deviceAddress;
@@ -39,16 +40,25 @@
                    <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
                    <p>
                      <button class="reject-bt">reject</button>
-                     <button class="admin-bt">admin</button>
+                     <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress}>admin</button>
                    </p>
                  </div>
                </div>`;
              }
+             var adminbt = document.querySelectorAll(".admin-bt");
+             adminbt.forEach(function(item,i){
+               item.addEventListener('click',function(){
+                 console.log(this.getAttribute('userAddress'));
+               })
+             });
            }
          }
          xmlhttp.open("POST", "/getBookingListByManager", true);  //true Asyc, false syc
          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
          xmlhttp.send("userAddress="+userAddress+"&"+"deviceAddress="+deviceAddress);
+
+
+
       });
       </script>
   </head>
