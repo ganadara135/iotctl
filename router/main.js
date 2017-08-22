@@ -198,6 +198,7 @@ app.post('/getBookingListByManager',function(req,res){
   });
 
 
+<<<<<<< HEAD
   app.get('/booking/:deviceName/:deviceAddress',function(req,res){
 
     var deviceName = req.params.deviceName;
@@ -209,6 +210,11 @@ app.post('/getBookingListByManager',function(req,res){
         deviceName: deviceName,
         deviceAddress: deviceAddress
     })
+=======
+  app.get('/booking',function(req,res){
+    console.log(req.query);
+    res.render('booking',{deviceName : req.query.deviceName, deviceAddress : req.query.address});
+>>>>>>> 18e796b2816bb79efcb70cbb0b3c0c3592851406
   });
 
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
@@ -808,6 +814,9 @@ var testval= "7b22314e5761416f6347514242526f33577757436a35467970733235334e48716f
   })
   app.get('/users',function(req,res){
     res.render('users');
+  });
+  app.get('/booking_list',function(req,res){
+    res.render('booking_list');
   });
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;

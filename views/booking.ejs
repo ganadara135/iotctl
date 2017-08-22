@@ -1,7 +1,7 @@
 <html>
   <head>
   <title>Block Chain</title>
-    <link rel="stylesheet" href="css/booking.css" />
+    <link rel="stylesheet" href="/css/booking.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
@@ -127,19 +127,19 @@
       <nav>
         <div class="user_info">
           <div class="img-wrap">
-            <img src="img/profile_face2.jpg" />
+            <img src="/img/profile_face2.jpg" />
           </div>
           <div class="profile">
             <p class="username">Alexander Great</p>
             <p class="user_detail">Administrator</p>
-            <img src="img/icon-setting.svg" class="icon-setting" />
+            <img src="/img/icon-setting.svg" class="icon-setting" />
           </div>
         </div>
         <div class="menu-container">
-          <a href="./devices">Devices</a>
-          <a href="./booking">Reservation</a>
-          <a href="./users">Users</a>
-          <a href="./main">History</a>
+          <a href="/devices">Devices</a>
+          <a href="/booking">Reservation</a>
+          <a href="/users">Users</a>
+          <a href="/main">History</a>
         </div>
       </nav>
       <label for="menu-bar" class="overlay"></label>
@@ -148,9 +148,15 @@
       <form method="post">
         <fieldset>
           <label class="subtitle" for="id_deviceName">Device Name</label>
+<<<<<<< HEAD
           <input type="text" class="input-1" id="id_deviceName" readonly value="<%= deviceName %>"><br>
           <label class="subtitle" for="id_deviceAddress">Device Address</label>
           <input type="text" class="input-1" id="id_deviceAddress" readonly value="<%= deviceAddress %>"><br>
+=======
+          <input type="text" class="input-1" id="id_deviceName" readonly value="<%=deviceName %>"><br>
+          <label class="subtitle" for="id_deviceAddress">Device Address</label>
+          <input type="text" class="input-1" id="id_deviceAddress" readonly value="<%=deviceAddress %>"><br>
+>>>>>>> 18e796b2816bb79efcb70cbb0b3c0c3592851406
 
           <label class="subtitle" for="bday">Reservation Date</label>
            <!-- ( <ml > 현재시간: </ml> <divTime id="clock"></divTime>) -->
