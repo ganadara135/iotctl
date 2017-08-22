@@ -271,10 +271,16 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
           for(x in devicesOf){
             result[x] = devicesOf[x];
             result[x].myDevice = 0;     // 내 장치가 아님
-            for(y in relationshipOf){
-              if(relationshipOf[y].userAddress == userAddress){
-//                console.log(" relationshipOf[x].userAddress.   --> : ", relationshipOf[y].userAddress)
-                result[x].myDevice = 1;   // 내 장치 임
+          }
+
+          for(y in relationshipOf){
+            console.log(relationshipOf[y].userAddress)
+            if(relationshipOf[y].userAddress == userAddress){
+              console.log(relationshipOf[y].deviceAddress);
+              for(x in devicesOf){
+                if(devicesOf[x].address == relationshipOf[y].deviceAddress){
+                  result[x].myDevice = 1;   // 내 장치 임
+                }
               }
             }
           }
