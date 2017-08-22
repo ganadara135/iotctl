@@ -106,5 +106,14 @@
 		"address": "1RVBTPQYDnSW9PzU7dTYmxXWwcucBLwgmWePBB",
 		"pubkey": "03a536ccdcfcce5633f7204c9841ed6b14b3a770107c43343916e8b96f21e6765d",
 		"enrolledDate": 1503376040498
+	},
+	"아이폰09": {
+		"deviceName": "아이폰09",
+		"devicePurpose": "99",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "0",
+		"address": "14CFXi15ziTTwRfnW2DbhbtGjhoR6rmAqcdQ4k",
+		"pubkey": "03c86145aca26114e247ad2288002366d9947ac5183a6991945fb3fe45487db19b",
+		"enrolledDate": 1503376249434
 	}
 }

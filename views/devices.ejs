@@ -7,30 +7,30 @@
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
       <script>
-      function requestMyDeviceList(){
-        var userAddress;// = null;
-        if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
-            var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
-            console.log("myJSONwithObject : ",myJSONwithObject);
-            console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-            userAddress =  myJSONwithObject.address;
-        } else {
-            allert("Sorry, your browser does not support Web Storage...");
-            return;
-        }
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-
-            console.log("this.responseText : ", this.responseText);
-            //내 장비목록을 가져왔으므로 표현은 영균이가 ~~
-          }
-        }
-
-        xmlhttp.open("POST", "/requestMyDeviceList", true);  //true Asyc, false syc
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("userAddress="+userAddress);
-      };
+      // function requestMyDeviceList(){
+      //   var userAddress;// = null;
+      //   if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+      //       var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+      //       console.log("myJSONwithObject : ",myJSONwithObject);
+      //       console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+      //       userAddress =  myJSONwithObject.address;
+      //   } else {
+      //       allert("Sorry, your browser does not support Web Storage...");
+      //       return;
+      //   }
+      //   var xmlhttp = new XMLHttpRequest();
+      //   xmlhttp.onreadystatechange = function() {
+      //     if (this.readyState == 4 && this.status == 200) {
+      //
+      //       console.log("this.responseText : ", this.responseText);
+      //       //내 장비목록을 가져왔으므로 표현은 영균이가 ~~
+      //     }
+      //   }
+      //
+      //   xmlhttp.open("POST", "/requestMyDeviceList", true);  //true Asyc, false syc
+      //   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      //   xmlhttp.send("userAddress="+userAddress);
+      // };
 
       function requestAllDeviceList(){
         var userAddress;// = null;

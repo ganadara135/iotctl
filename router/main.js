@@ -275,6 +275,8 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
               if(relationshipOf[y].userAddress == userAddress){
 //                console.log(" relationshipOf[x].userAddress.   --> : ", relationshipOf[y].userAddress)
                 result[x].myDevice = 1;   // 내 장치 임
+                console.log("devicesOf["+x+"]", devicesOf[x]);
+                console.log("result["+x+"]", result[x]);
               }
             }
           }

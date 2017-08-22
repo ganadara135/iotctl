@@ -86,5 +86,10 @@
 		"deviceAddress": "1RVBTPQYDnSW9PzU7dTYmxXWwcucBLwgmWePBB",
 		"userAddress": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
 		"enrolledDate": 1503376040498
+	},
+	"1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku14CFXi15ziTTwRfnW2DbhbtGjhoR6rmAqcdQ4k1503376249434": {
+		"deviceAddress": "14CFXi15ziTTwRfnW2DbhbtGjhoR6rmAqcdQ4k",
+		"userAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"enrolledDate": 1503376249434
 	}
 }
