@@ -57,9 +57,12 @@ app.post('/getBookingListByManager',function(req,res){
             }
 
             for(y in relationshipOf){
-              if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
-             && relationshipOf[y].deviceAddress == deviceAddress){
+              console.log("relationshipOf["+y+"].bookingTime",relationshipOf[y].bookingTime);
+               if(relationshipOf[y].bookingTime > Date.now()){
+//              if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
+//             && relationshipOf[y].deviceAddress == deviceAddress){
                 result[y] = relationshipOf[y];
+                console.log("result["+y+"]",result[y]);
               }
             }
 
@@ -67,7 +70,7 @@ app.post('/getBookingListByManager',function(req,res){
 
             if(Object.keys(result).length == 0){
               result["success"] = 0;
-              result["error"] = "No Booking List";
+              result["err;or"] = "No Booking List";
             }
             res.json(result);
           })
@@ -90,7 +93,7 @@ app.post('/getBookingListByManager',function(req,res){
     var deviceAddress = req.body.deviceAddress;
     var deviceName = req.body.deviceName;
     var userPrivkey = req.body.userPrivkey;
-    var bookingTime = req.body.bookingTime;
+    var bookingTime = new Number(req.body.bookingTime);
     var result = {};
 
     console.log("req.body  : ", req.body);
@@ -195,8 +198,17 @@ app.post('/getBookingListByManager',function(req,res){
   });
 
 
-  app.get('/booking',function(req,res){
-    res.render('booking');
+  app.get('/booking/:deviceName/:deviceAddress',function(req,res){
+
+    var deviceName = req.params.deviceName;
+    var deviceAddress = req.params.deviceAddress;
+
+    console.log("deviceName : ", deviceName);
+
+    res.render('booking', {
+        deviceName: deviceName,
+        deviceAddress: deviceAddress
+    })
   });
 
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
