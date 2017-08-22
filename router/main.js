@@ -19,6 +19,71 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
 
 //  xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"deviceName="+bbdeviceName+
 //  "&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
+app.post('/getBookingListByManager',function(req,res){
+  var sess = req.session;
+  var userAddress = req.body.userAddress;
+  var deviceAddress = req.body.deviceAddress;
+  var result = {};
+  console.log("Object.keys(result).length : ", Object.keys(result).length)
+  console.log("req.body  : ", req.body);
+  // 1. 보내준 값 유효범위 체크
+  // 2. 매니저 권한이 있는지 체크
+  // 3. relationship.json 에서 관련 데이터 목록화하여 던저줌
+
+  // 1. 보내준 값 유효범위 체크
+  if(!req.body.userAddress || !req.body.deviceAddress){
+      result["success"] = 0;
+      result["error"] = "invalid request";
+      res.json(result);
+      return;
+  }
+
+  // 2. 매니저 권한이 있는지 체크
+  var managerAuthorityCheck = false;
+  fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
+      var userOf = JSON.parse(data);
+      var x;
+
+      for(x in userOf){
+        if(userOf[x].secureGrade == 1 && userOf[x].address == userAddress){
+          managerAuthorityCheck = true;
+          // 3. 권한 요청 승인 기록 (RDB relationship,  Blockchain 각각에)
+          fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+            var relationshipOf = JSON.parse(data);
+            var y;
+
+            if(err){
+               throw err;
+            }
+
+            for(y in relationshipOf){
+              if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
+             && relationshipOf[y].deviceAddress == deviceAddress){
+                result[y] = relationshipOf[y];
+              }
+            }
+
+            console.log("Object.keys(result).length : ", Object.keys(result).length)
+
+            if(Object.keys(result).length == 0){
+              result["success"] = 0;
+              result["error"] = "No Booking List";
+            }
+            res.json(result);
+          })
+        }
+      }  // for(x in userOf){
+
+      if(managerAuthorityCheck == false){
+        result["success"] = 0;
+        result["error"] = "No Manager Authority";
+        res.json(result);
+        return;
+      }
+  })  //fs.readFile  user.json
+});
+
+
   app.post('/bookingDevice',function(req,res){
     var sess = req.session;
     var userAddress = req.body.userAddress;
@@ -396,7 +461,12 @@ app.post('/createDeviceAddress',function(req,res){
                 msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
                         devices[deviceName])).toString("hex")},
                       {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
-                        relationshipOf[deviceInputerAddress+result["address"]]  )).toString("hex")}],
+                        relationshipOf[deviceInputerAddress+result["address"]+devices[deviceName].enrolledDate]).toString() ).toString("hex")}]
+
+                // msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                //         devices[deviceName])).toString("hex")},
+                //       {"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                //         relationshipOf[deviceInputerAddress+result["address"]]  )).toString("hex")}],
           //              action: "send"
               })
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
@@ -592,7 +662,8 @@ app.post('/createUserAddress',function(req,res){
               from: result_return["address"],
               to: {},
 //              to: arrOfme,
-              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(new String(result_return["dateOfenroll"])).toString("hex")}],
+              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(new String(
+                result_return["dateOfenroll"])).toString("hex")}],
 //              msg : arrOfme,
 //              action: "send"
             })
@@ -718,7 +789,7 @@ var testval= "7b22314e5761416f6347514242526f33577757436a35467970733235334e48716f
   })
   app.get('/users',function(req,res){
     res.render('users');
-  })
+  });
   app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 
@@ -731,4 +802,4 @@ var testval= "7b22314e5761416f6347514242526f33577757436a35467970733235334e48716f
           lang: req.params.lang
       })
   });
-}
+};

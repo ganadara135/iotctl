@@ -3,7 +3,7 @@
 		"deviceName": "아이폰01",
 		"devicePurpose": "호연폰",
 		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
-		"deviceTele": 1,
+		"teleport": 1,
 		"address": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
 		"pubkey": "02f100b429f938c75a2b57b4e055440df300b50c6678a2449702162ce6a0424a95",
 		"enrolledDate": 1503283892924
@@ -12,11 +12,12 @@
 		"deviceName": "testestest",
 		"devicePurpose": "testestest",
 		"deviceInputerAddress": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
-		"teleport": "1",
+		"teleport": 1,
 		"address": "1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy",
 		"pubkey": "035af565f06cc72079c52794e69ee1c008a04a38db0a6e725bde5c10e9a1cb3659",
 		"enrolledDate": 1503299102676
 	},
+<<<<<<< HEAD
 	"gg": {
 		"deviceName": "gg",
 		"devicePurpose": "gg",
@@ -34,5 +35,69 @@
 		"address": "1bCAfugVUuSfpBWfB3d9px5VjRBVZjRV1cf3C6",
 		"pubkey": "023f5f95831589a5a183bfbd297f23c61ba0bfbcfdd9064ace2f84132e875e6f39",
 		"enrolledDate": 1503369304861
+=======
+	"아이폰02": {
+		"deviceName": "아이폰02",
+		"devicePurpose": "테스트",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "0",
+		"address": "1F74BCL3kMTAELaMv5pWeVmzZFkSgXrBzWgrcv",
+		"pubkey": "033d6eca15849019ba74093f6109c4de8393f1969557765a015cdc9535984ef89d",
+		"enrolledDate": 1503369691051
+	},
+	"아이폰03": {
+		"deviceName": "아이폰03",
+		"devicePurpose": "테스트",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "19gPVhJ7tuFnJnrLxSgoPiPuup5TcHsozW7yVA",
+		"pubkey": "026f2b5e6dba8b9a206f156fa25d27a1645df1bdae7b53a683b2c6397d1f4c3365",
+		"enrolledDate": 1503370177564
+	},
+	"아이폰04": {
+		"deviceName": "아이폰04",
+		"devicePurpose": "테스트",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "1FEHJYZK2yiBanc3a76cyfjg94MminyPSR9sdV",
+		"pubkey": "023b4ac8b3911243b73d67ff564a9aff4eb42c4b1539a9b6e811227e7dc21c6208",
+		"enrolledDate": 1503375162778
+	},
+	"아이폰05": {
+		"deviceName": "아이폰05",
+		"devicePurpose": "1",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "1RAwCHiFkSb5Yo7RT9QEG6HF6YkWnBmtZaPh6K",
+		"pubkey": "03d7ebad3d1b13460ee84885d247d5904c536cb9504724cb3256bbf56754416278",
+		"enrolledDate": 1503375386320
+	},
+	"아이폰06": {
+		"deviceName": "아이폰06",
+		"devicePurpose": "1",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "18Mzos9wHvRtb4sXRxdmoNfGawMRFzrY9AuJ5f",
+		"pubkey": "039127f03d366c9768a3e64d8f3f1897f58f8b330d2d6f6b37cefe035da00b3f90",
+		"enrolledDate": 1503375477753
+	},
+	"아이폰07": {
+		"deviceName": "아이폰07",
+		"devicePurpose": "77",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "18pEkhr7YVLSPwVNQStDWShUqQVphb1XJ3C3iP",
+		"pubkey": "03c900f5985d88c9d8eba2a2099100e7b1b18b5e10ffa0de9539b3404abb5414c4",
+		"enrolledDate": 1503375543672
+	},
+	"아이폰08": {
+		"deviceName": "아이폰08",
+		"devicePurpose": "88",
+		"deviceInputerAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
+		"teleport": "1",
+		"address": "1PYSnrPvmGTwPbdnKFzkyAdpo4Ao9q4G7wdtXH",
+		"pubkey": "02dd09d4fb7a32b87a8e123834c9e969ed71bed138601e2661b0f0258472fe770d",
+		"enrolledDate": 1503375599826
+>>>>>>> fd68226f6e3d1b7e1fbbca3cd227ad2ae1337dcb
 	}
 }

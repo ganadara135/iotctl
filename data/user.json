@@ -4,7 +4,7 @@
 		"password": "777",
 		"address": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
 		"pubkey": "039fe44bdd88c037e063ee9a2a65337868fb039f2d9cc3a57acb9470fad725125a",
-		"secureGrade": 0,
+		"secureGrade": 1,
 		"enrolledDate": 1503283793830
 	},
 	"test": {
