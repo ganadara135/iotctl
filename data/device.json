@@ -107,7 +107,6 @@
 		"pubkey": "03a536ccdcfcce5633f7204c9841ed6b14b3a770107c43343916e8b96f21e6765d",
 		"enrolledDate": 1503376040498
 	},
-<<<<<<< HEAD
 	"아이폰09": {
 		"deviceName": "아이폰09",
 		"devicePurpose": "99",
@@ -116,7 +115,7 @@
 		"address": "14CFXi15ziTTwRfnW2DbhbtGjhoR6rmAqcdQ4k",
 		"pubkey": "03c86145aca26114e247ad2288002366d9947ac5183a6991945fb3fe45487db19b",
 		"enrolledDate": 1503376249434
-=======
+	},
 	"qqq": {
 		"deviceName": "qqq",
 		"devicePurpose": "qqq",
@@ -134,6 +133,6 @@
 		"address": "19DS5bPj1fjbbLxMWF7N8zeZxYNW3VDDPD7uFQ",
 		"pubkey": "03cce66e687c2c6ec627a87d31b723e584ff148146a5a21c7b2ba89f146ea701a8",
 		"enrolledDate": 1503377867614
->>>>>>> 36e513d3c46bd6b4ef4f2ca9fa1fbbf6f166b04e
+
 	}
 }
