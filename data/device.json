@@ -16,5 +16,23 @@
 		"address": "1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy",
 		"pubkey": "035af565f06cc72079c52794e69ee1c008a04a38db0a6e725bde5c10e9a1cb3659",
 		"enrolledDate": 1503299102676
+	},
+	"gg": {
+		"deviceName": "gg",
+		"devicePurpose": "gg",
+		"deviceInputerAddress": "1TbU3SSbYrGuBRhBns86nKCCwgKwDg1Uhhe33c",
+		"teleport": "1",
+		"address": "1Q9NYY1VJLoCtxjpiY8AhMmoAyenZXXL1Ed8q9",
+		"pubkey": "0291a59d8aa5cad56aa01490db3e85b72db65e76e1615f85796e92fe3246caebbe",
+		"enrolledDate": 1503368933235
+	},
+	"gagaga": {
+		"deviceName": "gagaga",
+		"devicePurpose": "gagaga",
+		"deviceInputerAddress": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
+		"teleport": "1",
+		"address": "1bCAfugVUuSfpBWfB3d9px5VjRBVZjRV1cf3C6",
+		"pubkey": "023f5f95831589a5a183bfbd297f23c61ba0bfbcfdd9064ace2f84132e875e6f39",
+		"enrolledDate": 1503369304861
 	}
 }

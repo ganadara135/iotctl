@@ -1,7 +1,9 @@
 <html>
   <head>
-    <title>
-    </title>
+  <title>Block Chain</title>
+    <link rel="stylesheet" href="css/booking.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no
+      initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <script>
     $(document).ready(function(){
@@ -12,7 +14,7 @@
       var limitDate = new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),
       d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds())+oneHour);
 
-      alert(limitDate);
+      //alert(limitDate);
 
       $("#bday").val(limitDate.toISOString().slice(0,10));
       $("#btime").val(limitDate.toISOString().slice(11,16));
@@ -85,6 +87,7 @@
         if (this.readyState == 4 && this.status == 200) {
           console.log("this.responseText  : ", this.responseText)
           // 여기서 부터는 진균이가
+          location.href="./main";
         }
       }
       xmlhttp.open("POST", "/bookingDevice/", true);  //true Asyc, false syc
@@ -118,29 +121,60 @@
     </script>
   </head>
   <body onload="startTime()">
+    <header>
+      <input type="checkbox" id="menu-bar" />
+      <label for="menu-bar"><span></span></label>
+      <nav>
+        <div class="user_info">
+          <div class="img-wrap">
+            <img src="img/profile_face2.jpg" />
+          </div>
+          <div class="profile">
+            <p class="username">Alexander Great</p>
+            <p class="user_detail">Administrator</p>
+            <img src="img/icon-setting.svg" class="icon-setting" />
+          </div>
+        </div>
+        <div class="menu-container">
+          <a href="./devices">Devices</a>
+          <a href="./booking">Reservation</a>
+          <a href="./users">Users</a>
+          <a href="./main">History</a>
+        </div>
+      </nav>
+      <label for="menu-bar" class="overlay"></label>
+    </header>
+    <div class="content">
       <form method="post">
         <fieldset>
-          <h4 >사물명</h4>
-          <input type="text" id="id_deviceName" readonly value="아이폰01"><br>
-          <h4 >사물주소</h4>
-          <input type="text" id="id_deviceAddress" readonly value="1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV"><br>
-          <h4> 예약일시 </h4>
-          <ml > 사용일시 </ml> ( <ml > 현재시간: </ml> <divTime id="clock"></divTime>)<br>
-          <input type="date" name="bday" id="bday" max=""  required>
-          <input type="time" name="btime" id="btime" required><br>
+          <label class="subtitle" for="id_deviceName">Device Name</label>
+          <input type="text" class="input-1" id="id_deviceName" readonly value="아이폰01"><br>
+          <label class="subtitle" for="id_deviceAddress">Device Address</label>
+          <input type="text" class="input-1" id="id_deviceAddress" readonly value="1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV"><br>
 
-          <h4 >사용용도</h4>
-          <input type="text" id="id_purpose"><br>
+          <label class="subtitle" for="bday">Reservation Date</label>
+           <!-- ( <ml > 현재시간: </ml> <divTime id="clock"></divTime>) -->
+          <input type="date" name="bday" id="bday" max=""  required>
+          <input type="time" name="btime" id="btime" required>
+          <span id="clock"></span>
+
+          <label class="subtitle" for="id_purpose">Purpose of Use</label>
+          <input type="text" class="input-1"  id="id_purpose"><br>
 
           <fieldset>
-            <legend >사용자 비밀키</legend>
-            <input type="text" id="id_userPrivkey" >
-            <input type="button" value="비밀키 불러오기" onclick="setUserPrivkey()" ><br>
+
+            <label class="subtitle" for="id_userPrivkey">Secret Key</label>
+            <input type="button" class="button-1" value="Load Secret Key" onclick="setUserPrivkey()">
+            <input type="password" class="input-1" id="id_userPrivkey" style="margin: 10px 0px;" >
+
           </fieldset>
-        <input type="button" value='예약등록 버튼' id="id_bookingButton" onclick="bookingDevice()" >
-        <input type="button" value='나가기' id="goToChoiceId" >
+        <input type="button" class="button-1 booking-bt" value='Reservation' id="id_bookingButton" onclick="bookingDevice()" style="margin-top: 30px;" >
+        <!-- <input type="button" value='나가기' id="goToChoiceId" > -->
         </fieldset>
       </form>
+
+    </div>
+
 
   </body>
 </html>

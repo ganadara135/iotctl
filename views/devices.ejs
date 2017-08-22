@@ -54,7 +54,7 @@
               console.log(userOf[x]);
               content.innerHTML +=
               `
-                <div class="devices-list" id="list-1">
+                <div class="devices-list" id="list-1" isMine=${userOf[x].myDevice}>
                   <div class="devices-img">
                     <img src="img/icon-airconditioner2.svg" />
                   </div>
@@ -73,6 +73,30 @@
                     <span></span>
                   </div>`
           }
+          var temp = document.querySelector('.addButton');
+          var list = document.querySelectorAll('.devices-list');
+          console.log(list);
+          list.forEach(function(item,i){
+            item.addEventListener('click',function(){
+              if(this.getAttribute('isMine') == "1"){
+                location.href="./device_detail";
+              }else{
+                location.href="./booking";
+              }
+            })
+          })
+
+          temp.addEventListener('click',function(){
+            location.href="./device_add";
+          });
+          // list1.addEventListener('click',function(){
+          //   if(this.getAttribute('isMine')){
+          //     location.href="./device_detail";
+          //   }else{
+          //     location.href="./booking";
+          //   }
+          //
+          // })
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

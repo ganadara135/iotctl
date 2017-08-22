@@ -43,7 +43,7 @@
             }
           }
           xmlhttp.open("POST", "/createDeviceAddress", true);   //true Asyc, false syc
-          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
           xmlhttp.send("deviceName="+device_name_chk+"&"+"devicePurpose=" + device_purpose_chk+
           "&"+"deviceInputerAddress=" + device_inputer_address+"&"+"teleport=" + device_teleport_chk);
         }
@@ -67,8 +67,8 @@
         </div>
         <div class="menu-container">
           <a href="./devices">Devices</a>
-          <a href="#">Reservation</a>
-          <a href="#">Users</a>
+          <a href="./booking">Reservation</a>
+          <a href="./users">Users</a>
           <a href="./main">History</a>
         </div>
       </nav>
