@@ -234,6 +234,32 @@ nav{
 
 }
 .list-content p{
-  padding: 5px 0px;
+
   font-size: 10pt;
+}
+
+
+.booking-device{
+  font-weight: bold;
+}
+.booking-date::before{
+    content:'신청일자 : ';
+}
+.using-time::before{
+  content:'시작일자 : '
+}
+
+.reject-bt{
+  padding: 5px 10px;
+  background-color: pink;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.admin-bt{
+  padding: 5px 10px;
+  background-color: skyblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
