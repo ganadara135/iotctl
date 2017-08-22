@@ -198,23 +198,10 @@ app.post('/getBookingListByManager',function(req,res){
   });
 
 
-<<<<<<< HEAD
-  app.get('/booking/:deviceName/:deviceAddress',function(req,res){
 
-    var deviceName = req.params.deviceName;
-    var deviceAddress = req.params.deviceAddress;
-
-    console.log("deviceName : ", deviceName);
-
-    res.render('booking', {
-        deviceName: deviceName,
-        deviceAddress: deviceAddress
-    })
-=======
   app.get('/booking',function(req,res){
     console.log(req.query);
     res.render('booking',{deviceName : req.query.deviceName, deviceAddress : req.query.address});
->>>>>>> 18e796b2816bb79efcb70cbb0b3c0c3592851406
   });
 
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
