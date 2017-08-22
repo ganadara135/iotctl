@@ -54,7 +54,7 @@
               console.log(userOf[x]);
               content.innerHTML +=
               `
-                <div class="devices-list" id="list-1" isMine=${userOf[x].myDevice}>
+                <div class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
                   <div class="devices-img">
                     <img src="img/icon-airconditioner2.svg" />
                   </div>
@@ -77,11 +77,12 @@
           var list = document.querySelectorAll('.devices-list');
           console.log(list);
           list.forEach(function(item,i){
+            console.log(item.getAttribute('deviceName'));
             item.addEventListener('click',function(){
               if(this.getAttribute('isMine') == "1"){
                 location.href="./device_detail";
               }else{
-                location.href="./booking";
+                location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&address="+item.getAttribute('deviceAddress');
               }
             })
           })
