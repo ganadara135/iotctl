@@ -33,7 +33,7 @@ app.post('/approveBooking',function(req,res){
 
 
   // 1. 보내준 값 유효범위 체크
-  if(!req.body.deviceName || !req.body.userAddress){
+  if(!req.body.userAddress || !req.body.userAddress){
       result["success"] = 0;
       result["error"] = "invalid request";
       res.json(result);
@@ -41,7 +41,6 @@ app.post('/approveBooking',function(req,res){
   }
 
   // 2. 해당 예약내역 있는지 체크
-  // 3. relationship.json 에서 관련 데이터 목록화하여 던저줌
   fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
     var relationshipOf = JSON.parse(data);
     var y;
@@ -54,11 +53,13 @@ app.post('/approveBooking',function(req,res){
 
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
             && relationshipOf[y].deviceAddress == deviceAddress){
-        result[y] = relationshipOf[y];
+      //  result[y] = relationshipOf[y];
           // 3. BookingApproval.json  및 블록체인에 기록
-          var bookingApproval =  relationshipOf[userAddress+deviceAddress+bookingTime];
-          // or  =  relationshipOf[y];
-          bookingApproval.approvalTime = Date.now();
+          //var bookingApproval =  relationshipOf[userAddress+deviceAddress+bookingTime];
+//          var bookingApproval[userAddress+deviceAddress+bookingTime] =  relationshipOf[userAddress+deviceAddress+bookingTime];
+          var bookingApproval = {};
+          bookingApproval[y] =  relationshipOf[y];
+          bookingApproval[y].approvalTime = Date.now();
 
           fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
             if(err){
@@ -72,7 +73,7 @@ app.post('/approveBooking',function(req,res){
               from: userAddress,
               to: {},
               msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
-                      relationshipOf)).toString("hex")}],
+                      bookingApproval)).toString("hex")}],
         //              action: "send"
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
           .then(hexstringblob => {
@@ -102,9 +103,9 @@ app.post('/approveBooking',function(req,res){
 
             console.log("Finished Successfully");
             result["success"] = 1;
-            result["error"] = "Booking Completed";
-            res.json(result);
-            return true;
+            result["error"] = "Approval Completed";
+            // res.json(result);
+            // return true;   // to stop send  res.json(result) again behind
         })
         .catch(err => {
             console.log(err)
@@ -119,6 +120,7 @@ app.post('/approveBooking',function(req,res){
     if(Object.keys(result).length == 0){
       result["success"] = 0;
       result["errror"] = "No Booking List";
+
     }
     res.json(result);
   }) //fs.readFile   relationship.json
@@ -130,7 +132,7 @@ app.post('/getBookingListByManager',function(req,res){
   var userAddress = req.body.userAddress;
   var deviceAddress = req.body.deviceAddress;
   var result = {};
-  console.log("Object.keys(result).length : ", Object.keys(result).length)
+//  console.log("Object.keys(result).length : ", Object.keys(result).length)
   console.log("req.body  : ", req.body);
   // 1. 보내준 값 유효범위 체크
   // 2. 매니저 권한이 있는지 체크
@@ -145,53 +147,67 @@ app.post('/getBookingListByManager',function(req,res){
   }
 
   // 2. 매니저 권한이 있는지 체크
-  var managerAuthorityCheck = false;
+//  var managerAuthorityCheck = false;
   fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
       var userOf = JSON.parse(data);
       var x;
 
-      for(x in userOf){
-        if(userOf[x].secureGrade == 1 && userOf[x].address == userAddress){
-          managerAuthorityCheck = true;
-          // 3. relationship.json 에서 관련 데이터 목록화하여 던저줌
+//      for(x in userOf){
+        // 하드코딩함
+      if(userOf["admin"].address == userAddress){
+          //managerAuthorityCheck = true;
+
+          // 3. relationship.json 엔 있고 approvalBooking.json에 없는 데이터를 목록화하여 던저줌
           fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+//            console.log("data  relationship.json -> ", data)
             var relationshipOf = JSON.parse(data);
-            var y;
+//            var approvalBookingOf = {};
 
             if(err){
                throw err;
             }
 
-            for(y in relationshipOf){
-//              console.log("relationshipOf["+y+"].bookingTime",relationshipOf[y].bookingTime);
-               if(relationshipOf[y].bookingTime > Date.now()){
-//              if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
-//             && relationshipOf[y].deviceAddress == deviceAddress){
-                result[y] = relationshipOf[y];
-//                console.log("result["+y+"]",result[y]);
+            fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
+//              console.log("data  approvalBooking.json -> ", data)
+//console.log("data  relationshipOf -> ", relationshipOf)
+              var approveBookingOf = JSON.parse(data);
+              var y,z;
+              if(err){
+                 throw err;
               }
-            }
+              for(y in relationshipOf){
+                 for(z in approveBookingOf){
+                   if((relationshipOf[y].bookingTime > Date.now()) && (y != z) ){
+                    result[y] = relationshipOf[y];
+                   }
+                 }
+              }
+              console.log("Object.keys(result).length : ", Object.keys(result).length)
 
-            console.log("Object.keys(result).length : ", Object.keys(result).length)
-
-            if(Object.keys(result).length == 0){
-              result["success"] = 0;
-              result["err;or"] = "No Booking List";
-            }
-            res.json(result);
-          })
+              if(Object.keys(result).length == 0){
+                result["success"] = 0;
+                result["error"] = "No Booking List";
+              }
+              res.json(result);
+              return true;
+            });  //   fs.readFile( approvalBooking.json.
+          });  //fs.readFile  relationship.json
+        }else {
+          result["success"] = 0;
+          result["error"] = "No Manager Authority";
+          res.json(result);
+          return true;
         }
-      }  // for(x in userOf){
+//      }  // for(x in userOf){
 
-      if(managerAuthorityCheck == false){
-        result["success"] = 0;
-        result["error"] = "No Manager Authority";
-        res.json(result);
-        return;
-      }
+      // if(managerAuthorityCheck == false){
+      //   result["success"] = 0;
+      //   result["error"] = "No Manager Authority";
+      //   res.json(result);
+      //   return;
+      // }
   })  //fs.readFile  user.json
 });
-
 
   app.post('/bookingDevice',function(req,res){
     var sess = req.session;
@@ -219,6 +235,9 @@ app.post('/getBookingListByManager',function(req,res){
     }
 
     fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
+        if(err){
+            throw err;
+        }
         var devices = JSON.parse(data);
         // 2. 해당 디바이스가 있는지 체크
         if(!devices[deviceName]){
@@ -232,10 +251,10 @@ app.post('/getBookingListByManager',function(req,res){
         //    3.1. 예약유효기간은 예약시각의 30분이내
         //    3.2. relationship.approvalBooking = true, false. (default=false)
          fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
-             var relationshipOf = JSON.parse(data);
              if(err){
                  throw err;
              }
+             var relationshipOf = JSON.parse(data);
 
              // relationshiop.json 은  장치관리자주소 + 장치주소 + bookingTime 로 고유번호부여
              relationshipOf[userAddress+deviceAddress+bookingTime] = {};
@@ -245,10 +264,7 @@ app.post('/getBookingListByManager',function(req,res){
              relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
              relationshipOf[userAddress+deviceAddress+bookingTime].bookingTime = bookingTime;
 
-          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
-
-
-
+//          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
           fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
             if(err){
                 throw err;
@@ -312,14 +328,13 @@ app.post('/getBookingListByManager',function(req,res){
 
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
     var sess = req.session;
-  //  var userAddress = req.body.userAddress;
     var result = {};
 
     fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
-        var userOf = JSON.parse(data);
         if(err){
             throw err;    // device가 하나도 없거나, 읽을때 에러 발생
         }
+        var userOf = JSON.parse(data);
         var x;
         for(x in userOf){
           result[x] = userOf[x];
@@ -368,36 +383,43 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
   var result = {};
 
   fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
-      var devicesOf = JSON.parse(data);
       if(err){
           throw err;    // device가 하나도 없거나, 읽을때 에러 발생
       }
+      var devicesOf = JSON.parse(data);
       fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
-          var relationshipOf = JSON.parse(data);
-          var x,y;
-
           if(err){
               throw err;   // relationship 이 하나도 없거나, 에러 발생시
           }
-          for(x in devicesOf){
-            result[x] = devicesOf[x];
-            result[x].myDevice = 0;     // 내 장치가 아님
-
-          }
-
-          for(y in relationshipOf){
-            console.log(relationshipOf[y].userAddress)
-            if(relationshipOf[y].userAddress == userAddress){
-              console.log(relationshipOf[y].deviceAddress);
+          var relationshipOf = JSON.parse(data);
+          fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
+              if(err){
+                  throw err;   // relationship 이 하나도 없거나, 에러 발생시
+              }
+              var approveBookingOf = JSON.parse(data);
+              var x,y,z;
               for(x in devicesOf){
-                if(devicesOf[x].address == relationshipOf[y].deviceAddress){
-                  result[x].myDevice = 1;   // 내 장치 임
+                result[x] = devicesOf[x];
+                result[x].myDevice = 0;     // 내 장치가 아님
+              }
+              for(y in relationshipOf){
+              //  console.log(relationshipOf[y].userAddress)
+                if(relationshipOf[y].userAddress == userAddress){
+              //    console.log(relationshipOf[y].deviceAddress);
+                  for(x in devicesOf){
+                    if(devicesOf[x].address == relationshipOf[y].deviceAddress && relationshipOf[y].bookingTime > Date.now()){
+                      result[x].myDevice = 1;   // 예약시간이 살아 있는 장치 목록.
+                      for(z in approveBookingOf){
+                        if(y == z){
+                            result[x].myDevice = 2;  // 승인된 사용가능 장치
+                        }
+                      }
+                    }
+                  }
                 }
               }
-            }
-          }
-//          console.log("result  : ", result);
-          res.json(result);
+              res.json(result);
+          })   // fs.readFile  approveBooking.json
       })   // fs.readFile  relationship.json
     })// fs.readFile  device.json
 });
@@ -676,13 +698,10 @@ app.post('/createUserAddress',function(req,res){
               users[username] =  req.body;
               users[username].address =  result["address"];
               users[username].pubkey =  result["pubkey"];
-              users[username].secureGrade = 0;    // 보안등급 0- 일반인, 1 - 관리자
+//              users[username].secureGrade = 0;    // 보안등급 0- 일반인, 1 - 관리자
               users[username].enrolledDate = Date.now();
               result["dateOfenroll"] = users[username].dateOfenroll;
               console.log("*********  users[username]  : " , users[username]);
-
-
-
 
               // SAVE DATA
               fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
