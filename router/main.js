@@ -17,8 +17,114 @@ const multichain = bluebird.promisifyAll(require("multichain-node")(connection),
 module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
 
-//  xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"deviceName="+bbdeviceName+
-//  "&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
+app.post('/approveBooking',function(req,res){
+  var sess = req.session;
+  var userAddress = req.body.userAddress;
+  var deviceAddress = req.body.deviceAddress;
+  var userPrivkey = req.body.userPrivkey;   // 관리자 비밀키
+  var bookingTime = new Number(req.body.bookingTime);
+  var result = {};
+
+  console.log("req.body  : ", req.body);
+
+  // 1. 보내준 값 유효범위 체크
+  // 2. 해당 예약내역 있는지 체크
+  // 3. BookingApproval.json  및 블록체인에 기록
+
+
+  // 1. 보내준 값 유효범위 체크
+  if(!req.body.deviceName || !req.body.userAddress){
+      result["success"] = 0;
+      result["error"] = "invalid request";
+      res.json(result);
+      return;
+  }
+
+  // 2. 해당 예약내역 있는지 체크
+  // 3. relationship.json 에서 관련 데이터 목록화하여 던저줌
+  fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+    var relationshipOf = JSON.parse(data);
+    var y;
+
+    if(err){
+       throw err;
+    }
+
+    for(y in relationshipOf){
+
+      if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
+            && relationshipOf[y].deviceAddress == deviceAddress){
+        result[y] = relationshipOf[y];
+          // 3. BookingApproval.json  및 블록체인에 기록
+          var bookingApproval =  relationshipOf[userAddress+deviceAddress+bookingTime];
+          // or  =  relationshipOf[y];
+          bookingApproval.approvalTime = Date.now();
+
+          fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
+            if(err){
+                throw err;
+            }
+          }) // fs.writeFile approveBooking.json
+
+          console.log("call createRawSendFrom()");
+  //        return multichain.validateAddressPromise({address: this.address1})
+          multichain.createRawSendFromPromise({
+              from: userAddress,
+              to: {},
+              msg : [{"for":"BookingStream","key":"bookingTime","data":new Buffer(JSON.stringify(
+                      relationshipOf)).toString("hex")}],
+        //              action: "send"
+          })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
+          .then(hexstringblob => {
+            console.log("hexstringblob  : ", hexstringblob);
+
+            assert(hexstringblob)
+
+            return multichain.signRawTransactionPromise({
+              hexstring: hexstringblob,
+        //        parents: [],
+              privatekeys: [userPrivkey]
+          })
+        })      //  sendrawtransaction [paste-bigger-hex-blob]
+        .then(hexvalue => {
+          console.log("hexvalue.hex  : ", hexvalue.hex);
+
+          assert(hexvalue)
+
+          return multichain.sendRawTransactionPromise({
+              hexstring: hexvalue.hex
+          })
+        })
+        .then(tx_hex => {
+            console.log("tx_hex  : ", tx_hex);
+
+            assert(tx_hex)
+
+            console.log("Finished Successfully");
+            result["success"] = 1;
+            result["error"] = "Booking Completed";
+            res.json(result);
+            return true;
+        })
+        .catch(err => {
+            console.log(err)
+            throw err;
+        })
+      }  // if
+    }   // for
+
+
+    console.log("Object.keys(result).length : ", Object.keys(result).length)
+
+    if(Object.keys(result).length == 0){
+      result["success"] = 0;
+      result["errror"] = "No Booking List";
+    }
+    res.json(result);
+  }) //fs.readFile   relationship.json
+});
+
+
 app.post('/getBookingListByManager',function(req,res){
   var sess = req.session;
   var userAddress = req.body.userAddress;
@@ -47,7 +153,7 @@ app.post('/getBookingListByManager',function(req,res){
       for(x in userOf){
         if(userOf[x].secureGrade == 1 && userOf[x].address == userAddress){
           managerAuthorityCheck = true;
-          // 3. 권한 요청 승인 기록 (RDB relationship,  Blockchain 각각에)
+          // 3. relationship.json 에서 관련 데이터 목록화하여 던저줌
           fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
             var relationshipOf = JSON.parse(data);
             var y;
@@ -57,12 +163,12 @@ app.post('/getBookingListByManager',function(req,res){
             }
 
             for(y in relationshipOf){
-              console.log("relationshipOf["+y+"].bookingTime",relationshipOf[y].bookingTime);
+//              console.log("relationshipOf["+y+"].bookingTime",relationshipOf[y].bookingTime);
                if(relationshipOf[y].bookingTime > Date.now()){
 //              if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
 //             && relationshipOf[y].deviceAddress == deviceAddress){
                 result[y] = relationshipOf[y];
-                console.log("result["+y+"]",result[y]);
+//                console.log("result["+y+"]",result[y]);
               }
             }
 
