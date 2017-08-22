@@ -6,6 +6,51 @@
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+      <script>
+      $(document).ready(function(){
+         var userAddress, deviceAddress;
+         if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+             var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
+             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
+             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+             userAddress =  myJSONwithObject.address;
+             deviceAddress =  myJSONwithObjectDevice.address;
+         } else {
+             allert("Sorry, your browser does not support Web Storage...");
+             return;
+         }
+         var xmlhttp = new XMLHttpRequest();
+         var booking_list = document.querySelector('.booking-list');
+         booking_list.innerHTML = '';
+         xmlhttp.onreadystatechange = function() {
+           if (this.readyState == 4 && this.status == 200) {
+            var userOf = JSON.parse(this.responseText);
+            console.log(userOf);
+             for(var x in userOf){
+               booking_list.innerHTML +=
+               `<div class="list">
+                 <div class="user-img-wrap">
+                   <img src="img/profile_face3.jpg" />
+                 </div>
+                 <div class="list-content">
+                   <p class="booking-device">${userOf[x].deviceAddress}</p>
+                   <p class="booking-date">${new Date(userOf[x].enrolledDate).toLocaleDateString()} ${new Date(userOf[x].enrolledDate).toLocaleTimeString()}</p>
+                   <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
+                   <p>
+                     <button class="reject-bt">reject</button>
+                     <button class="admin-bt">admin</button>
+                   </p>
+                 </div>
+               </div>`;
+             }
+           }
+         }
+         xmlhttp.open("POST", "/getBookingListByManager", true);  //true Asyc, false syc
+         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xmlhttp.send("userAddress="+userAddress+"&"+"deviceAddress="+deviceAddress);
+      });
+      </script>
   </head>
   <body>
     <header>
@@ -44,8 +89,8 @@
             <p class="booking-date">2017/03/15 08:00:00</p>
             <p class="using-time">2017/04/11 09:00</p>
             <p>
-              <button>reject</button>
-              <button>admin</button>
+              <button class="reject-bt">reject</button>
+              <button class="admin-bt">admin</button>
             </p>
           </div>
         </div>
