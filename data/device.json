@@ -17,7 +17,6 @@
 		"pubkey": "035af565f06cc72079c52794e69ee1c008a04a38db0a6e725bde5c10e9a1cb3659",
 		"enrolledDate": 1503299102676
 	},
-<<<<<<< HEAD
 	"gg": {
 		"deviceName": "gg",
 		"devicePurpose": "gg",
@@ -35,7 +34,7 @@
 		"address": "1bCAfugVUuSfpBWfB3d9px5VjRBVZjRV1cf3C6",
 		"pubkey": "023f5f95831589a5a183bfbd297f23c61ba0bfbcfdd9064ace2f84132e875e6f39",
 		"enrolledDate": 1503369304861
-=======
+	},
 	"아이폰02": {
 		"deviceName": "아이폰02",
 		"devicePurpose": "테스트",
@@ -98,6 +97,14 @@
 		"address": "1PYSnrPvmGTwPbdnKFzkyAdpo4Ao9q4G7wdtXH",
 		"pubkey": "02dd09d4fb7a32b87a8e123834c9e969ed71bed138601e2661b0f0258472fe770d",
 		"enrolledDate": 1503375599826
->>>>>>> fd68226f6e3d1b7e1fbbca3cd227ad2ae1337dcb
+	},
+	"gggl": {
+		"deviceName": "gggl",
+		"devicePurpose": "gggl",
+		"deviceInputerAddress": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
+		"teleport": "1",
+		"address": "1RVBTPQYDnSW9PzU7dTYmxXWwcucBLwgmWePBB",
+		"pubkey": "03a536ccdcfcce5633f7204c9841ed6b14b3a770107c43343916e8b96f21e6765d",
+		"enrolledDate": 1503376040498
 	}
 }

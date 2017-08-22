@@ -23,7 +23,6 @@
 		"userAddress": "1HBpkwk9dytrvgf63EnGUCBjVmZitHygzQvcLM",
 		"enrolledDate": 1503299102676
 	},
-<<<<<<< HEAD
 	"1T5yKoW6V6p4nHnWspuwsaMGdH3wzd1QB41Xcz1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV1503374760000": {
 		"deviceAddress": "1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV",
 		"userAddress": "1T5yKoW6V6p4nHnWspuwsaMGdH3wzd1QB41Xcz",
@@ -47,7 +46,7 @@
 		"deviceAddress": "1bCAfugVUuSfpBWfB3d9px5VjRBVZjRV1cf3C6",
 		"userAddress": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
 		"enrolledDate": 1503369304861
-=======
+	},
 	"1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku1N4fQdyYZn9rimGpsrUKjL8bqRz2ejvaWN55q1503369691024": {
 		"deviceAddress": "1N4fQdyYZn9rimGpsrUKjL8bqRz2ejvaWN55q",
 		"userAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
@@ -82,6 +81,10 @@
 		"deviceAddress": "1PYSnrPvmGTwPbdnKFzkyAdpo4Ao9q4G7wdtXH",
 		"userAddress": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
 		"enrolledDate": 1503375599826
->>>>>>> fd68226f6e3d1b7e1fbbca3cd227ad2ae1337dcb
+	},
+	"1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH111RVBTPQYDnSW9PzU7dTYmxXWwcucBLwgmWePBB1503376040498": {
+		"deviceAddress": "1RVBTPQYDnSW9PzU7dTYmxXWwcucBLwgmWePBB",
+		"userAddress": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
+		"enrolledDate": 1503376040498
 	}
 }
