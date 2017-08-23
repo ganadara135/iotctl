@@ -10,6 +10,10 @@
       $(document).ready(function(){
          var userAddress, deviceAddress;
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+
+            console.log("localStorage.getItem(myJSONSecretKey)  : ", localStorage.getItem("myJSONSecretKey"))
+            console.log("localStorage.getItem(myJSONSecretKeyDevice)  : ", localStorage.getItem("myJSONSecretKeyDevice"))
+            
              var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
              var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
 //             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
