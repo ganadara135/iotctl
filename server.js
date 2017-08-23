@@ -48,6 +48,8 @@ console.log('address_param: ' + address_param);
 var router = require('./router/main')(app, fs, jsonParser, urlencodedParser,client_token_param,address_param);
 // or router(app, fs, jsonParser, urlencodedParser);
 
+port_param = 80;   // 클라우드용
+
 var server = app.listen(port_param, function(){
     console.log("Server has started on port ", port_param);
 });
