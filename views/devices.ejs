@@ -88,7 +88,7 @@
           list.forEach(function(item,i){
             console.log(item.getAttribute('deviceName'));
             item.addEventListener('click',function(){
-              if(this.getAttribute('isMine') == "1"){
+              if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
                 location.href="./device_detail";
               }else{
                 location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&address="+item.getAttribute('deviceAddress');
@@ -163,7 +163,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="addButton">
         <span></span>
       </div>

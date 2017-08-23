@@ -5,6 +5,90 @@
     <link rel="stylesheet" href="css/device_detail.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+      <script>
+      function requestAllDeviceList(){
+        var userAddress;// = null;
+        var content = document.querySelector('.content');
+        content.innerHTML = '';
+        if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+            var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+            console.log("myJSONwithObject : ",myJSONwithObject);
+            console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+            userAddress =  myJSONwithObject.address;
+        } else {
+            allert("Sorry, your browser does not support Web Storage...");
+            return;
+        }
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var userOf = JSON.parse(this.responseText);
+            for(var x in userOf){
+              console.log("userOf["+x+"] ", userOf[x]);
+              if(userOf[x].myDevice == 1){    // 내 장치
+                content.innerHTML +=
+                `
+                  <div style="color:#FF00FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                    <div class="devices-img">
+                      <img src="img/icon-airconditioner2.svg" />
+                    </div>
+                    <div class="devices-detail">
+                      <p class="device-name">${userOf[x].deviceName} 내 장치</p>
+                      <p class="device-info">
+                        <img src="img/icon-people.svg" />13
+                        <span class="connected"></span>
+                      </p>
+                    </div>
+                  </div>
+                `
+              }else if(userOf[x].myDevice == 2){   // 승인된 내 장치
+                content.innerHTML +=
+                `
+                  <div style="color:#00FFFF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                    <div class="devices-img">
+                      <img src="img/icon-airconditioner2.svg" />
+                    </div>
+                    <div class="devices-detail">
+                      <p class="device-name">${userOf[x].deviceName} 사용 승인된 남의 장치</p>
+                      <p class="device-info">
+                        <img src="img/icon-people.svg" />13
+                        <span class="connected"></span>
+                      </p>
+                    </div>
+                  </div>
+                `
+              }
+            }  // for
+            content.innerHTML +=
+                `<div class="addButton">
+                    <span></span>
+                  </div>`
+          }
+          var temp = document.querySelector('.addButton');
+          var list = document.querySelectorAll('.devices-list');
+          console.log(list);
+          list.forEach(function(item,i){
+            console.log(item.getAttribute('deviceName'));
+            item.addEventListener('click',function(){
+//              if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
+                location.href="./device_detail";
+//              }else{
+//                location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&address="+item.getAttribute('deviceAddress');
+//              }
+            })
+          })
+
+          temp.addEventListener('click',function(){
+            location.href="./device_add";
+          });
+        }
+        xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send("userAddress="+userAddress);
+      };
+
+  </script>
   </head>
   <body>
     <header>
