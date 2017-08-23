@@ -16,7 +16,7 @@
 console.log(">>>>>>>>>>>>>>> ", (localStorage.getItem("myJSONSecretKeyDevice") == null))
             if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKeyDevice") == null
             || localStorage.getItem("myJSONSecretKey") == "" || localStorage.getItem("myJSONSecretKeyDevice") == "" ){
-                allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                 console.log("test        llllllllllllllllllllllllllll")
                 location.href="./index";
                 return;
@@ -27,15 +27,15 @@ console.log(">>>>>>>>>>>>>>> ", (localStorage.getItem("myJSONSecretKeyDevice") =
   //             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
                userAddress =  myJSONwithObject.address;
                deviceAddress =  myJSONwithObjectDevice.address;
-               allert(myJSONwithObjectDevice.address)
+               alert(myJSONwithObjectDevice.address)
                if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
-                 allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                 alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                  location.href="./index";
                  return;
                }
            }
          } else {
-             allert("Sorry, your browser does not support Web Storage...");
+             alert("Sorry, your browser does not support Web Storage...");
              return;
          }
          var xmlhttp = new XMLHttpRequest();
