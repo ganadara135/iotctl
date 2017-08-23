@@ -29,7 +29,6 @@
              }else{
                 location.href="/booking_list";
              }
-
            }
          }
          xmlhttp.open("POST", "/getBookingListByManager", true);  //true Asyc, false syc
@@ -52,7 +51,7 @@
           <div class="profile">
             <p class="username">Alexander Great</p>
             <p class="user_detail">Administrator</p>
-            <img src="img/icon-setting.svg" class="icon-setting" />
+            <img id="setting-icon" src="img/icon-setting.svg" class="icon-setting" />
           </div>
         </div>
         <div class="menu-container">
@@ -78,6 +77,8 @@
       </div>
 
     </div>
-
+    <script>
+      document.querySelector('#setting-icon').addEventListener('click',()=>{location.href="/main"});
+    </script>
   </body>
 </html>
