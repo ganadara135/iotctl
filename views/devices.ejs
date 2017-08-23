@@ -89,9 +89,9 @@
             console.log(item.getAttribute('deviceName'));
             item.addEventListener('click',function(){
               if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
-                location.href="./device_detail?deviceName="+item.getAttribute('deviceName')+"&address="+item.getAttribute('deviceAddress');
+                location.href="./device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
               }else{
-                location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&address="+item.getAttribute('deviceAddress');
+                location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
               }
             })
           })
