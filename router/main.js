@@ -456,12 +456,17 @@ app.post('/login',urlencodedParser, function(req, res){
               result["success"] = 1;
               result["IDname"]= "Successfully login";
 
-              var tenMinute = 60000 * 10;
-              // expires 는 쿠키생존기간 설정변수
-              req.session.cookie.expires = new Date(Date.now() + tenMinute);
-              //maxAge 는 expires 설정후 지난 시간을 나타냄
-              req.session.cookie.maxAge = tenMinute;
+              // var tenMinute = 60000 * 10;
+              // // expires 는 쿠키생존기간 설정변수
+              // req.session.cookie.expires = new Date(Date.now() + tenMinute);
+              // //maxAge 는 expires 설정후 지난 시간을 나타냄
+              // req.session.cookie.maxAge = tenMinute;
       //        sess.IDname = users[IDname]["IDname"];
+              sess.loginUser = users[IDname]["username"];
+              sess.userAddress = users[IDname]["address"];
+              console.log("sess.loginUser :  ", sess.loginUser)
+              console.log("sess.userAddress :  ", sess.userAddress)
+
               res.json(result);
 /*                res.redirect('choice', {
                   title: "MY HOMEPAGE",
@@ -902,9 +907,9 @@ app.post('/createUserAddress',function(req,res){
       })
   });
 
-  app.get('/login',function(req,res){
-    res.render('login');
-  })
+  // app.get('/login',function(req,res){
+  //   res.render('login');
+  // })
   app.get('/main',function(req,res){
     console.log("call main()");
     res.render('main');

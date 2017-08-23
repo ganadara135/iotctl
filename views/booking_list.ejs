@@ -42,8 +42,8 @@
                      <p class="booking-date">${new Date(userOf[x].enrolledDate).toLocaleDateString()} ${new Date(userOf[x].enrolledDate).toLocaleTimeString()}</p>
                      <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
                      <p>
-                       <button class="reject-bt">reject</button>
-                       <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>admin</button>
+                       <button class="reject-bt">거부</button>
+                       <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>승인</button>
                      </p>
                    </div>
                  </div>`;
