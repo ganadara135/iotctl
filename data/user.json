@@ -1,11 +1,4 @@
 {
-	"admin": {
-		"username": "admin",
-		"password": "admin",
-		"address": "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku",
-		"pubkey": "039fe44bdd88c037e063ee9a2a65337868fb039f2d9cc3a57acb9470fad725125a",
-		"enrolledDate": 1503283793830
-	},
 	"test": {
 		"username": "test",
 		"password": "test",
@@ -82,5 +75,12 @@
 		"address": "1ZmETGKS2begy1x8pVC753aL4wBTsZziEYcH11",
 		"pubkey": "02c436f277b4e3b19dadc640a0b1c049a7eaf845da23b14b48cc800008268931b8",
 		"enrolledDate": 1503369260461
+	},
+	"test111": {
+		"username": "test111",
+		"password": "test111",
+		"address": "14ujqQTyzGH3bT8MTBqQ8E7F3EBRwbVgXCqKw7",
+		"pubkey": "02e3e7b446cf0e9a2e39fbaad0ae5aea6aa895eef2fb8925dfcce752fb605905c3",
+		"enrolledDate": 1503455360755
 	}
 }

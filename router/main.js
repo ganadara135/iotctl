@@ -58,10 +58,7 @@ app.post('/approveBooking',function(req,res){
 
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
             && relationshipOf[y].deviceAddress == deviceAddress){
-      //  result[y] = relationshipOf[y];
-          // 3. BookingApproval.json  및 블록체인에 기록
-          //var bookingApproval =  relationshipOf[userAddress+deviceAddress+bookingTime];
-//          var bookingApproval[userAddress+deviceAddress+bookingTime] =  relationshipOf[userAddress+deviceAddress+bookingTime];
+
           var bookingApproval = {};
           bookingApproval[y] =  relationshipOf[y];
           bookingApproval[y].approvalTime = Date.now();
@@ -359,42 +356,12 @@ app.post('/getBookingListByManager',function(req,res){
   });
 
 
-  app.post('/requestMyDeviceList',urlencodedParser, function(req, res){
-    var sess = req.session;
-    var userAddress = req.body.userAddress;
-    var result = {};
-
-    fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
-        var devicesOf = JSON.parse(data);
-        if(err){
-            throw err;    // device가 하나도 없거나, 읽을때 에러 발생
-        }
-        fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
-            var relationshipOf = JSON.parse(data);
-            var x,y;
-
-            if(err){
-                throw err;   // relationship 이 하나도 없거나, 에러 발생시
-            }
-            for(x in devicesOf){
-              for(y in relationshipOf){
-                if(relationshipOf[y].userAddress == userAddress){
-//                console.log(" relationshipOf[x].userAddress.   --> : ", relationshipOf[y].userAddress)
-                  result[x] = devicesOf[x];
-//                  result[x].myDevice = 1;   // 내 장치 임
-                }
-              }
-            }
-//          console.log("result  : ", result);
-            res.json(result);
-        })   // fs.readFile  relationship.json
-      })// fs.readFile  device.json
-});
-
 app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
   var sess = req.session;
   var userAddress = req.body.userAddress;
   var result = {};
+
+  console.log("call  requestAllDeviceList() ");
 
   fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
     if(err){
@@ -412,7 +379,6 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
       fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
         if(err){
               throw err;   // relationship 이 하나도 없거나, 에러 발생시
-
         }
 
         var relationshipOf = JSON.parse(data);
