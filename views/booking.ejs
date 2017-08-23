@@ -76,7 +76,7 @@
       var oneHour = 60000 * 10 * 6;
 
       if(bookingDate.getTime() >= currentDate.getTime() + oneHour){
-        alert("입력한 시간으로 예약합니다"  + bookingDate.toISOString() +" / " + bookingDate.getTime());
+        alert("입력한 시간으로 예약합니다  : "  + bookingDate.toISOString() +" / " + bookingDate.getTime());
       }else{
         alert("UNVALIDITY : 1시간 앞서 예약하세요");
         return false;
@@ -97,10 +97,6 @@
 //      xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"purpose=" + bbpurpose+"&"+"devicePrivkey=" + myObjDevice.privkey
 //      +"&"+"deviceAddress=" + myObjDevice.address+"&"+"userAddress=" + myObjUser.address);
     };
-
-    // xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
-    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // xmlhttp.send("userAddress="+userAddress);
 
 
     function startTime() {

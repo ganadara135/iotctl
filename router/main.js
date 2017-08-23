@@ -331,12 +331,6 @@ app.post('/getBookingListByManager',function(req,res){
   });
 
 
-
-  app.get('/booking',function(req,res){
-    console.log(req.query);
-    res.render('booking',{deviceName : req.query.deviceName, deviceAddress : req.query.address});
-  });
-
   app.post('/requestAllUserList',urlencodedParser, function(req, res){
     var sess = req.session;
     var result = {};
@@ -925,9 +919,16 @@ app.post('/createUserAddress',function(req,res){
   app.get('/devices',function(req,res){
     res.render('devices');
   })
+
+  app.get('/booking',function(req,res){
+    console.log(req.query);
+    res.render('booking',{deviceName : req.query.deviceName, deviceAddress : req.query.deviceAddress});
+  });
   app.get('/device_detail',function(req,res){
-    res.render('device_detail');
-  })
+    console.log(req.query);
+    res.render('device_detail',{deviceName : req.query.deviceName, deviceAddress : req.query.deviceAddress});
+  });
+
   app.get('/device_add',function(req,res){
     res.render('device_add');
   })
