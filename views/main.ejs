@@ -16,6 +16,11 @@
              console.log("myJSONwithObject.address : ",myJSONwithObject.address);
              userAddress =  myJSONwithObject.address;
              deviceAddress =  myJSONwithObjectDevice.address;
+             if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
+               allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+               location.href="./index";
+               return;
+             }
          } else {
              allert("Sorry, your browser does not support Web Storage...");
              return;
@@ -56,9 +61,10 @@
         </div>
         <div class="menu-container">
           <a href="./devices">Devices</a>
-          <!-- <a href="./booking">Reservation</a> -->
           <a href="./users">Users</a>
-          <a href="#">History</a>
+          <a href="./main">History</a>
+          <a href="./logout">logout</a>
+          <!-- <a href="#">Reservation</a> -->
         </div>
       </nav>
       <label for="menu-bar" class="overlay"></label>

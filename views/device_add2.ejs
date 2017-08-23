@@ -35,7 +35,7 @@
                 var myJSON = JSON.stringify(this.responseText);
                 localStorage.setItem("myJSONSecretKeyDevice", myJSON);
                 alert("할당된 장치 주소 : ", this.responseText);
-  
+
                 console.log("device_address  : ", JSON.parse(this.responseText).address);
 
   //              $("#device_address").val(JSON.parse(this.responseText).address);
@@ -70,9 +70,10 @@
         </div>
         <div class="menu-container">
           <a href="./devices">Devices</a>
-          <!-- <a href="./booking">Reservation</a> -->
           <a href="./users">Users</a>
           <a href="./main">History</a>
+          <a href="./logout">logout</a>
+          <!-- <a href="#">Reservation</a> -->
         </div>
       </nav>
       <label for="menu-bar" class="overlay"></label>

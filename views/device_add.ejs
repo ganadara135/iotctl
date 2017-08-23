@@ -5,6 +5,27 @@
     <link rel="stylesheet" href="css/device_add.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <script>
+    // 브라우저 웹스토리지에 사용자주소 있는지 검사, 또한 브라우저가 이미 등록되어 있는지 검사
+      $(document).ready(function(){
+        var userAddress;
+        if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+            var JSONuserCheck = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+            console.log("JSONuserCheck : ",JSONuserCheck);
+            //console.log("JSONuserCheck.address : ",myJSONwithObject.address);
+            userAddress =  JSONuserCheck.address;
+            if(!JSONuserCheck.address){
+
+              allert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+              location.href="./index";
+              return;
+            }
+        } else {
+            allert("Sorry, your browser does not support Web Storage...");
+            return;
+        }
+      });
+    </script>
   </head>
   <body>
     <header>
@@ -23,9 +44,10 @@
         </div>
         <div class="menu-container">
           <a href="./devices">Devices</a>
-          <!-- <a href="./booking">Reservation</a> -->
           <a href="./users">Users</a>
           <a href="./main">History</a>
+          <a href="./logout">logout</a>
+          <!-- <a href="#">Reservation</a> -->
         </div>
       </nav>
       <label for="menu-bar" class="overlay"></label>
