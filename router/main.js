@@ -407,7 +407,7 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
       fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
         if(err){
               throw err;   // relationship 이 하나도 없거나, 에러 발생시
-            
+
         }
 
         var relationshipOf = JSON.parse(data);
@@ -434,7 +434,7 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
                 if(relationshipOf[y].userAddress == userAddress){
               //    console.log(relationshipOf[y].deviceAddress);
                   for(x in devicesOf){
-                    if(devicesOf[x].address == relationshipOf[y].deviceAddress && relationshipOf[y].bookingTime > Date.now()){
+                    if(devicesOf[x].address == relationshipOf[y].deviceAddress){ // && relationshipOf[y].bookingTime > Date.now()){
                       result[x].myDevice = 1;   // 예약시간이 살아 있는 장치 목록.
                       for(z in approveBookingOf){
                         if(y == z){
