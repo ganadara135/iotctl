@@ -13,8 +13,7 @@
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
              var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
              var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
-             console.log('>>>>>>>>>>>>>>>>>>>>>>>>>.');
-             console.log(myJSONwithObject)
+
              console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
              console.log("myJSONwithObject.address : ",myJSONwithObject.address);
              userAddress =  myJSONwithObject.address;
@@ -94,8 +93,8 @@
             <img src="img/profile_face2.jpg" />
           </div>
           <div class="profile">
-            <p class="username">Alexander Great</p>
-            <p class="user_detail">Administrator</p>
+            <p class="username"><%= loginUser %></p>
+            <p class="user_detail"><%= userAddress %></p>
             <img id="icon-setting" src="img/icon-setting.svg" class="icon-setting" />
           </div>
         </div>

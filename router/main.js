@@ -130,7 +130,7 @@ app.post('/approveBooking',function(req,res){
 
 
 app.post('/getBookingListByManager',function(req,res){
-  var sess = req.session;
+  var sess = req.session;   // sess.loginUser,  sess.userAddress
   var userAddress = req.body.userAddress;
   var deviceAddress = req.body.deviceAddress;
   var result = {};
@@ -171,8 +171,6 @@ app.post('/getBookingListByManager',function(req,res){
             var relationshipOf = JSON.parse(data);
 //            var approvalBookingOf = {};
 
-
-
             fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
               var approveBookingOf;
               if(err){
@@ -208,14 +206,6 @@ app.post('/getBookingListByManager',function(req,res){
           res.json(result);
           return true;
         }
-//      }  // for(x in userOf){
-
-      // if(managerAuthorityCheck == false){
-      //   result["success"] = 0;
-      //   result["error"] = "No Manager Authority";
-      //   res.json(result);
-      //   return;
-      // }
   })  //fs.readFile  user.json
 });
 
@@ -484,8 +474,8 @@ app.post('/login',urlencodedParser, function(req, res){
 });
 
 app.get('/logout', function(req, res){
-      sess = req.session;
-      if(sess.IDname){
+      var sess = req.session;
+      if(sess.loginUser){
           req.session.destroy(function(err){
               if(err){
                   console.log(err);
@@ -903,7 +893,8 @@ app.post('/createUserAddress',function(req,res){
       res.render('index', {
           title: "인덱스화면",
           length: 5,
-          IDname: sess.IDname
+          loginUser: sess.loginUser,
+          userAddress: sess.userAddress
       })
   });
 
@@ -911,51 +902,99 @@ app.post('/createUserAddress',function(req,res){
   //   res.render('login');
   // })
   app.get('/main',function(req,res){
+    var sess = req.session;
     console.log("call main()");
-    res.render('main');
+    res.render('main', {
+        title: "main 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   })
   // app.get('/main/:username/:useraddress',function(req,res){
   //   console.log("call main()");
   //   res.render('main');
   // })
   app.get('/signup',function(req,res){   // 사용자 등록화면
-    res.render('signup');
+    var sess = req.session;
+    console.log("call signup()");
+    res.render('signup', {
+        title: "signup 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   })
   app.get('/devices',function(req,res){
-    res.render('devices');
+    var sess = req.session;
+    console.log("call devices()");
+    res.render('devices', {
+        title: "devices 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   })
 
   app.get('/booking',function(req,res){
-    console.log(req.query);
-    res.render('booking',{deviceName : req.query.deviceName, deviceAddress : req.query.deviceAddress});
+    var sess = req.session;
+    console.log("req.query  : ", req.query);
+    res.render('booking',{
+      deviceName : req.query.deviceName,
+      deviceAddress : req.query.deviceAddress,
+      loginUser: sess.loginUser,
+      userAddress: sess.userAddress
+    })
   });
   app.get('/device_detail',function(req,res){
-    console.log(req.query);
-    res.render('device_detail',{deviceName : req.query.deviceName, deviceAddress : req.query.deviceAddress});
+    var sess = req.session;
+    console.log("req.query  : ", req.query);
+    res.render('device_detail',{
+      deviceName : req.query.deviceName,
+      deviceAddress : req.query.deviceAddress,
+      loginUser: sess.loginUser,
+      userAddress: sess.userAddress
+    })
   });
 
   app.get('/device_add',function(req,res){
-    res.render('device_add');
+    var sess = req.session;
+    console.log("call device_add()");
+    res.render('device_add', {
+        title: "device_add 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   })
   app.get('/device_add2',function(req,res){
-    res.render('device_add2');
-  })
+    var sess = req.session;
+    console.log("call device_add2()");
+    res.render('device_add2', {
+        title: "device_add2 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
+  });
   app.get('/users',function(req,res){
-    res.render('users');
+    var sess = req.session;
+    console.log("call users()");
+    res.render('users', {
+        title: "users 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   });
   app.get('/booking_list',function(req,res){
-    res.render('booking_list');
-  });
-  app.get('/enroll/:lang',function(req,res){
-      var sess = req.session;
-
-//      console.log("xptmxmxm")
-
-      res.render('enroll', {
-          title: "Enrollment",
-          length: 5,
-          IDname: sess.IDname,
-          lang: req.params.lang
-      })
+    var sess = req.session;
+    console.log("call booking_list()");
+    res.render('booking_list', {
+        title: "booking_list 페이지",
+        length: 5,
+        loginUser: sess.loginUser,
+        userAddress: sess.userAddress
+    })
   });
 };
