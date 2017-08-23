@@ -405,88 +405,7 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
       })   // fs.readFile  relationship.json
     })// fs.readFile  device.json
 });
-//  app.post('/login/:IDname',jsonParser, function(req, res){
-app.post('/login',urlencodedParser, function(req, res){
-//  app.post('/login',urlencodedParser, function(req, res){
-      var sess = req.session;
-      var result = {};
 
-
-      if (!req.body)
-        console.log("bodyParser is not working!!!!");
-
-
-      console.log("req.body  : ", req.body);
-
-        fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
-          if(err){
-              console.log("err[code]    :    ", err["code"])
-              if(err["code"] == "ENOENT"){
-                result["success"] = 0;
-                result["error"] = "Server Internal Error";
-                res.json(result);
-                return;
-              }else {
-                throw err;   // relationship 이 하나도 없거나, 에러 발생시
-              }
-          }
-          var users = JSON.parse(data);
-          var IDname = req.body.IDname;
-          var password = req.body.password;
-          var result = {};
-          if(!users[IDname]){
-              // USERNAME NOT FOUND
-              result["success"] = 0;
-              result["error"] = "ID incorrect";
-              res.json(result);
-              return;
-          }
-
-          if(users[IDname]["password"] == password){
-              result["success"] = 1;
-              result["IDname"]= "Successfully login";
-
-              // var tenMinute = 60000 * 10;
-              // // expires 는 쿠키생존기간 설정변수
-              // req.session.cookie.expires = new Date(Date.now() + tenMinute);
-              // //maxAge 는 expires 설정후 지난 시간을 나타냄
-              // req.session.cookie.maxAge = tenMinute;
-      //        sess.IDname = users[IDname]["IDname"];
-              sess.loginUser = users[IDname]["username"];
-              sess.userAddress = users[IDname]["address"];
-              console.log("sess.loginUser :  ", sess.loginUser)
-              console.log("sess.userAddress :  ", sess.userAddress)
-
-              res.json(result);
-/*                res.redirect('choice', {
-                  title: "MY HOMEPAGE",
-                  length: 5,
-                  IDname: req.body.IDname,
-                  amount: 0
-              })
-*/
-          }else{
-              result["success"] = 0;
-              result["error"] = "PW incorrect";
-              res.json(result);
-          }
-      })
-});
-
-app.get('/logout', function(req, res){
-      var sess = req.session;
-      if(sess.loginUser){
-          req.session.destroy(function(err){
-              if(err){
-                  console.log(err);
-              }else{
-                  res.redirect('/');
-              }
-          })
-      }else{
-          res.redirect('/');
-      }
-});
 
 app.post('/createDeviceAddress',function(req,res){
       var sess = req.session;
@@ -701,6 +620,11 @@ app.post('/createUserAddress',function(req,res){
               users[username].enrolledDate = Date.now();
               result["dateOfenroll"] = users[username].dateOfenroll;
               console.log("*********  users[username]  : " , users[username]);
+
+              sess.loginUser = username;
+              sess.userAddress = users[username].address;
+              console.log("sess.loginUser :  ", sess.loginUser)
+              console.log("sess.userAddress :  ", sess.userAddress)
 
               // SAVE DATA
               fs.writeFile(__dirname + "/../data/user.json", JSON.stringify(users, null, '\t'), "utf8", function(err, data){
@@ -918,6 +842,12 @@ app.post('/createUserAddress',function(req,res){
   app.get('/signup',function(req,res){   // 사용자 등록화면
     var sess = req.session;
     console.log("call signup()");
+
+    // sess.loginUser = users[IDname]["username"];
+    // sess.userAddress = users[IDname]["address"];
+    // console.log("sess.loginUser :  ", sess.loginUser)
+    // console.log("sess.userAddress :  ", sess.userAddress)
+
     res.render('signup', {
         title: "signup 페이지",
         length: 5,
@@ -930,7 +860,7 @@ app.post('/createUserAddress',function(req,res){
     console.log("call devices()");
 
     console.log("sess.loginUser  :  ", sess.loginUser);
-    
+
     res.render('devices', {
         title: "devices 페이지",
         length: 5,
@@ -999,5 +929,90 @@ app.post('/createUserAddress',function(req,res){
         loginUser: sess.loginUser,
         userAddress: sess.userAddress
     })
+  });
+  //  app.post('/login/:IDname',jsonParser, function(req, res){
+  app.post('/login',urlencodedParser, function(req, res){
+  //  app.post('/login',urlencodedParser, function(req, res){
+        var sess = req.session;
+        var result = {};
+
+
+        if (!req.body)
+          console.log("bodyParser is not working!!!!");
+
+
+        console.log("req.body  : ", req.body);
+
+          fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
+            if(err){
+                console.log("err[code]    :    ", err["code"])
+                if(err["code"] == "ENOENT"){
+                  result["success"] = 0;
+                  result["error"] = "Server Internal Error";
+                  res.json(result);
+                  return;
+                }else {
+                  throw err;   // relationship 이 하나도 없거나, 에러 발생시
+                }
+            }
+            var users = JSON.parse(data);
+            var IDname = req.body.IDname;
+            var password = req.body.password;
+            var result = {};
+            if(!users[IDname]){
+                // USERNAME NOT FOUND
+                result["success"] = 0;
+                result["error"] = "ID incorrect";
+                res.json(result);
+                return;
+            }
+
+            if(users[IDname]["password"] == password){
+                result["success"] = 1;
+                result["IDname"]= "Successfully login";
+
+                // var tenMinute = 60000 * 10;
+                // // expires 는 쿠키생존기간 설정변수
+                // req.session.cookie.expires = new Date(Date.now() + tenMinute);
+                // //maxAge 는 expires 설정후 지난 시간을 나타냄
+                // req.session.cookie.maxAge = tenMinute;
+        //        sess.IDname = users[IDname]["IDname"];
+                sess.loginUser = users[IDname]["username"];
+                sess.userAddress = users[IDname]["address"];
+                console.log("sess.loginUser :  ", sess.loginUser)
+                console.log("sess.userAddress :  ", sess.userAddress)
+
+                res.json(result);
+  /*                res.redirect('choice', {
+                    title: "MY HOMEPAGE",
+                    length: 5,
+                    IDname: req.body.IDname,
+                    amount: 0
+                })
+  */
+            }else{
+                result["success"] = 0;
+                result["error"] = "PW incorrect";
+                res.json(result);
+            }
+        })
+  });
+
+  app.get('/logout', function(req, res){
+        var sess = req.session;
+
+        console.log("logout() call in main.js")
+        
+        if(sess.loginUser){
+            req.session.destroy(function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                    res.redirect('/');
+                }
+            })
+        }else{
+            res.redirect('/');
+        }
   });
 };
