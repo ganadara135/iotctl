@@ -9,6 +9,10 @@ const connection = {
 //      pass: "973MVcjrxbwyKdCWN6mMeCKUXZGRXgAFB4g4xr3PkcME"
       user: "multichainrpc"
 }
+//curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
+//curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "liststreampublisheritems", "params": ["BookingStream", "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku", false, 20] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
+//multichain-cli MyMultichain liststreampublisheritems BookingStream 1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku
+
 const assert = require('assert');
 const bluebird = require("bluebird");
 const multichain = bluebird.promisifyAll(require("multichain-node")(connection), {suffix: "Promise"});
@@ -284,7 +288,8 @@ app.post('/getBookingListByManager',function(req,res){
             console.log("hexstringblob  : ", hexstringblob);
 
             assert(hexstringblob)
-
+                // 이 부분만 curl 로 클라이언트에서 직접 처리 할 수 있다.
+                //  curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "MyMultichain signrawtransaction", "params": ["myhex"] }' -H 'content-type: text/plain;' http://127.0.0.1:7206
             return multichain.signRawTransactionPromise({
               hexstring: hexstringblob,
         //        parents: [],
