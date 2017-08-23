@@ -12,6 +12,7 @@ const connection = {
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "liststreampublisheritems", "params": ["BookingStream", "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku", false, 20] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
 //multichain-cli MyMultichain liststreampublisheritems BookingStream 1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku
+// multichain-cli MyMultichain -rpcconnect=220.230.112.30 -rpcport=7206 -rpcuser=multichainrpc -rpcpassword=AxNpbxmkLN4Hey4AkV4VeC964ndGQMxmfizwH9Y56znT getinfo
 
 const assert = require('assert');
 const bluebird = require("bluebird");
@@ -158,7 +159,9 @@ app.post('/getBookingListByManager',function(req,res){
 
 //      for(x in userOf){
         // 하드코딩함
-      if(userOf["admin"].address == userAddress){
+      console.log("userOf[admin]  : ", userOf["admin"]);
+
+      if(userOf["admin"] != undefined && userOf["admin"].address == userAddress){
           //managerAuthorityCheck = true;
 
           // 3. relationship.json 엔 있고 approvalBooking.json에 없는 데이터를 목록화하여 던저줌
