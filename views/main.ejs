@@ -13,19 +13,25 @@
 
             console.log("localStorage.getItem(myJSONSecretKey)  : ", localStorage.getItem("myJSONSecretKey"))
             console.log("localStorage.getItem(myJSONSecretKeyDevice)  : ", localStorage.getItem("myJSONSecretKeyDevice"))
-            
-             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
-             var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
-//             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
-//             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-             userAddress =  myJSONwithObject.address;
-             deviceAddress =  myJSONwithObjectDevice.address;
-             allert(myJSONwithObjectDevice.address)
-             if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
-               allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-               location.href="./index";
-               return;
-             }
+
+            if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKeyDevice") == null ){
+                allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                location.href="./index";
+                return;
+            }else {
+               var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+               var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
+  //             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
+  //             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+               userAddress =  myJSONwithObject.address;
+               deviceAddress =  myJSONwithObjectDevice.address;
+               allert(myJSONwithObjectDevice.address)
+               if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
+                 allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                 location.href="./index";
+                 return;
+               }
+           }
          } else {
              allert("Sorry, your browser does not support Web Storage...");
              return;
