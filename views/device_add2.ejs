@@ -29,17 +29,20 @@
 
               console.log("this.responseText : ", this.responseText);
               // $("responsePanel").append(" "+this.responseText+" ");
+              if(JSON.parse(this.responseText).success == '0'){
+                alert("에러메시지 : ", JSON.parse(this.responseText).error)
+              }else{
+                var myJSON = JSON.stringify(this.responseText);
+                localStorage.setItem("myJSONSecretKeyDevice", myJSON);
+                alert("할당된 장치 주소 : ", this.responseText);
+  
+                console.log("device_address  : ", JSON.parse(this.responseText).address);
 
-              var myJSON = JSON.stringify(this.responseText);
-              localStorage.setItem("myJSONSecretKeyDevice", myJSON);
-              alert("할당된 장치 주소 : " this.responseText);
-
-              console.log("device_address  : ", JSON.parse(this.responseText).address);
-
-//              $("#device_address").val(JSON.parse(this.responseText).address);
-              $("responsePanel01").append(JSON.parse(this.responseText).address);
-              $("responsePanel02").append(JSON.parse(this.responseText).privkey);
-              $("responsePanel03").append(JSON.parse(this.responseText).pubkey);
+  //              $("#device_address").val(JSON.parse(this.responseText).address);
+                $("responsePanel01").append(JSON.parse(this.responseText).address);
+                $("responsePanel02").append(JSON.parse(this.responseText).privkey);
+                $("responsePanel03").append(JSON.parse(this.responseText).pubkey);
+              }
             }
           }
           xmlhttp.open("POST", "/createDeviceAddress", true);   //true Asyc, false syc
