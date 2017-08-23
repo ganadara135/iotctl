@@ -177,10 +177,14 @@ app.post('/getBookingListByManager',function(req,res){
 
 
             fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
-              if(err){
-                 throw err;
+              var approveBookingOf;
+              if(err["code"] != "ENOENT"){
+                throw err;
+              }else if(err){    // ENOENT   파일이 없는 경우
+                approveBookingOf = {};
+              }else {
+                approveBookingOf = JSON.parse(data);
               }
-              var approveBookingOf = JSON.parse(data);
               var y,z;
 
               for(y in relationshipOf){
@@ -435,7 +439,7 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
               //    console.log(relationshipOf[y].deviceAddress);
                   for(x in devicesOf){
                     if(devicesOf[x].address == relationshipOf[y].deviceAddress){ // && relationshipOf[y].bookingTime > Date.now()){
-                      result[x].myDevice = 1;   // 예약시간이 살아 있는 장치 목록.
+                      result[x].myDevice = 1;   // 승인 안된 내 장치 목록.
                       for(z in approveBookingOf){
                         if(y == z){
                             result[x].myDevice = 2;  // 승인된 사용가능 장치
