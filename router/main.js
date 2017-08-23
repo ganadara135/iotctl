@@ -392,38 +392,38 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
   var result = {};
 
   fs.readFile( __dirname + "/../data/device.json", 'utf8',  function(err, data){
-      if(err){
-          throw err;    // device가 하나도 없거나, 읽을때 에러 발생
-      }
+    if(err){
+        console.log("err[code]    :    ", err["code"])
+        if(err["code"] == "ENOENT"){
+          result["success"] = 0;
+          result["error"] = "Server Internal Error";
+          res.json(result);
+          return;
+        }else {
+          throw err;   // relationship 이 하나도 없거나, 에러 발생시
+        }
+    }
       var devicesOf = JSON.parse(data);
       fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
         if(err){
-            console.log("err[code]    :    ", err["code"])
-            if(err["code"] == "ENOENT"){
-              result["success"] = 0;
-              result["error"] = "Server Internal Error";
-              res.json(result);
-              return;
-            }else {
               throw err;   // relationship 이 하나도 없거나, 에러 발생시
-            }
+            
         }
 
         var relationshipOf = JSON.parse(data);
         fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
-            if(err){
-                console.log("err[code]    :    ", err["code"])
-                if(err["code"] == "ENOENT"){
-                  result["success"] = 0;
-                  result["error"] = "Server Internal Error";
-                  res.json(result);
-                  return;
-                }else {
-                  throw err;   // relationship 이 하나도 없거나, 에러 발생시
-                }
+          console.log("err[code]    :    ", err["code"])
+            var approveBookingOf;
+            if(err["code"] != "ENOENT"){
+              throw err;
+            }else if(err){    // ENOENT   파일이 없는 경우
+              approveBookingOf = {};
+            }else {
+              approveBookingOf = JSON.parse(data);
             }
-            
-              var approveBookingOf = JSON.parse(data);
+
+
+              //var approveBookingOf = JSON.parse(data);
               var x,y,z;
               for(x in devicesOf){
                 result[x] = devicesOf[x];
@@ -462,7 +462,18 @@ app.post('/login',urlencodedParser, function(req, res){
 
       console.log("req.body  : ", req.body);
 
-      fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
+        fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
+          if(err){
+              console.log("err[code]    :    ", err["code"])
+              if(err["code"] == "ENOENT"){
+                result["success"] = 0;
+                result["error"] = "Server Internal Error";
+                res.json(result);
+                return;
+              }else {
+                throw err;   // relationship 이 하나도 없거나, 에러 발생시
+              }
+          }
           var users = JSON.parse(data);
           var IDname = req.body.IDname;
           var password = req.body.password;
