@@ -178,10 +178,11 @@ app.post('/getBookingListByManager',function(req,res){
 
             fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
               var approveBookingOf;
-              if(err["code"] != "ENOENT"){
-                throw err;
-              }else if(err){    // ENOENT   파일이 없는 경우
+              if(err){
                 approveBookingOf = {};
+                if(err["code"] != "ENOENT"){
+                  throw err;
+                }
               }else {
                 approveBookingOf = JSON.parse(data);
               }
@@ -416,15 +417,15 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
 
         var relationshipOf = JSON.parse(data);
         fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
-          console.log("err[code]    :    ", err["code"])
-            var approveBookingOf;
+          var approveBookingOf;
+          if(err){
+            approveBookingOf = {};
             if(err["code"] != "ENOENT"){
               throw err;
-            }else if(err){    // ENOENT   파일이 없는 경우
-              approveBookingOf = {};
-            }else {
-              approveBookingOf = JSON.parse(data);
             }
+          }else {
+            approveBookingOf = JSON.parse(data);
+          }
 
 
               //var approveBookingOf = JSON.parse(data);
