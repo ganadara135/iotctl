@@ -45,14 +45,14 @@
       <div class="tab-content tab1-content">
         <div class="device-info">
           <p class="people"><img src="img/icon-people.svg" />6</p>
-          <p class="status"><span class="connected"> <%= deviceName %>  <%= deviceAddress %></span></p>
+          <p class="status"><span class="connected"> <%= deviceName %> </span></p>
         </div>
         <div class="device-img">
           <img src="img/icon-airconditioner2.svg" />
         </div>
-        <p class="device-name">Air Conditioner</p>
+        <p class="device-name"><h2><%= deviceName %></h2></p>
         <input type="checkbox" id="device-switch" />
-        <label for="device-switch"><span></span></label>
+        <label for="device-switch"><span> <%= deviceAddress %> </span></label>
 
       </div>
 
