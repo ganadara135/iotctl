@@ -51,23 +51,57 @@
           if (this.readyState == 4 && this.status == 200) {
             var userOf = JSON.parse(this.responseText);
             for(var x in userOf){
-              console.log(userOf[x]);
-              content.innerHTML +=
-              `
-                <div class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
-                  <div class="devices-img">
-                    <img src="img/icon-airconditioner2.svg" />
+              console.log("userOf["+x+"] ", userOf[x]);
+              if(userOf[x].myDevice == 0){    // 남의 장치
+                content.innerHTML +=
+                `
+                  <div style="color:#0000FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                    <div class="devices-img">
+                      <img src="img/icon-airconditioner2.svg" />
+                    </div>
+                    <div class="devices-detail">
+                      <p class="device-name">${userOf[x].deviceName}</p>
+                      <p class="device-info">
+                        <img src="img/icon-people.svg" />13
+                        <span class="connected"></span>
+                      </p>
+                    </div>
                   </div>
-                  <div class="devices-detail">
-                    <p class="device-name">${userOf[x].deviceName}</p>
-                    <p class="device-info">
-                      <img src="img/icon-people.svg" />13
-                      <span class="connected"></span>
-                    </p>
+                `
+              }else if(userOf[x].myDevice == 1){    // 내 장치
+                content.innerHTML +=
+                `
+                  <div style="color:#FF00FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                    <div class="devices-img">
+                      <img src="img/icon-airconditioner2.svg" />
+                    </div>
+                    <div class="devices-detail">
+                      <p class="device-name">${userOf[x].deviceName}</p>
+                      <p class="device-info">
+                        <img src="img/icon-people.svg" />13
+                        <span class="connected"></span>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              `
-            }
+                `
+              }else{ // (userOf[x].myDevice == 2){   // 승인된 내 장치
+                content.innerHTML +=
+                `
+                  <div style="color:#00FFFF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                    <div class="devices-img">
+                      <img src="img/icon-airconditioner2.svg" />
+                    </div>
+                    <div class="devices-detail">
+                      <p class="device-name">${userOf[x].deviceName}</p>
+                      <p class="device-info">
+                        <img src="img/icon-people.svg" />13
+                        <span class="connected"></span>
+                      </p>
+                    </div>
+                  </div>
+                `
+              }
+            }  // for
             content.innerHTML +=
                 `<div class="addButton">
                     <span></span>
@@ -104,19 +138,6 @@
         xmlhttp.send("userAddress="+userAddress);
       };
 
-      function requestAllUserList(){
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-
-            console.log("this.responseText : ", this.responseText);
-            //전체 유저목록을 가져왔으므로 표현은 영균이가 ~~
-          }
-        }
-        xmlhttp.open("POST", "/requestAllUserList", true);  //true Asyc, false syc
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send();
-      };
   </script>
   </head>
   <body>
