@@ -928,6 +928,9 @@ app.post('/createUserAddress',function(req,res){
   app.get('/devices',function(req,res){
     var sess = req.session;
     console.log("call devices()");
+
+    console.log("sess.loginUser  :  ", sess.loginUser);
+    
     res.render('devices', {
         title: "devices 페이지",
         length: 5,
