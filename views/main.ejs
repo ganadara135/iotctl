@@ -13,7 +13,7 @@
 
             console.log("localStorage.getItem(myJSONSecretKey)  : ", localStorage.getItem("myJSONSecretKey"))
             console.log("localStorage.getItem(myJSONSecretKeyDevice)  : ", localStorage.getItem("myJSONSecretKeyDevice"))
-
+console.log(">>>>>>>>>>>>>>> ", (localStorage.getItem("myJSONSecretKeyDevice") == null))
             if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKeyDevice") == null
             || localStorage.getItem("myJSONSecretKey") == "" || localStorage.getItem("myJSONSecretKeyDevice") == "" ){
                 allert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
