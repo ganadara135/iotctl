@@ -166,22 +166,23 @@ app.post('/getBookingListByManager',function(req,res){
 
           // 3. relationship.json 엔 있고 approvalBooking.json에 없는 데이터를 목록화하여 던저줌
           fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
+            if(err){
+               console.log("err    :    ", err)
+               throw err;
+            }
 //            console.log("data  relationship.json -> ", data)
             var relationshipOf = JSON.parse(data);
 //            var approvalBookingOf = {};
 
-            if(err){
-               throw err;
-            }
+
 
             fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
-//              console.log("data  approvalBooking.json -> ", data)
-//console.log("data  relationshipOf -> ", relationshipOf)
-              var approveBookingOf = JSON.parse(data);
-              var y,z;
               if(err){
                  throw err;
               }
+              var approveBookingOf = JSON.parse(data);
+              var y,z;
+
               for(y in relationshipOf){
                  for(z in approveBookingOf){
                    if((relationshipOf[y].bookingTime > Date.now()) && (y != z) ){
@@ -268,7 +269,7 @@ app.post('/getBookingListByManager',function(req,res){
              relationshipOf[userAddress+deviceAddress+bookingTime].deviceAddress = deviceAddress;
              relationshipOf[userAddress+deviceAddress+bookingTime].userAddress = userAddress;
              relationshipOf[userAddress+deviceAddress+bookingTime].enrolledDate = Date.now();
-             relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
+//             relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
              relationshipOf[userAddress+deviceAddress+bookingTime].bookingTime = bookingTime;
 
 //          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
@@ -396,14 +397,32 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
       }
       var devicesOf = JSON.parse(data);
       fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
-          if(err){
+        if(err){
+            console.log("err[code]    :    ", err["code"])
+            if(err["code"] == "ENOENT"){
+              result["success"] = 0;
+              result["error"] = "Server Internal Error";
+              res.json(result);
+              return;
+            }else {
               throw err;   // relationship 이 하나도 없거나, 에러 발생시
-          }
-          var relationshipOf = JSON.parse(data);
-          fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
-              if(err){
+            }
+        }
+
+        var relationshipOf = JSON.parse(data);
+        fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
+            if(err){
+                console.log("err[code]    :    ", err["code"])
+                if(err["code"] == "ENOENT"){
+                  result["success"] = 0;
+                  result["error"] = "Server Internal Error";
+                  res.json(result);
+                  return;
+                }else {
                   throw err;   // relationship 이 하나도 없거나, 에러 발생시
-              }
+                }
+            }
+            
               var approveBookingOf = JSON.parse(data);
               var x,y,z;
               for(x in devicesOf){
