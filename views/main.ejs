@@ -17,8 +17,7 @@ console.log(">>>>>>>>>>>>>>> ", (localStorage.getItem("myJSONSecretKeyDevice") =
             if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKeyDevice") == null
             || localStorage.getItem("myJSONSecretKey") == "" || localStorage.getItem("myJSONSecretKeyDevice") == "" ){
                 alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-                console.log("test        llllllllllllllllllllllllllll")
-                location.href="./index";
+                location.href="./login";
                 return;
             }else {
                var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
@@ -30,7 +29,7 @@ console.log(">>>>>>>>>>>>>>> ", (localStorage.getItem("myJSONSecretKeyDevice") =
                alert(myJSONwithObjectDevice.address)
                if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
                  alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-                 location.href="./index";
+                 location.href="./login";
                  return;
                }
            }
