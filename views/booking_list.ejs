@@ -19,6 +19,7 @@
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
            var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
            var deviceJsonWebstorageValue = localStorage.getItem("myJSONSecretKeyDevice");
+           console.log(" deviceJsonWebstorageValue : ", deviceJsonWebstorageValue)
            if( userJsonWebstorageValue == null || userJsonWebstorageValue == ""
             || deviceJsonWebstorageValue == null || deviceJsonWebstorageValue == ""){
                alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
