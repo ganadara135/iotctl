@@ -370,7 +370,7 @@ app.post('/requestAllDeviceList',urlencodedParser, function(req, res){
           var approveBookingOf;
           if(err){
             approveBookingOf = {};
-            if(err["code"] != "ENOENT"){
+            if(err["code"] != "ENOENT"){    // 승인리스트가 없으면 에럴 던저 버린다
               throw err;
             }
           }else {

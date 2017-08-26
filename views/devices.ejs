@@ -8,19 +8,30 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
       <script>
       function requestAllDeviceList(){
+        if(!loginUser){
+          alert("로그인 페이지로 들어오시기 바랍니다.")
+          location.href="/";
+          return true;
+        }
         var userAddress;// = null;
         var content = document.querySelector('.content');
         content.innerHTML = '';
         if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+          if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKey") == "" ){
+              alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+              location.href="/";
+              return;
+          }else {
             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
             console.log("myJSONwithObject : ",myJSONwithObject);
             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
             userAddress =  myJSONwithObject.address;
             if(!myJSONwithObject.address){
               allert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-              location.href="./index";
+              location.href="/";
               return;
             }
+          }
         } else {
             allert("Sorry, your browser does not support Web Storage...");
             return;
@@ -40,7 +51,7 @@
                       <img src="img/icon-airconditioner2.svg" />
                     </div>
                     <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName}  남의 장치</p>
+                      <p class="device-name">${userOf[x].deviceName} 남이 등록한 장치</p>
                       <p class="device-info">
                         <img src="img/icon-people.svg" />13
                         <span class="connected"></span>
@@ -56,7 +67,7 @@
                       <img src="img/icon-airconditioner2.svg" />
                     </div>
                     <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName} 내 장치</p>
+                      <p class="device-name">${userOf[x].deviceName} 내가 등록한 장치</p>
                       <p class="device-info">
                         <img src="img/icon-people.svg" />13
                         <span class="connected"></span>
@@ -72,7 +83,7 @@
                       <img src="img/icon-airconditioner2.svg" />
                     </div>
                     <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName} 사용 승인된 남의 장치</p>
+                      <p class="device-name">${userOf[x].deviceName} 사용 승인된 장치</p>
                       <p class="device-info">
                         <img src="img/icon-people.svg" />13
                         <span class="connected"></span>

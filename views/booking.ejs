@@ -7,6 +7,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <script>
     $(document).ready(function(){
+      // session 처리
+      if(!loginUser){
+        alert("로그인 페이지로 들어오시기 바랍니다.")
+        location.href="/";
+        return true;
+      }
+
+
       var d = new Date();
 //      var str = currentDate.toLocaleTimeString();
       var oneHour = 60000 * 10 * 6;

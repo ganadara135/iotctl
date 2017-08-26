@@ -8,12 +8,16 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
       <script>
       $(document).ready(function(){
+        if(!loginUser){
+          alert("로그인 페이지로 들어오시기 바랍니다.")
+          location.href="/";
+          return true;
+        }
          var userAddress, deviceAddress;
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
 
-            if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKeyDevice") == null
-            || localStorage.getItem("myJSONSecretKey") == "" || localStorage.getItem("myJSONSecretKeyDevice") == "" ){
-                alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+            if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKey") == ""){
+                alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                 location.href="/";
                 return;
             }else {
