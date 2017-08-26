@@ -28,7 +28,7 @@ app.use(urlencodedParser)
 
 
 app.use(session({
- secret: 'MYSESSION',
+ secret: 'MYSECRET',
  resave: false,
  saveUninitialized: true,
  //cookie: { maxAge: 600000 }  // 10분
