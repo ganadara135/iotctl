@@ -9,24 +9,35 @@
       <!-- <script> </s -->
       <script>
       $(document).ready(function(){
-        var check_login = "<%= loginUser %>"
-        if(!check_login){
-          alert("로그인 페이지로 들어오시기 바랍니다.")
-          location.href="/";
-          return true;
-        }
+        //  var check_login = "<%= loginUser %>"
+        //  if(!check_login){
+        //     alert("로그인 페이지로 들어오시기 바랍니다.")
+        //     location.href="/";
+        //     return true;
+        //  }
          var userAddress, deviceAddress;
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
-             var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
-             var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
-
-             console.log("myJSONwithObjectDevice.address : ",myJSONwithObjectDevice.address);
-             console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-             userAddress =  myJSONwithObject.address;
-             deviceAddress =  myJSONwithObjectDevice.address;
+           var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
+           var deviceJsonWebstorageValue = localStorage.getItem("myJSONSecretKeyDevice");
+           if( userJsonWebstorageValue == null || userJsonWebstorageValue == ""
+            || deviceJsonWebstorageValue == null || deviceJsonWebstorageValue == ""){
+               alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+               location.href="/";
+               return false;
+           }else {
+               var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
+               var myJSONwithObjectDevice = JSON.parse(JSON.parse(deviceJsonWebstorageValue));
+               userAddress =  myJSONwithObject.address;
+               deviceAddress =  myJSONwithObjectDevice.address;
+               if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
+                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                 location.href="/";
+                 return false;
+               }
+           }
          } else {
-             allert("Sorry, your browser does not support Web Storage...");
-             return;
+               alert("Sorry, your browser does not support Web Storage...");
+               return;
          }
          var xmlhttp = new XMLHttpRequest();
          var booking_list = document.querySelector('.booking-list');
