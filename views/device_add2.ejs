@@ -8,18 +8,35 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
       <script>
         function deviceAddrRequest(){
+          var check_login = "<%= loginUser %>"
+          if(!check_login){
+            alert("로그인 페이지로 들어오시기 바랍니다.")
+            location.href="/";
+            return true;
+          }
           var device_name_chk =  $("#device_name").val();
           var device_purpose_chk =  $("#device_purpose").val();
           var device_teleport_chk =  $("#teleport").val();
           var device_inputer_address = null;
 
           if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
-              var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
-              console.log("myJSONwithObject : ",myJSONwithObject);
-              console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-              device_inputer_address =  myJSONwithObject.address;
+            var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
+
+            if( userJsonWebstorageValue == null || userJsonWebstorageValue == ""){
+                alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                location.href="/";
+                return false;
+            }else {
+                var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
+                device_inputer_address =  myJSONwithObject.address;
+                if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
+                  alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                  location.href="/";
+                  return false;
+                }
+            }
           } else {
-              allert("Sorry, your browser does not support Web Storage...");
+              alert("Sorry, your browser does not support Web Storage...");
               return;
           }
 

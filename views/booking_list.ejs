@@ -9,12 +9,12 @@
       <!-- <script> </s -->
       <script>
       $(document).ready(function(){
-        //  var check_login = "<%= loginUser %>"
-        //  if(!check_login){
-        //     alert("로그인 페이지로 들어오시기 바랍니다.")
-        //     location.href="/";
-        //     return true;
-        //  }
+         var check_login = "<%= loginUser %>"
+         if(!check_login){
+            alert("로그인 페이지로 들어오시기 바랍니다.")
+            location.href="/";
+            return true;
+         }
          var userAddress, deviceAddress;
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
            var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");

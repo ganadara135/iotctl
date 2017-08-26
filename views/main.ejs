@@ -14,15 +14,17 @@
           location.href="/";
           return true;
         }
+          
          var userAddress, deviceAddress;
+         var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
 
-            if(localStorage.getItem("myJSONSecretKey") == null || localStorage.getItem("myJSONSecretKey") == ""){
+            if(userJsonWebstorageValue == null || userJsonWebstorageValue == ""){
                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                 location.href="/";
                 return;
             }else {
-               var myJSONwithObject = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKey")));
+               var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
                var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
                userAddress =  myJSONwithObject.address;
                deviceAddress =  myJSONwithObjectDevice.address;
