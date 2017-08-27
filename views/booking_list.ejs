@@ -59,8 +59,8 @@
                      <p class="booking-date">${new Date(userOf[x].enrolledDate).toLocaleDateString()} ${new Date(userOf[x].enrolledDate).toLocaleTimeString()}</p>
                      <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
                      <p>
-                       <button class="reject-bt">거부</button>
-                       <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>승인</button>
+                       <button class="reject-bt">Reject</button>
+                       <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>Approve</button>
                      </p>
                    </div>
                  </div>`;
@@ -78,19 +78,19 @@
                         var resp = request.responseText;
                         console.log(resp);
                       } else {
-                        // We reached our target server, but it returned an error
+                        alert("We reached our target server, but it returned an error");
                       }
                     };
 
                     request.onerror = function() {
-                      // There was a connection error of some sort
+                      alert("There was a connection error of some sort");
                     };
                     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     request.send("userAddress="+this.getAttribute('userAddress')+"&"+"deviceAddress="+this.getAttribute('deviceAddress')+"&bookingTime="+this.getAttribute('bookingTime')+"&userPrivkey="+myJSONwithObject.privkey);
                  })
                });
              }else {
-               alert("승인요청내역이 1개도 없습니다.")
+               alert("There are any list of approval");
              }
            }  //  if (this.readyState == 4 &&
          }
@@ -138,8 +138,8 @@
             <p class="booking-date">2017/03/15 08:00:00</p>
             <p class="using-time">2017/04/11 09:00</p>
             <p>
-              <button class="reject-bt">reject</button>
-              <button class="admin-bt">admin</button>
+              <button class="reject-bt">Reject</button>
+              <button class="admin-bt">Approve</button>
             </p>
           </div>
         </div>
