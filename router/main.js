@@ -188,6 +188,8 @@ app.post('/getBookingListByManager',function(req,res){
 
               for(y in relationshipOf){
                  for(z in approveBookingOf){
+                   console.log(" z : ", z)
+                   console.log(" z[approvalTime] : ", z["approvalTim"])
                    console.log(" z.approvalTime : ", z.approvalTime)
                    if((relationshipOf[y].bookingTime > Date.now()) && (z.approvalTime > 0) ){
                     //  console.log(" relationshipOf : ", y)
