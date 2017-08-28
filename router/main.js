@@ -48,12 +48,15 @@ app.post('/approveBooking',function(req,res){
   fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
     var relationshipOf = JSON.parse(data);
     var y;
+    var countRelationship = Object.keys(result).length;
 
     if(err){
        throw err;
     }
 
+    console( "relationshipOf.length   :    ",
     for(y in relationshipOf){
+      countRelationship--;
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
             && relationshipOf[y].deviceAddress == deviceAddress){
 
@@ -68,7 +71,6 @@ app.post('/approveBooking',function(req,res){
                 throw err;
             }
           }) // fs.writeFile approveBooking.json
-
 
           console.log("call createRawSendFrom()");
   //        return multichain.validateAddressPromise({address: this.address1})
@@ -106,8 +108,8 @@ app.post('/approveBooking',function(req,res){
             console.log("Finished Successfully");
             result["success"] = 1;
             result["error"] = "Approval Completed";
-            res.json(result);
-            return true;   // to stop send  res.json(result) again behind
+            // res.json(result);
+            // return true;   // to stop send  res.json(result) again behind
         })
         .catch(err => {
             console.log(err)
@@ -115,19 +117,15 @@ app.post('/approveBooking',function(req,res){
         })
 
         })  // fs.readFile  approveBooking.json
-      }  // if
+      }
     }   // for
 
-
-
-
     console.log("Object.keys(result).length : ", Object.keys(result).length)
-
-    if(Object.keys(result).length == 0){
-      result["success"] = 0;
-      result["errror"] = "No Booking List";
-      res.json(result);
+    if(Object.keys(result).length == 0 && countRelationship <= 0 ){
+        result["success"] = 0;
+        result["errror"] = "No Booking List";
     }
+    res.json(result);
 
   }) //fs.readFile   relationship.json
 });
