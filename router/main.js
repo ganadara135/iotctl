@@ -188,8 +188,10 @@ app.post('/getBookingListByManager',function(req,res){
 
               for(y in relationshipOf){
                  for(z in approveBookingOf){
-                   if((relationshipOf[y].bookingTime > Date.now()) && (y != z) ){
-                    result[y] = relationshipOf[y];
+                   if((relationshipOf[y].bookingTime > Date.now()) && (z.approvalTime > 0) ){
+                    //  console.log(" relationshipOf : ", y)
+                    //  console.log(" approveBookingOf : ", z)
+                     result[y] = relationshipOf[y];
                    }
                  }
               }
