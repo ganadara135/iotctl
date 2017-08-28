@@ -106,8 +106,8 @@ app.post('/approveBooking',function(req,res){
             console.log("Finished Successfully");
             result["success"] = 1;
             result["error"] = "Approval Completed";
-            // res.json(result);
-            // return true;   // to stop send  res.json(result) again behind
+            res.json(result);
+            return true;   // to stop send  res.json(result) again behind
         })
         .catch(err => {
             console.log(err)
@@ -126,8 +126,9 @@ app.post('/approveBooking',function(req,res){
     if(Object.keys(result).length == 0){
       result["success"] = 0;
       result["errror"] = "No Booking List";
+      res.json(result);
     }
-    res.json(result);
+
   }) //fs.readFile   relationship.json
 });
 
