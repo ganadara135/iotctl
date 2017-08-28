@@ -68,7 +68,7 @@ app.post('/approveBooking',function(req,res){
                 throw err;
             }
           }) // fs.writeFile approveBooking.json
-          })  // fs.readFile  approveBooking.json
+
 
           console.log("call createRawSendFrom()");
   //        return multichain.validateAddressPromise({address: this.address1})
@@ -113,8 +113,12 @@ app.post('/approveBooking',function(req,res){
             console.log(err)
             throw err;
         })
+
+        })  // fs.readFile  approveBooking.json
       }  // if
     }   // for
+
+
 
 
     console.log("Object.keys(result).length : ", Object.keys(result).length)
