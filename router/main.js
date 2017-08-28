@@ -54,7 +54,7 @@ app.post('/approveBooking',function(req,res){
        throw err;
     }
 
-    console( "relationshipOf.length   :    ",
+//    console( "relationshipOf.length   :    ",
     for(y in relationshipOf){
       countRelationship--;
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
