@@ -36,7 +36,6 @@ app.post('/approveBooking',function(req,res){
   // 2. 해당 예약내역 있는지 체크
   // 3. BookingApproval.json  및 블록체인에 기록
 
-
   // 1. 보내준 값 유효범위 체크
   if(!req.body.userAddress || !req.body.userAddress){
       result["success"] = 0;
@@ -55,19 +54,21 @@ app.post('/approveBooking',function(req,res){
     }
 
     for(y in relationshipOf){
-
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
             && relationshipOf[y].deviceAddress == deviceAddress){
 
-          var bookingApproval = {};
+          fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
+            var bookingApproval = JSON.parse(data);
+
+        //  var bookingApproval = {};
           bookingApproval[y] =  relationshipOf[y];
           bookingApproval[y].approvalTime = Date.now();
-
           fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
             if(err){
                 throw err;
             }
           }) // fs.writeFile approveBooking.json
+          })  // fs.readFile  approveBooking.json
 
           console.log("call createRawSendFrom()");
   //        return multichain.validateAddressPromise({address: this.address1})
@@ -100,7 +101,6 @@ app.post('/approveBooking',function(req,res){
         })
         .then(tx_hex => {
             console.log("tx_hex  : ", tx_hex);
-
             assert(tx_hex)
 
             console.log("Finished Successfully");
@@ -122,7 +122,6 @@ app.post('/approveBooking',function(req,res){
     if(Object.keys(result).length == 0){
       result["success"] = 0;
       result["errror"] = "No Booking List";
-
     }
     res.json(result);
   }) //fs.readFile   relationship.json
@@ -264,6 +263,7 @@ app.post('/getBookingListByManager',function(req,res){
 //             relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
              relationshipOf[userAddress+deviceAddress+bookingTime].bookingTime = bookingTime;
 
+//          fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
 //          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
           fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
             if(err){
