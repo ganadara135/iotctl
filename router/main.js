@@ -596,6 +596,7 @@ app.post('/createUserAddress',function(req,res){
       // LOAD DATA & CHECK DUPLICATION
       fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
           var users = JSON.parse(data);
+          console.log("users[username]  : ", users[username])
           if(users[username]){
               // DUPLICATION FOUND
               result["success"] = 0;
@@ -658,6 +659,12 @@ app.post('/createUserAddress',function(req,res){
                 })
           })
           .then(txid => {
+                console.log("TEST:   confirmCallbackEnroll() ")
+                assert(txid);
+                confirmCallbackEnroll(result,res);
+          })
+/*
+          .then(txid => {
                 listenForConfirmations(txid, (err, confirmed) => {
                     if(err){
                         throw err;
@@ -668,7 +675,7 @@ app.post('/createUserAddress',function(req,res){
                     }
                 })
           })
-          .catch(err => {
+*/          .catch(err => {
                 console.log(err)
                 throw err;
           })
