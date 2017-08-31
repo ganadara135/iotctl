@@ -3,13 +3,13 @@
 
 const connection = {
 //      port: 7206,     //rpc port
-      port: 2772,     //rpc port
+      port: 7414,     //rpc port
       host: '220.230.112.30',
 //      pass: "AxNpbxmkLN4Hey4AkV4VeC964ndGQMxmfizwH9Y56znT",
 //      host: '127.0.0.1',
 //      pass: "973MVcjrxbwyKdCWN6mMeCKUXZGRXgAFB4g4xr3PkcME"
       user: "multichainrpc",
-      pass: "multichainrpc"
+      pass: "GTaHwrrhy7H5D8DQH2cQgSLP7icWW1vYpfZXPb6yzXgB"
 }
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "liststreampublisheritems", "params": ["BookingStream", "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku", false, 20] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
