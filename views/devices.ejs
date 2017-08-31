@@ -101,22 +101,23 @@
                     <span></span>
                   </div>`
           }
-          var temp = document.querySelectorAll('.addButton');
+          var temp = document.querySelector('.addButton');
           var list = document.querySelectorAll('.devices-list');
           console.log(list);
           list.forEach(function(item,i){
             console.log(item.getAttribute('deviceName'));
             item.addEventListener('click',function(){
               if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
-                location.href="./device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
+                location.href="/device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
               }else{
-                location.href="./booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
+                location.href="/booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
               }
             })
           })
 
           temp.addEventListener('click',function(){
-            location.href="./device_add";
+            console.log("temp addButton Pressed ")
+            location.href="/device_add";
           });
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
@@ -150,7 +151,7 @@
           <!-- <a href="#">Reservation</a> -->
         </div>
       </nav>
-      <label for="menu-bar" class="overlay">여기가 어디냐?</label>
+      <label for="menu-bar" class="overlay"></label>
     </header>
 
     <div class="content">
@@ -179,7 +180,7 @@
         </div>
       </div>
 
-      <div class="addButton">
+      <div class="addButton" id="id-addButton">
         <span>addButton</span>
       </div>
     </div>
@@ -188,6 +189,7 @@
     </script>
     <script>
       document.querySelector('#icon-setting').addEventListener('click',()=>{location.href="/main"});
+      // document.querySelector('#id-addButton').addEventListener('click',()=>{location.href="/device_add"});
     </script>
   </body>
 </html>
