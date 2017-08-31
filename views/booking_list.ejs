@@ -59,7 +59,7 @@
                      <p class="booking-date">${new Date(userOf[x].enrolledDate).toLocaleDateString()} ${new Date(userOf[x].enrolledDate).toLocaleTimeString()}</p>
                      <p class="using-time">${new Date(userOf[x].bookingTime).toLocaleDateString()} ${new Date(userOf[x].bookingTime).toLocaleTimeString()}</p>
                      <p>
-                       <button class="reject-bt">Reject</button>
+                       <button class="reject-bt" onclick="alert('You pressed Reject button')">Reject</button>
                        <button class="admin-bt" userAddress=${userOf[x].userAddress} deviceAddress=${userOf[x].deviceAddress} bookingTime=${userOf[x].bookingTime}>Approve</button>
                      </p>
                    </div>
@@ -77,7 +77,7 @@
                         // Success!
                         var resp = request.responseText;
                         console.log("   resp   :    ",  resp);
-
+                        alert(" Success   resp   :    ",  resp);
                       } else {
                         alert("We reached our target server, but it returned an error");
                       }

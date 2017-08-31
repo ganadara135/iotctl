@@ -2,12 +2,14 @@
 
 
 const connection = {
-      port: 7206,     //rpc port
+//      port: 7206,     //rpc port
+      port: 2772,     //rpc port
       host: '220.230.112.30',
-      pass: "AxNpbxmkLN4Hey4AkV4VeC964ndGQMxmfizwH9Y56znT",
+//      pass: "AxNpbxmkLN4Hey4AkV4VeC964ndGQMxmfizwH9Y56znT",
 //      host: '127.0.0.1',
 //      pass: "973MVcjrxbwyKdCWN6mMeCKUXZGRXgAFB4g4xr3PkcME"
-      user: "multichainrpc"
+      user: "multichainrpc",
+      pass: "multichainrpc"
 }
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
 //curl --user multichainrpc --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "liststreampublisheritems", "params": ["BookingStream", "1NWaAocGQBBRo3WwWCj5Fyps253NHqoJRWR9Ku", false, 20] }' -H 'content-type: text/plain;' http://220.230.112.30:7206
@@ -108,7 +110,7 @@ app.post('/approveBooking',function(req,res){
             console.log("Finished Successfully");
             result["success"] = 1;
             result["error"] = "Approval Completed";
-            // res.json(result);
+            //res.json(result);
             // return true;   // to stop send  res.json(result) again behind
         })
         .catch(err => {
