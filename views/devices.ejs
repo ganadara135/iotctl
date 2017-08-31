@@ -6,130 +6,6 @@
     <meta name="viewport" content="width=device-width, user-scalable=no
       initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-      <script>
-      function requestAllDeviceList(){
-        var check_login = "<%= loginUser %>"
-        if(!check_login){
-          alert("로그인 페이지로 들어오시기 바랍니다.")
-          location.href="/";
-          return true;
-        }
-        var userAddress;// = null;
-        var content = document.querySelector('.content');
-        content.innerHTML = '';
-
-        if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
-          var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
-          if(userJsonWebstorageValue == null || userJsonWebstorageValue == "" ){
-              alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-              location.href="/";
-              return;
-          }else {
-            var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
-            console.log("myJSONwithObject : ",myJSONwithObject);
-            console.log("myJSONwithObject.address : ",myJSONwithObject.address);
-            userAddress =  myJSONwithObject.address;
-            if(!myJSONwithObject.address){
-              alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
-              location.href="/";
-              return;
-            }
-          }
-        } else {
-            alert("Sorry, your browser does not support Web Storage...");
-            return;
-        }
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            var userOf = JSON.parse(this.responseText);
-            for(var x in userOf){
-              console.log("userOf["+x+"] ", userOf[x]);
-              if(userOf[x].myDevice == 0){    // 남의 장치
-                content.innerHTML +=
-                `
-                  <div style="color:#0000FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
-                    <div class="devices-img">
-                      <img src="img/icon-airconditioner2.svg" />
-                    </div>
-                    <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName} 남이 등록한 장치</p>
-                      <p class="device-info">
-                        <img src="img/icon-people.svg" />13
-                        <span class="connected"></span>
-                      </p>
-                    </div>
-                  </div>
-                `
-              }else if(userOf[x].myDevice == 1){    // 내 장치
-                content.innerHTML +=
-                `
-                  <div style="color:#FF00FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
-                    <div class="devices-img">
-                      <img src="img/icon-airconditioner2.svg" />
-                    </div>
-                    <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName} 내가 등록한 장치</p>
-                      <p class="device-info">
-                        <img src="img/icon-people.svg" />13
-                        <span class="connected"></span>
-                      </p>
-                    </div>
-                  </div>
-                `
-              }else{ // (userOf[x].myDevice == 2){   // 승인된 내 장치
-                content.innerHTML +=
-                `
-                  <div style="color:#00FFFF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
-                    <div class="devices-img">
-                      <img src="img/icon-airconditioner2.svg" />
-                    </div>
-                    <div class="devices-detail">
-                      <p class="device-name">${userOf[x].deviceName} 사용 승인된 장치</p>
-                      <p class="device-info">
-                        <img src="img/icon-people.svg" />13
-                        <span class="connected"></span>
-                      </p>
-                    </div>
-                  </div>
-                `
-              }
-            }  // for
-            content.innerHTML +=
-                `<div class="addButton" id="id-addButton">
-                    <span> </span>
-                  </div>`
-          }
-
-
-          var temp = document.querySelector('.addButton');
-          temp.addEventListener('click',function(){
-            console.log("temp addButton Pressed ")
-            location.href="/device_add";
-          });
-          
-          var list = document.querySelectorAll('.devices-list');
-          console.log("list  ==> ", list);
-          list.forEach(function(item,i){
-            console.log("item. deviceName : ", item.getAttribute('deviceName'));
-            item.addEventListener('click',function(){
-              if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
-                location.href="/device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
-              }else{
-                location.href="/booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
-              }
-            })
-          });
-
-
-        }
-        xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("userAddress="+userAddress);
-      };
-
-  </script>
   </head>
   <body>
     <header>
@@ -184,16 +60,140 @@
         </div>
       </div>
 
-      <!-- <div class="addButton" id="id-addButton">
-        ssssssssss
-      </div> -->
+      <div class="addButton" id="id-addButton">
+        <span> </span>
+      </div>
     </div>
     <script>
       requestAllDeviceList()
     </script>
     <script>
       document.querySelector('#icon-setting').addEventListener('click',()=>{location.href="/main"});
-      document.querySelector('#id-addButton').addEventListener('click',()=>{location.href="/device_add"});
+      // document.querySelector('#id-addButton').addEventListener('click',()=>{location.href="/device_add"});
     </script>
+    <script>
+    function requestAllDeviceList(){
+      var check_login = "<%= loginUser %>"
+      if(!check_login){
+        alert("로그인 페이지로 들어오시기 바랍니다.")
+        location.href="/";
+        return true;
+      }
+      var userAddress;// = null;
+      var content = document.querySelector('.content');
+      content.innerHTML = '';
+
+      if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+        var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
+        if(userJsonWebstorageValue == null || userJsonWebstorageValue == "" ){
+            alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+            location.href="/";
+            return;
+        }else {
+          var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
+          console.log("myJSONwithObject : ",myJSONwithObject);
+          console.log("myJSONwithObject.address : ",myJSONwithObject.address);
+          userAddress =  myJSONwithObject.address;
+          if(!myJSONwithObject.address){
+            alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+            location.href="/";
+            return;
+          }
+        }
+      } else {
+          alert("Sorry, your browser does not support Web Storage...");
+          return;
+      }
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var userOf = JSON.parse(this.responseText);
+          for(var x in userOf){
+            console.log("userOf["+x+"] ", userOf[x]);
+            if(userOf[x].myDevice == 0){    // 남의 장치
+              content.innerHTML +=
+              `
+                <div style="color:#0000FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                  <div class="devices-img">
+                    <img src="img/icon-airconditioner2.svg" />
+                  </div>
+                  <div class="devices-detail">
+                    <p class="device-name">${userOf[x].deviceName} 남이 등록한 장치</p>
+                    <p class="device-info">
+                      <img src="img/icon-people.svg" />13
+                      <span class="connected"></span>
+                    </p>
+                  </div>
+                </div>
+              `
+            }else if(userOf[x].myDevice == 1){    // 내 장치
+              content.innerHTML +=
+              `
+                <div style="color:#FF00FF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                  <div class="devices-img">
+                    <img src="img/icon-airconditioner2.svg" />
+                  </div>
+                  <div class="devices-detail">
+                    <p class="device-name">${userOf[x].deviceName} 내가 등록한 장치</p>
+                    <p class="device-info">
+                      <img src="img/icon-people.svg" />13
+                      <span class="connected"></span>
+                    </p>
+                  </div>
+                </div>
+              `
+            }else{ // (userOf[x].myDevice == 2){   // 승인된 내 장치
+              content.innerHTML +=
+              `
+                <div style="color:#00FFFF" class="devices-list" id="list-1" isMine=${userOf[x].myDevice} deviceName=${userOf[x].deviceName} deviceAddress=${userOf[x].address}>
+                  <div class="devices-img">
+                    <img src="img/icon-airconditioner2.svg" />
+                  </div>
+                  <div class="devices-detail">
+                    <p class="device-name">${userOf[x].deviceName} 사용 승인된 장치</p>
+                    <p class="device-info">
+                      <img src="img/icon-people.svg" />13
+                      <span class="connected"></span>
+                    </p>
+                  </div>
+                </div>
+              `
+            }
+          }  // for
+          content.innerHTML +=
+              `<div class="addButton" id="id-addButton">
+                  <span> </span>
+                </div>`
+        }
+
+
+        var temp = document.querySelector('.addButton');
+        temp.addEventListener('click',function(){
+          console.log("temp addButton Pressed ")
+          location.href="/device_add";
+        });
+
+        var list = document.querySelectorAll('.devices-list');
+        console.log("list  ==> ", list);
+        list.forEach(function(item,i){
+          console.log("item. deviceName : ", item.getAttribute('deviceName'));
+          item.addEventListener('click',function(){
+            if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
+              location.href="/device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
+            }else{
+              location.href="/booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
+            }
+          })
+        });
+
+
+      }
+      xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send("userAddress="+userAddress);
+    };
+
+</script>
   </body>
 </html>

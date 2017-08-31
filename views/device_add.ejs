@@ -19,7 +19,7 @@
                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                 location.href="/";
                 return false;
-            }else if ( !deviceJsonWebstorageValue){
+            }else if (deviceJsonWebstorageValue != null || deviceJsonWebstorageValue != ""){
                 alert("본 사물은 이미 등록되어있어 재등록할 수 없습니다.")
                 location.href="/main";
                 return false;
