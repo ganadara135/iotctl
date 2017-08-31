@@ -64,9 +64,9 @@
         <span> </span>
       </div>
     </div>
-    <script>
+    <!-- <script>
       requestAllDeviceList()
-    </script>
+    </script> -->
     <script>
       document.querySelector('#icon-setting').addEventListener('click',()=>{location.href="/main"});
       // document.querySelector('#id-addButton').addEventListener('click',()=>{location.href="/device_add"});
@@ -193,7 +193,11 @@
       xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xmlhttp.send("userAddress="+userAddress);
     };
-
+</script>
+<script>
+$(document).ready(function(){
+  requestAllDeviceList();
+});
 </script>
   </body>
 </html>
