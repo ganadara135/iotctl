@@ -29,7 +29,7 @@
             }else {
                 var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
                 device_inputer_address =  myJSONwithObject.address;
-                if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
+                if(!myJSONwithObject.address){
                   alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                   location.href="/";
                   return false;
