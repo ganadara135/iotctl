@@ -101,7 +101,7 @@
                     <span></span>
                   </div>`
           }
-          var temp = document.querySelector('.addButton');
+          // var temp = document.querySelector('.addButton');
           var list = document.querySelectorAll('.devices-list');
           console.log(list);
           list.forEach(function(item,i){
@@ -115,10 +115,10 @@
             })
           })
 
-          temp.addEventListener('click',function(){
-            console.log("temp addButton Pressed ")
-            location.href="/device_add";
-          });
+          // temp.addEventListener('click',function(){
+          //   console.log("temp addButton Pressed ")
+          //   location.href="/device_add";
+          // });
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
