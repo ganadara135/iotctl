@@ -102,10 +102,17 @@
                   </div>`
           }
 
+
+          var temp = document.querySelector('.addButton');
+          temp.addEventListener('click',function(){
+            console.log("temp addButton Pressed ")
+            location.href="/device_add";
+          });
+          
           var list = document.querySelectorAll('.devices-list');
-          console.log(list);
+          console.log("list  ==> ", list);
           list.forEach(function(item,i){
-            console.log(item.getAttribute('deviceName'));
+            console.log("item. deviceName : ", item.getAttribute('deviceName'));
             item.addEventListener('click',function(){
               if(this.getAttribute('isMine') == "1" || this.getAttribute('isMine') == "2"){
                 location.href="/device_detail?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
@@ -114,12 +121,8 @@
               }
             })
           });
-          
-          var temp = document.querySelector('.addButton');
-          temp.addEventListener('click',function(){
-            console.log("temp addButton Pressed ")
-            location.href="/device_add";
-          });
+
+
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
