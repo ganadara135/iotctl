@@ -51,7 +51,7 @@
               }else{
                 var myJSON = JSON.stringify(this.responseText);
                 localStorage.setItem("myJSONSecretKeyDevice", myJSON);
-                alert("할당된 장치 주소 : ", this.responseText);
+                alert("할당된 장치 주소 : ", myJSON);
 
                 console.log("device_address  : ", JSON.parse(this.responseText).address);
 

@@ -14,8 +14,8 @@
           location.href="/";
           return true;
         }
-          
-         var userAddress, deviceAddress;
+
+         var userAddress;
          var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
 
@@ -25,12 +25,12 @@
                 return;
             }else {
                var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
-               var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
+              // var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
                userAddress =  myJSONwithObject.address;
-               deviceAddress =  myJSONwithObjectDevice.address;
-               alert(myJSONwithObjectDevice.address)
-               if(!myJSONwithObject.address || !myJSONwithObjectDevice.address){
-                 alert("사용자주소나 제품주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+            //   deviceAddress =  myJSONwithObjectDevice.address;
+              // alert(myJSONwithObjectDevice.address)
+               if(!myJSONwithObject.address){
+                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                  location.href="/";
                  return;
                }
