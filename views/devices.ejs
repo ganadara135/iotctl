@@ -96,12 +96,12 @@
                 `
               }
             }  // for
-            // content.innerHTML +=
-            //     `<div class="addButton" id="id-addButton">
-            //
-            //       </div>`
+            content.innerHTML +=
+                `<div class="addButton" id="id-addButton">
+                    <span> </span>
+                  </div>`
           }
-          // var temp = document.querySelector('.addButton');
+
           var list = document.querySelectorAll('.devices-list');
           console.log(list);
           list.forEach(function(item,i){
@@ -113,12 +113,13 @@
                 location.href="/booking/?deviceName="+item.getAttribute('deviceName')+"&deviceAddress="+item.getAttribute('deviceAddress');
               }
             })
-          })
-
-          // temp.addEventListener('click',function(){
-          //   console.log("temp addButton Pressed ")
-          //   location.href="/device_add";
-          // });
+          });
+          
+          var temp = document.querySelector('.addButton');
+          temp.addEventListener('click',function(){
+            console.log("temp addButton Pressed ")
+            location.href="/device_add";
+          });
         }
         xmlhttp.open("POST", "/requestAllDeviceList", true);  //true Asyc, false syc
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -180,9 +181,9 @@
         </div>
       </div>
 
-      <div class="addButton" id="id-addButton">
+      <!-- <div class="addButton" id="id-addButton">
         ssssssssss
-      </div>
+      </div> -->
     </div>
     <script>
       requestAllDeviceList()
