@@ -9,8 +9,10 @@ input::-webkit-input-placeholder { color: lightgray; }
 body{
   width: 100vw;
   height: 100vh;
-  background: -moz-linear-gradient(top,#31435b,#25364a);
-  background: -webkit-linear-gradient(top,#31435b,#25364a);
+  /*background: -moz-linear-gradient(top,#31435b,#25364a);*/
+  /*background: -webkit-linear-gradient(top,#31435b,#25364a);*/
+  background: -moz-linear-gradient(top,black 77%, white);
+  background: -webkit-linear-gradient(top,black 77%, white);
   text-align: center;
   display: flex;
   flex-direction: column;
