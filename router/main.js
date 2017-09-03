@@ -128,7 +128,6 @@ app.post('/approveBooking',function(req,res){
     //     result["errror"] = "No Booking List in approveBooking()";
     // }
     // res.json(result);
-
   }) //fs.readFile   relationship.json
 });
 
