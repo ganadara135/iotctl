@@ -50,7 +50,7 @@ app.post('/approveBooking',function(req,res){
   fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
     var relationshipOf = JSON.parse(data);
     var y;
-    var countRelationship = Object.keys(result).length;
+    var countRelationship = Object.keys(relationshipOf).length;
 
     if(err){
        throw err;
@@ -110,8 +110,8 @@ app.post('/approveBooking',function(req,res){
             console.log("Finished Successfully");
             result["success"] = 1;
             result["error"] = "Approval Completed";
-            //res.json(result);
-            // return true;   // to stop send  res.json(result) again behind
+            res.json(result);
+             return true;   // to stop send  res.json(result) again behind
         })
         .catch(err => {
             console.log(err)
@@ -122,12 +122,12 @@ app.post('/approveBooking',function(req,res){
       }
     }   // for
 
-    console.log("Object.keys(result).length : ", Object.keys(result).length)
-    if(Object.keys(result).length == 0 && countRelationship <= 0 ){
-        result["success"] = 0;
-        result["errror"] = "No Booking List";
-    }
-    res.json(result);
+    // console.log("Object.keys(result).length : ", Object.keys(result).length)
+    // if(Object.keys(result).length == 0 && countRelationship <= 0 ){
+    //     result["success"] = 0;
+    //     result["errror"] = "No Booking List in approveBooking()";
+    // }
+    // res.json(result);
 
   }) //fs.readFile   relationship.json
 });
@@ -185,25 +185,27 @@ app.post('/getBookingListByManager',function(req,res){
               }else {
                 approveBookingOf = JSON.parse(data);
               }
-              var y,z;
 
+              var y,z;
               for(y in relationshipOf){
-                 for(z in approveBookingOf){
-                  //  console.log(" z : ", z)
-                  //  console.log(" z[approvalTime] : ", z["approvalTim"])
-                   console.log(" approveBookingOf[z].approvalTime : ", approveBookingOf[z].approvalTime)
-                   if((relationshipOf[y].bookingTime > Date.now()) && (approveBookingOf[z].approvalTime > 0) ){
-                    //  console.log(" relationshipOf : ", y)
-                    //  console.log(" approveBookingOf : ", z)
-                     result[y] = relationshipOf[y];
-                   }
-                 }
+                if(relationshipOf[y].bookingTime > Date.now()){
+                    var check_approval = false;
+                    for(z in approveBookingOf){
+                      if( relationshipOf[y].deviceAddress == approveBookingOf[z].deviceAddress &&
+                      relationshipOf[y].userAddress == approveBookingOf[z].userAddress){
+                          check_approval = true;
+                      }
+                    }
+                    if(check_approval == false){
+                      result[y] = relationshipOf[y];
+                    }
+                }
               }
               console.log("Object.keys(result).length : ", Object.keys(result).length)
 
               if(Object.keys(result).length == 0){
                 result["success"] = 0;
-                result["error"] = "No Booking List";
+                result["error"] = "No Booking List in getBookingListByManager()";
               }
               res.json(result);
               return true;

@@ -75,9 +75,15 @@
                     request.onload = function() {
                       if (request.status >= 200 && request.status < 400) {
                         // Success!
-                        var resp = request.responseText;
-                        console.log("   resp   :    ",  resp);
-                        alert(" Success   resp   :    ",  resp);
+                        //var resp = request.responseText;
+                        var userOf = JSON.parse(this.responseText);
+                        console.log("   this.responseText   :    ",  this.responseText);
+                        console.log("   userOf   :    ",  userOf);
+                        alert(" Success   userOf   :    " +  userOf.success);
+
+                        if(userOf.success == '1'){
+                          location.href="/main";
+                        }
                       } else {
                         alert("We reached our target server, but it returned an error");
                       }

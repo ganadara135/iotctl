@@ -15,22 +15,26 @@
           return true;
         }
 
-         var userAddress;
-         var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
+         var userAddress, deviceAddress;
          if (typeof(Storage) !== "undefined") {    // 사용자 address 추출하여 연결하는 부분
+             var userJsonWebstorageValue = localStorage.getItem("myJSONSecretKey");
+             var deviceJsonWebstorageValue = localStorage.getItem("myJSONSecretKeyDevice");
 
             if(userJsonWebstorageValue == null || userJsonWebstorageValue == ""){
                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
                 location.href="/";
                 return;
-            }else {
+            }else if (deviceJsonWebstorageValue == null || deviceJsonWebstorageValue == ""){
+              alert("Please register your divice into IoT Control System")
+              return false;
+            } else {
                var myJSONwithObject = JSON.parse(JSON.parse(userJsonWebstorageValue));
               // var myJSONwithObjectDevice = JSON.parse(JSON.parse(localStorage.getItem("myJSONSecretKeyDevice")));
                userAddress =  myJSONwithObject.address;
             //   deviceAddress =  myJSONwithObjectDevice.address;
               // alert(myJSONwithObjectDevice.address)
                if(!myJSONwithObject.address){
-                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후사용하세요")
+                 alert("사용자주소가 등록되어 있지 않습니다. 통제시스템에 등록후 사용하세요")
                  location.href="/";
                  return;
                }
