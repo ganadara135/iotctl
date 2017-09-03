@@ -32,7 +32,7 @@ app.post('/approveBooking',function(req,res){
   var bookingTime = new Number(req.body.bookingTime);
   var result = {};
 
-  console.log("req.body  : ", req.body);
+  console.log("req.body  approveBooking ()   : ", req.body);
 
   // 1. 보내준 값 유효범위 체크
   // 2. 해당 예약내역 있는지 체크
@@ -49,25 +49,43 @@ app.post('/approveBooking',function(req,res){
   // 2. 해당 예약내역 있는지 체크
   fs.readFile( __dirname + "/../data/relationship.json", 'utf8',  function(err, data){
     var relationshipOf = JSON.parse(data);
-    var y;
+//    var y;
     var countRelationship = Object.keys(relationshipOf).length;
 
     if(err){
        throw err;
     }
 
+
+    // y 111111111 ========>   14Ghx441QqgHrUErWicep7wLbf9NB12MRrjQgt      1Y5bxWUZzYe4dfVcaJmsN26EDy96vq6geNKiwV1504438200000
+    // bookingApproval  ==>  { '14Ghx441QqgHrUErWicep7wLbf9NB12MRrjQgt     1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy1504438200000':
+    //    { deviceAddress: '1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy',
+    //      userAddress: '14Ghx441QqgHrUErWicep7wLbf9NB12MRrjQgt',
+    //      enrolledDate: 1504431051540,
+    //      bookingTime: 1504438200000,
+    //      approvalTime: 1504432191565 } }
+    //  y 2222222222 ========>   14Ghx441QqgHrUErWicep7wLbf9NB12MRrjQgt    1U9q1ZggsFASYccLzPm67mJNP89E72UR3ruTqy1504438200000
+
+
 //    console( "relationshipOf.length   :    ",
-    for(y in relationshipOf){
-      countRelationship--;
+    for(const y in relationshipOf){
+//      countRelationship--;
       if(relationshipOf[y].bookingTime > Date.now() && relationshipOf[y].userAddress == userAddress
             && relationshipOf[y].deviceAddress == deviceAddress){
-
+// console.log("deviceAddress  : ", deviceAddress);
+// console.log("relationshipOf[y].deviceAddress  ==> ", relationshipOf[y].deviceAddress);
+// console.log("relationshipOf[y]  ==> ", relationshipOf[y]);
+// console.log(" y 111111111 ========>  ", y)
           fs.readFile( __dirname + "/../data/approveBooking.json", 'utf8',  function(err, data){
             var bookingApproval = JSON.parse(data);
-
-        //  var bookingApproval = {};
-          bookingApproval[y] =  relationshipOf[y];
-          bookingApproval[y].approvalTime = Date.now();
+            // console.log("bookingApproval  ==> ", bookingApproval);
+            // console.log(" y 2222222222 ========>  ", y)
+            bookingApproval[y] = {};
+            // console.log(" bookingApproval[y]  1111 ========>  ", bookingApproval[y])
+            bookingApproval[y] =  relationshipOf[y];
+            // console.log(" bookingApproval[y]  2222 ========>  ", bookingApproval[y])
+            bookingApproval[y].approvalTime = Date.now();
+          // console.log("   write approveBooking.json bookingApproval[y] : ", bookingApproval[y]);
           fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
             if(err){
                 throw err;
@@ -84,7 +102,7 @@ app.post('/approveBooking',function(req,res){
         //              action: "send"
           })         // signrawtransaction [paste-hex-blob] '[]' '["privkey"]'
           .then(hexstringblob => {
-            console.log("hexstringblob  : ", hexstringblob);
+            // console.log("hexstringblob  : ", hexstringblob);
 
             assert(hexstringblob)
 
@@ -95,7 +113,7 @@ app.post('/approveBooking',function(req,res){
           })
         })      //  sendrawtransaction [paste-bigger-hex-blob]
         .then(hexvalue => {
-          console.log("hexvalue.hex  : ", hexvalue.hex);
+          // console.log("hexvalue.hex  : ", hexvalue.hex);
 
           assert(hexvalue)
 
@@ -155,13 +173,15 @@ app.post('/getBookingListByManager',function(req,res){
 //  var managerAuthorityCheck = false;
   fs.readFile( __dirname + "/../data/user.json", 'utf8',  function(err, data){
       var userOf = JSON.parse(data);
-      var x;
+//      var x;
 
 //      for(x in userOf){
         // 하드코딩함
       console.log("userOf[admin]  : ", userOf["admin"]);
+      console.log("userOf[admin2]  : ", userOf["admin2"]);
 
-      if(userOf["admin"] != undefined && userOf["admin"].address == userAddress){
+      if((userOf["admin"] != undefined && userOf["admin"].address == userAddress)
+       || (userOf["admin2"] != undefined && userOf["admin2"].address == userAddress)){
           //managerAuthorityCheck = true;
 
           // 3. relationship.json 엔 있고 approvalBooking.json에 없는 데이터를 목록화하여 던저줌
@@ -185,13 +205,17 @@ app.post('/getBookingListByManager',function(req,res){
                 approveBookingOf = JSON.parse(data);
               }
 
-              var y,z;
-              for(y in relationshipOf){
+              //var y,z;
+              for(const y in relationshipOf){
                 if(relationshipOf[y].bookingTime > Date.now()){
                     var check_approval = false;
-                    for(z in approveBookingOf){
+                    for(const z in approveBookingOf){
+                      // console.log("relationshipOf[y].deviceAddress : ", relationshipOf[y].deviceAddress);
+                      // console.log("approveBookingOf[z].deviceAddress : ", approveBookingOf[z].deviceAddress);
+
                       if( relationshipOf[y].deviceAddress == approveBookingOf[z].deviceAddress &&
                       relationshipOf[y].userAddress == approveBookingOf[z].userAddress){
+//                    relationshipOf[y].bookingTime == approveBookingOf[z].bookingTime){
                           check_approval = true;
                       }
                     }
@@ -274,8 +298,7 @@ app.post('/getBookingListByManager',function(req,res){
 //             relationshipOf[userAddress+deviceAddress+bookingTime].approvalBooking = false;
              relationshipOf[userAddress+deviceAddress+bookingTime].bookingTime = bookingTime;
 
-//          fs.writeFile(__dirname + "/../data/approveBooking.json", JSON.stringify(bookingApproval, null, '\t'), "utf8", function(err, data){
-//          console.log("relationshipOf[userAddress+deviceAddress+bookingTime]  : " ,relationshipOf[userAddress+deviceAddress+bookingTime]);
+
           fs.writeFile(__dirname + "/../data/relationship.json", JSON.stringify(relationshipOf, null, '\t'), "utf8", function(err, data){
             if(err){
                 throw err;
